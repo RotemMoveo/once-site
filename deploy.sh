@@ -17,6 +17,9 @@ touch "$WORK/.nojekyll"   # בלי זה GitHub Pages מדלג על תיקיות 
 
 cd "$WORK"
 git init -q -b gh-pages
+# ה-repo הזמני לא יורש זהות; לוקחים אותה מה-repo האמיתי, עם ברירת מחדל.
+git config user.name  "$(git -C "$ROOT" config user.name  || echo 'ONCE deploy')"
+git config user.email "$(git -C "$ROOT" config user.email || echo 'deploy@once.local')"
 git add -A
 git commit -q -m "Deploy ONCE site — $(date '+%Y-%m-%d %H:%M')"
 git remote add origin "$(git -C "$ROOT" remote get-url origin)"
