@@ -86,6 +86,13 @@ PAGES = {
 # index.html and about.html carry their own inline copy of the chrome CSS, so
 # these run over every built file, not just chrome.css.
 GLOBAL = [
+    # --- the language switch (menu + footer) --------------------------------
+    # On the Hebrew site it points into en/ and reads "English"; here it is the
+    # way back out, and it is the one Hebrew string on an English page.
+    ('href="en/', 'href="../'),
+    ('hreflang="en" lang="en" dir="ltr">', 'hreflang="he" lang="he" dir="rtl">'),
+    ('<span class="ls-t">English</span>',
+     '<span class="ls-t">\u05e2\u05d1\u05e8\u05d9\u05ea</span>'),
     # the animated indicator is offset from the left now, so animate `left`
     ('background:var(--night-sky);transition:right .2s linear}',
      'background:var(--night-sky);transition:left .2s linear}'),

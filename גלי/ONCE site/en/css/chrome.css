@@ -85,7 +85,7 @@ button{font-family:inherit;background:none;border:none;cursor:pointer}
 .menu-overlay.open{opacity:1;pointer-events:auto}
 .menu{position:fixed;top:0;bottom:0;left:0;width:min(420px,86vw);background:var(--dark-blue);z-index:61;transform:translateX(-100%);transition:transform .5s cubic-bezier(.25,.72,.25,1);display:flex;flex-direction:column;padding:36px 48px 48px;overflow-y:auto}
 .menu.open{transform:none}
-.menu-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:48px}
+.menu-top{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-bottom:48px}
 .menu-close{width:32px;height:32px;display:flex;align-items:center;justify-content:center}
 .menu-search{display:none;width:32px;height:32px;align-items:center;justify-content:center}
 .menu-close svg{transition:transform .3s}
@@ -98,6 +98,17 @@ button{font-family:inherit;background:none;border:none;cursor:pointer}
 .menu-contact ul{list-style:none;display:flex;flex-direction:column;gap:8px}
 .menu-contact li,.menu-contact a{font:400 15px/1.5 'GoogleSans';color:#fff}
 .menu-contact a:hover{text-decoration:underline}
+
+/* ============ language switch ============ */
+.langsw{display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border:.5px solid var(--hairline);background:rgba(251,251,251,.08);color:#fff;font:500 13px/1 'GoogleSans';white-space:nowrap;transition:background .25s,border-color .25s,color .25s}
+.langsw:hover{background:#fff;border-color:#fff;color:var(--dark-blue)}
+.langsw svg{flex:0 0 auto}
+/* the switch sits opposite the close button. The auto margin goes on the
+   close, not on the link: the link carries its own dir (ltr for 'English',
+   rtl for the way back), and a logical margin resolves against that. */
+.menu-top .menu-close{margin-inline-end:auto}
+.f-links .langsw{align-self:center;padding:6px 11px;font-size:12px}
+.f-links .langsw,.f-links .langsw:hover{text-decoration:none}
 
 .only-mobile{display:none}
 
