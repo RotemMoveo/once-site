@@ -1,0 +1,6 @@
+# macOS
+.DS_Store
+**/.DS_Store
+
+# Zip archives — duplicates of folders already tracked here
+*.zip
