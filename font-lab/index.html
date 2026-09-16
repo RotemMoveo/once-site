@@ -27,21 +27,25 @@ a{color:inherit;text-decoration:none}
 .top p{font:400 16px/1.6 'GoogleSans';color:rgba(255,255,255,.7);margin-top:14px}
 
 main{flex:1;padding:12px 0 0}
-.sec{padding:52px 0 0}
-.sec-h{display:flex;align-items:center;gap:11px;padding-bottom:18px;
- border-bottom:1px solid var(--line)}
-.sec-h h2{font:400 30px/1 'Almoni';letter-spacing:-1px}
+.sec{padding:56px 0 0}
+/* the group label is the display face — Almoni, dark, no border. The options
+   below it are the site's own button: Google Sans 500, marine, hairline box.
+   Different typeface, weight, size and colour, so they cannot read as headings. */
+.sec-h{display:flex;align-items:center;gap:11px;margin-bottom:20px}
+.sec-h h2{font:400 32px/1 'Almoni';letter-spacing:-1.1px}
 .sec-h .st{color:var(--night-sky);flex:0 0 auto}
 
-.row{display:flex;align-items:center;gap:20px;padding:26px 4px;
- border-bottom:1px solid var(--line);transition:padding .25s,color .25s}
-.row:hover{color:var(--marine);padding-inline:14px 4px}
+.row{display:flex;align-items:center;gap:18px;padding:19px 20px;margin-bottom:10px;
+ border:.5px solid var(--marine);background:rgba(251,251,251,.12);color:var(--marine);
+ transition:background .25s,color .25s}
+.row:hover{background:var(--marine);color:#fff}
 .row:focus-visible{outline:2px solid var(--marine);outline-offset:2px}
-.rt{font:400 28px/1.1 'Almoni';letter-spacing:-.8px;flex:0 0 auto}
-.rf{font:400 16px/1.4 'GoogleSans';color:var(--gray-txt);margin-inline-start:auto;
- text-align:end}
-.go{width:13px;height:9px;flex:0 0 auto;color:var(--marine);transition:transform .25s}
-.row:hover .go{transform:translateX(5px)}
+.rt{font:500 17px/1.2 'GoogleSans';flex:0 0 auto}
+.rf{font:400 15px/1.4 'GoogleSans';color:var(--gray-txt);margin-inline-start:auto;
+ text-align:end;transition:color .25s}
+.row:hover .rf{color:rgba(255,255,255,.72)}
+.go{width:13px;height:9px;flex:0 0 auto;transition:transform .25s}
+.row:hover .go{transform:translateX(-5px)}
 
 footer{padding:56px 0 46px;font:400 13px/1.6 'GoogleSans';color:#9aa8b1}
 
@@ -51,12 +55,11 @@ footer{padding:56px 0 46px;font:400 13px/1.6 'GoogleSans';color:#9aa8b1}
  .brand>svg{width:46px;height:41px}
  .top h1{margin-top:34px;letter-spacing:-1px}
  .top p{font-size:15px}
- .sec{padding:38px 0 0}
- .sec-h h2{font-size:25px}
- .row{gap:14px;padding:20px 2px}
- .row:hover{padding-inline:2px}
- .rt{font-size:23px;letter-spacing:-.6px}
- .rf{font-size:14px}
+ .sec{padding:40px 0 0}
+ .sec-h h2{font-size:26px}
+ .row{gap:12px;padding:16px 15px}
+ .rt{font-size:16px}
+ .rf{font-size:13.5px}
  footer{padding:40px 0 34px}
 }
 </style>
