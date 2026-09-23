@@ -1,0 +1,908 @@
+
+
+
+
+
+
+:root{
+  --dark-blue:#062840;
+  --night-sky:#003a5e;
+  --marine:#00416c;
+  --warm-cream:#f0e7e0;
+  --stone:#d4d2cc;
+  --hairline:#1f72a8;
+  --gray-txt:#717c83;
+  --tab-gray:#777777;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+section[id]{scroll-margin-top:93px}
+body{font-family:'GoogleSans','Almoni',Arial,sans-serif;background:#fff;color:var(--night-sky);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%}
+a{text-decoration:none;color:inherit}
+button{font-family:inherit;background:none;border:none;cursor:pointer}
+
+/* ============ buttons ============ */
+@keyframes nudge{0%{transform:translateX(0)}45%{transform:translateX(6px)}100%{transform:translateX(0)}}
+.btn{display:inline-flex;align-items:center;gap:16px;padding:17px;background:rgba(251,251,251,.12);border:.5px solid var(--marine);color:var(--marine);font:500 16px/1 'GoogleSans';cursor:pointer;transition:background .25s,color .25s}
+.btn svg{flex:0 0 auto}
+.btn:hover{background:var(--marine);color:#fff}
+.btn:hover svg{animation:nudge .6s ease}
+.btn:hover svg path{stroke:#fff}
+.btn.btn-light{border-color:#fff;color:#fff}
+.btn.btn-light:hover{background:rgba(255,255,255,.18)}
+
+/* ============ NAV ============ */
+.hero{position:relative;height:748px;background:none center/cover no-repeat;display:flex;flex-direction:column;justify-content:flex-end}
+.hero::before{content:'';position:absolute;inset:0;background:rgba(0,0,0,.2);pointer-events:none}
+.nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:stretch;justify-content:space-between;height:93px;background:rgba(255,255,255,.05);border-bottom:.5px solid rgba(255,255,255,.55);backdrop-filter:blur(2px);transition:background .35s ease}
+.nav.scrolled{background:rgba(255,255,255,.82);-webkit-backdrop-filter:blur(14px) saturate(1.4);backdrop-filter:blur(14px) saturate(1.4);border-bottom-color:rgba(0,65,108,.25)}
+.nav.scrolled .nav-icons{border-inline-end-color:rgba(0,65,108,.25)}
+.nav.scrolled .nav-contact{border-inline-start-color:rgba(0,65,108,.25)}
+.nav.scrolled .nav-contact a{color:var(--marine)}
+.nav.scrolled svg path[stroke]{stroke:var(--marine)}
+.nav.scrolled svg path[fill="white"],.nav.scrolled svg path[fill="#fff"],.nav.scrolled svg path[fill="#FFFFFF"]{fill:var(--marine);stroke:none}
+.nav.scrolled .nav-logo svg path{fill:var(--marine);stroke:none}
+.nav-side{display:flex;align-items:center}
+.nav-icons{padding:0 48px;border-inline-end:.5px solid rgba(255,255,255,.55);gap:48px}
+.nav-contact{border-inline-start:.5px solid rgba(255,255,255,.55);width:227px;justify-content:center}
+.nav-contact a{display:inline-flex;align-items:center;gap:10px;color:#fff;font:500 18px/1.3 'GoogleSans'}
+.nav-contact a:hover svg{animation:nudge .6s ease}
+.nav-logo{position:absolute;left:50%;top:14px;transform:translateX(-50%);z-index:2}
+.nav-logo svg{width:71px;height:64px;display:block}
+.nav-icons button{display:flex;align-items:center;justify-content:center;width:24px;height:24px}
+.nav svg path[stroke]{transition:stroke .35s ease}
+.nav svg path[fill]{transition:fill .35s ease}
+.nav-contact a span{transition:color .35s ease}
+.burger svg path{transform-box:fill-box;transform-origin:0% 50%}
+@keyframes burgerLine{50%{transform:scaleX(.5)}}
+.burger:hover svg path:nth-of-type(1){animation:burgerLine .55s ease .06s}
+.burger:hover svg path:nth-of-type(2){animation:burgerLine .55s ease}
+.burger:hover svg path:nth-of-type(3){animation:burgerLine .55s ease .12s}
+
+/* ============ HERO ============ */
+.hero-content{position:relative;z-index:2;display:flex;flex-direction:column;align-items:flex-start;gap:10px;padding:0 100px 64px}
+.hero-content .star{width:48px;height:48px;margin-bottom:10px}
+.hero h1{font:400 80px/1 'Almoni';letter-spacing:-3px;color:#fff;text-align:left;white-space:pre-line}
+
+.imgz{overflow:hidden;position:relative}
+.imgz img{width:100%;height:100%;object-fit:cover;transition:transform 1.1s cubic-bezier(.22,.61,.36,1)}
+.imgz:hover img{transform:scale(1.045)}
+
+/* .imgz for a photo the Figma export paints as a CSS background instead of an
+   <img>. The element's own background cannot be scaled without scaling the box,
+   so ::after carries a copy of it (background:inherit picks up the whole
+   shorthand — url, center/cover, and any texture layer above it) and that is
+   what moves. Children need the z-index: ::after is generated last, so it would
+   otherwise cover the text a tile puts over its photo. */
+.bgz{overflow:hidden;position:relative}
+.bgz::after{content:'';position:absolute;inset:0;background:inherit;pointer-events:none;transition:transform 1.1s cubic-bezier(.22,.61,.36,1)}
+.bgz:hover::after{transform:scale(1.045)}
+.bgz>*{position:relative;z-index:1}
+@media (prefers-reduced-motion:reduce){.imgz img,.bgz::after{transition:none}}
+
+.menu-overlay{position:fixed;inset:0;background:rgba(6,40,64,.45);opacity:0;pointer-events:none;transition:opacity .45s ease;z-index:60}
+.menu-overlay.open{opacity:1;pointer-events:auto}
+.menu{position:fixed;top:0;bottom:0;left:0;width:min(420px,86vw);background:var(--dark-blue);z-index:61;transform:translateX(-100%);transition:transform .5s cubic-bezier(.25,.72,.25,1);display:flex;flex-direction:column;padding:36px 48px 48px;overflow-y:auto}
+.menu.open{transform:none}
+.menu-top{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-bottom:48px}
+.menu-close{width:32px;height:32px;display:flex;align-items:center;justify-content:center}
+.menu-search{display:none;width:32px;height:32px;align-items:center;justify-content:center}
+.menu-close svg{transition:transform .3s}
+.menu-close:hover svg{transform:rotate(90deg)}
+.menu-links{display:flex;flex-direction:column;gap:28px;text-align:left;margin-bottom:56px}
+.menu-links a{font:400 32px/1.1 'Almoni';letter-spacing:-.6px;color:#fff;transition:color .25s}
+.menu-links a:hover{color:#76c9ff}
+.menu-contact{margin-top:auto;padding-top:36px;border-top:.5px solid var(--hairline);text-align:left}
+.menu-contact h4{font:400 13px/1.3 'GoogleSans';color:#76c9ff;margin-bottom:12px}
+.menu-contact ul{list-style:none;display:flex;flex-direction:column;gap:8px}
+.menu-contact li,.menu-contact a{font:400 15px/1.5 'GoogleSans';color:#fff}
+
+/* ============ language switch ============ */
+.langsw{display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border:.5px solid var(--hairline);background:rgba(251,251,251,.08);color:#fff;font:500 13px/1 'GoogleSans';white-space:nowrap;transition:background .25s,border-color .25s,color .25s}
+.langsw:hover{background:#fff;border-color:#fff;color:var(--dark-blue)}
+.langsw svg{flex:0 0 auto}
+/* the switch sits opposite the close button. The auto margin goes on the
+   close, not on the link: the link carries its own dir (ltr for 'English',
+   rtl for the way back), and a logical margin resolves against that. */
+.menu-top .menu-close{margin-inline-end:auto}
+.f-links .langsw{align-self:center;padding:6px 11px;font-size:12px}
+.f-links .langsw,.f-links .langsw:hover{text-decoration:none}
+
+.only-mobile{display:none}
+
+/* ============ word reveal ============ */
+.wsplit .w{display:inline-block;opacity:0;transform:translateY(.22em);filter:blur(3px);transition:opacity .55s ease-out,transform .55s ease-out,filter .28s ease-out;transition-delay:var(--d,0ms);will-change:opacity,transform,filter}
+.wsplit.in .w{opacity:1;transform:none;filter:none}
+.brev{opacity:0;transform:translateY(14px);filter:blur(3px);transition:opacity .65s ease-out,transform .65s ease-out,filter .3s ease-out}
+.brev.in{opacity:1;transform:none;filter:none}
+@media (prefers-reduced-motion:reduce){.wsplit .w,.brev{transition:none;opacity:1;transform:none;filter:none}}
+
+/* ============ SECTION HEADERS ============ */
+.sec-head-row{display:flex;justify-content:space-between;align-items:flex-start}
+.sec-title{display:inline-flex;align-items:center;gap:16px}
+.sec-title h2{font:400 48px/1 'Almoni';letter-spacing:-2px;color:var(--night-sky)}
+.sec-title svg,.sec-title img{flex:0 0 auto}
+
+/* ============ PROJECTS ============ */
+.projects{background:#fff;padding:88px 0 48px 100px}
+.projects-head{display:flex;justify-content:space-between;align-items:flex-start;padding-inline-end:100px;margin-bottom:32px}
+.projects-track{position:relative;height:1px;background:var(--stone);margin-bottom:32px;margin-inline-end:100px}
+.projects-track .seg{position:absolute;top:-.5px;left:0;height:2px;width:142px;background:var(--night-sky);transition:left .2s linear}
+.tabs{display:flex;gap:32px;justify-content:flex-start;margin-bottom:32px}
+.tab{display:inline-flex;align-items:center;gap:8px;font:400 18px/24px 'GoogleSans';color:var(--tab-gray);cursor:pointer;white-space:nowrap}
+.tab .tlab{display:inline-flex;flex-direction:column;align-items:center}
+.tab .tlab::after{content:attr(data-text);font-weight:700;height:0;overflow:hidden;visibility:hidden;pointer-events:none}
+.tab .ttxt{white-space:nowrap}
+.tab svg{flex:0 0 auto}
+.tab.active{font-weight:700;color:var(--night-sky)}
+.tab:not(.active) svg path{stroke:#d4d2cc}
+.tab:not(.active) svg path[fill]{fill:#d4d2cc}
+.slider-wrap{position:relative}
+.slider{display:flex;gap:24px;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;padding-bottom:4px}
+.slider::-webkit-scrollbar{display:none}
+.pcard{flex:0 0 594px;display:flex;flex-direction:column;gap:32px}
+.pcard-img{width:100%;height:540px}
+.pcard-info{position:relative;display:flex;justify-content:space-between;align-items:flex-start;gap:22px}
+.ptag{display:inline-flex;align-items:center;gap:8px;background:#e2eef6;color:var(--marine);font:400 14px/1.3 'GoogleSans';padding:6px 16px 6px 10px;white-space:nowrap}
+.ptag.ptag-mktg{background:rgba(58,179,255,.1);color:var(--night-sky);padding:6px 10px}
+.pcard-txt{width:370px;max-width:62%;display:flex;flex-direction:column;gap:22px}
+/* Title row.  The status tag belongs on the title's line, pushed out to the
+   card's far edge so it lines up with the edge of the photo above it — the
+   margin is `inline-start:auto` so the same rule reads right-to-left in Hebrew
+   and left-to-right in English.  when the two labels cannot share a line
+   (a narrow phone, or a long English status) the tag stays on the title's line
+   and breaks over two lines instead, panel and all: nowrap keeps it out of a
+   line of its own, the title does not shrink, so the tag is the one that gives.
+   The English labels are long enough that lifting the tag put a full-width band
+   above every card. */
+.pcard-head{display:flex;flex-wrap:nowrap;align-items:center;gap:6px 12px}
+.pcard-head h3{flex-shrink:0}
+.pcard-head .ptag{white-space:normal;min-width:0}
+.pcard-head .ptag>svg{flex:0 0 auto}
+/* The same row, as the Figma export builds it on the project and urban-renewal
+   cards: no class there, so it is addressed by its layer name. Same rule — the
+   row does not break, the title does not shrink, the tag does. */
+[data-name="שורת כותרת"]{flex-wrap:nowrap !important}
+[data-name="שורת כותרת"]>*{flex-shrink:0 !important}
+[data-name="שורת כותרת"]>[data-name="tag"],
+[data-name="שורת כותרת"]>[data-name="תגית"]{flex-shrink:1 !important;min-width:0 !important}
+.pcard-head .ptag{margin-inline-start:auto}
+/* From tablet up the text column is only 370px of a 594px card, so the tag has
+   to leave the column to reach the photo's edge. */
+@media (min-width:769px){
+  .pcard-head .ptag{position:absolute;inset-inline-end:0;top:0;margin:0}
+}
+.pcard-txt h3{font:700 24px/1.05 'Almoni';letter-spacing:-.4px;color:var(--night-sky)}
+.pcard-txt p{font:400 16px/27px 'GoogleSans';color:var(--gray-txt);margin-top:8px}
+.plink{display:inline-flex;align-items:center;gap:10px;align-self:flex-start;font:500 18px/1 'GoogleSans';color:var(--night-sky)}
+.plink:hover svg{animation:nudge .6s ease}
+.arrows{display:flex;gap:42px;justify-content:flex-start;margin-top:64px}
+.arrows button{width:32px;height:32px;transition:opacity .2s}
+.arrows button[disabled]{opacity:.4;cursor:default}
+
+/* ============ QUOTE ============ */
+.quote{background:#fff;padding:88px 100px 180px;display:flex;flex-direction:column;align-items:center;gap:31px;text-align:center}
+.quote .star{width:43px;height:43px}
+.quote blockquote{max-width:938px;font:400 48px/1 'Almoni';letter-spacing:-2px;color:var(--marine)}
+.quote-author{display:flex;align-items:center;gap:20px}
+.quote-sig{display:flex;flex-direction:column;align-items:center}
+.quote-sig img{width:70px;height:40px}
+.quote-sig span{font:400 12px/27px 'GoogleSans';color:#9e9e9e}
+.quote-avatar{width:64px;height:64px;border-radius:50%;overflow:hidden}
+.quote-avatar img{width:100%;height:100%;object-fit:cover}
+
+/* ============ ABOUT ============ */
+.about{position:relative;min-height:800px;background:url(../../images/7eca6ee7e529f57c.jpg) center/cover no-repeat;display:flex;align-items:center;justify-content:center;padding:200px 100px}
+.about-inner{display:flex;flex-direction:column;align-items:center;gap:35px;max-width:565px;text-align:center}
+.about-inner h2{font:400 48px/1 'Almoni';letter-spacing:-2px;color:#fff}
+.about-inner p{font:400 16px/27px 'GoogleSans';color:#fff;margin-top:-11px}
+.about-inner .btn{margin-top:0}
+
+/* ============ IRONIT ============ */
+.ironit{padding:100px;background:#fff}
+.ironit-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:32px}
+.ironit-img{width:100%;height:684px}
+.ironit-txt{margin-top:32px;max-width:536px;margin-inline-start:auto;font:400 16px/27px 'GoogleSans';color:var(--night-sky);text-align:left}
+
+/* ============ NEWS ============ */
+.news{padding:100px;background:#fff}
+.news-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:40px}
+.news-grid{display:flex;gap:8px}
+.ncard{flex:1;display:flex;flex-direction:column;gap:32px}
+.ncard-img{width:100%;aspect-ratio:408/331}
+.ncard-body{display:flex;flex-direction:column;gap:22px;padding-inline-end:19%}
+.ncard-body h3{font:700 24px/1.25 'GoogleSans';color:var(--night-sky)}
+.ncard-body p{font:400 16px/27px 'GoogleSans';color:var(--gray-txt);margin-top:8px}
+.ncard-body .plink{align-self:flex-start;font-size:18px}
+
+/* ============ FORM ============ */
+.formsec{padding:100px;background:#fff}
+.formsec-inner{display:flex;gap:160px;justify-content:center;align-items:center}
+.form-img{width:582px;max-width:45%;aspect-ratio:582/617}
+.form-col{width:501px;max-width:100%;display:flex;flex-direction:column;gap:57px;padding:30px 0}
+.form-title{display:inline-flex;align-items:center;gap:16px;align-self:flex-start}
+.form-title h2{font:400 48px/1 'Almoni';letter-spacing:-2px;color:var(--marine)}
+form{display:flex;flex-direction:column;gap:41px}
+.frow{display:flex;gap:32px}
+.field{flex:1;display:flex;flex-direction:column}
+.field label{font:400 16px/27px 'GoogleSans';color:var(--marine)}
+.field input{border:none;border-bottom:.75px solid var(--marine);background:transparent;padding:10px 0;font:400 16px/1.4 'GoogleSans';color:var(--night-sky);border-radius:0;outline:none;width:100%}
+.field input:focus{border-bottom-width:1.5px}
+.field input[type=email],.field input[type=tel]{direction:ltr;text-align:left}
+.fcheck{display:flex;align-items:flex-start;gap:10px;color:var(--marine);font:400 16px/27px 'GoogleSans';cursor:pointer;user-select:none}
+.fcheck input{position:absolute;opacity:0;pointer-events:none}
+.fcheck .box{position:relative;width:16px;height:16px;flex:0 0 auto}
+.fcheck .box::before{content:'';position:absolute;inset:1px;border:1px solid var(--marine)}
+.fcheck .box svg{position:absolute;top:-2px;left:-1px;opacity:1}
+.fcheck input:not(:checked)+.box svg{opacity:0}
+.form-col .btn{align-self:flex-start}
+
+/* ============ FOOTER ============ */
+footer{background:var(--dark-blue);color:#fff;padding:48px 0 32px}
+.f-top-line{border-top:.5px solid var(--hairline)}
+.f-cols{max-width:1268px;margin:0 auto;padding:0 20px;min-height:423px;display:flex;justify-content:space-between;align-items:flex-start;gap:11px}.f-cols>.f-col{padding-top:72px}@media (max-width:768px){.f-cols>.f-col{padding-top:0}}.f-col.contact .f-insta{display:inline-flex;margin-top:20px;color:#fff;opacity:.85}.f-col.contact .f-insta:hover{opacity:1}.f-col.contact .f-social{display:flex;align-items:center;gap:24px}
+.f-col{width:237px;display:flex;flex-direction:column;align-items:flex-start;gap:8px}
+.f-col h4{font:400 14px/1.3 'GoogleSans';color:#76c9ff;font-weight:400;margin-bottom:0}
+.f-col.contact ul{margin-top:-2px}
+.f-col ul{list-style:none;display:flex;flex-direction:column;gap:16px}
+.f-col.contact ul{gap:6px}
+.f-col.contact li,.f-col.contact a{font:400 16px/1.3 'GoogleSans';color:#fff}
+.f-col.biglinks li a{font:400 28px/1 'Almoni';letter-spacing:-.56px;color:#fff;transition:color .2s}
+.f-col.biglinks li a:hover{color:#76c9ff}
+.f-divider{width:.5px;align-self:stretch;background:var(--hairline);margin:0 27px}
+.f-logo img{width:233px;height:210px}
+.f-bottom{max-width:1268px;margin:0 auto;padding:0 20px}
+.f-bottom-line{border-top:.5px solid var(--hairline);margin-bottom:32px}
+.f-bottom-row{display:flex;justify-content:space-between;align-items:center;font:400 12px/1.3 'GoogleSans';color:#fff}
+/* align-items:center — בלי זה הקישורים נמתחים לגובה השורה (שנקבע ע"י כפתור
+   חילוף השפה, 28px) והטקסט שלהם יושב בראש התיבה, בעוד התווית בתוך הכפתור
+   ממורכזת: פער של 6.5px בין השניים. */
+.f-links{display:flex;gap:32px;align-items:center}
+.f-links a:hover{text-decoration:underline}
+
+/* ============ RESPONSIVE ============ */
+@media (max-width:1280px){
+  .hero-content{padding:0 48px 48px}
+  .projects{padding:72px 0 40px 48px}
+  .projects-head{padding-inline-end:48px}
+  .projects-track{margin-inline-end:48px}
+  .quote{padding:72px 48px 120px}
+  .ironit,.news,.formsec{padding:72px 48px}
+  .formsec-inner{gap:64px}
+  .f-cols{min-height:380px}
+}
+@media (max-width:1024px){
+  .hero{height:640px}
+  .hero h1{font-size:64px}
+  .quote blockquote{font-size:40px}
+  .pcard{flex-basis:480px}
+  .pcard-img{height:436px}
+  .formsec-inner{flex-direction:column;align-items:center}
+  .form-img{max-width:100%;width:520px}
+  /* מ-1024 הפוטר נשבר לרשת 2x2 ולא לשורה עוטפת. שלושת הקווים המפרידים
+     נשארים בתפקיד: שניים אנכיים, אחד בכל שורה, באותה עמודת רשת בדיוק —
+     ולכן אחד מעל השני — והשלישי, זה שנשאר בלי זוג, נפרש לרוחב כקו אופקי
+     בין השורות. כל טור צמוד לקו, וכל טור יושב בדיוק מעל הטור שמתחתיו. */
+  .f-cols{display:grid;grid-template-columns:1fr auto 1fr;column-gap:0;row-gap:40px;min-height:0;padding-top:56px;padding-bottom:56px}
+  .f-cols>.f-col{padding-top:0}
+  .f-col{width:auto}
+  .f-cols>:nth-child(1){grid-area:1/1}
+  .f-cols>:nth-child(2){grid-area:1/2}
+  .f-cols>:nth-child(3){grid-area:1/3}
+  .f-cols>:nth-child(4){grid-area:2/1/3/4;width:auto;height:.5px;margin:0}
+  .f-cols>:nth-child(5){grid-area:3/1}
+  .f-cols>:nth-child(6){grid-area:3/2}
+  .f-cols>:nth-child(7){grid-area:3/3}
+  .f-logo img{width:200px}
+}
+@media (max-width:768px){
+  .nav{height:64px}
+  .nav-contact{display:none}
+  .nav-icons button.nav-search{display:none}
+  .nav-icons{padding:0 20px;gap:24px;border-inline-end:none}
+  .nav-logo{left:auto;right:20px;transform:none;top:8px}
+  .nav-logo svg{width:54px;height:48px}
+  .menu-search{display:flex}
+  .only-mobile{display:inline-flex}
+  .projects-head .btn,.ironit-head .btn,.news-head .btn{display:none}
+  /* the arrows and the CTA are both slider-level controls, so one row keeps the
+     button anchored instead of floating alone under centred arrows */
+  .projects-foot{display:flex;align-items:center;justify-content:space-between;margin-top:40px}
+  .projects-foot .arrows,.projects-more{margin-top:0}
+  .tab .tab-pre{display:none}
+  .tab .tlab::after{content:attr(data-short)}
+  .ironit-more{margin-top:28px}
+  .news-more{margin-top:40px}
+  .f-top-line{display:none}
+  /* ברוחב טלפון שורת הזכויות ושני הקישורים נדחסו לשורה אחת שנגעה בשני
+     השוליים, וכפתור השפה נתלה מתחתיה ב-8px. כאן זו רשת של שתי עמודות:
+     שורת הזכויות נפרשת לרוחב, שני הקישורים יושבים זה לצד זה, וכפתור
+     השפה מקבל שורה משלו — הכל ממורכז, עם אוויר בין השורות. */
+  .f-links{display:grid;grid-template-columns:auto auto;justify-content:center;justify-items:center;gap:14px 24px}
+  .f-links>span{grid-column:1/-1}
+  .f-links .langsw{grid-column:1/-1}
+  .hero{height:560px}
+  .hero-content{padding:0 20px 40px}
+  .hero-content .star{width:32px;height:32px}
+  .hero h1{font-size:44px;letter-spacing:-1.5px}
+  .sec-title h2{font-size:32px;letter-spacing:-1px}
+  .sec-title svg,.sec-title img{width:32px;height:32px}
+  .projects{padding:56px 20px 32px 20px}
+  .projects-head{padding-inline-end:0;flex-direction:column-reverse;gap:24px;align-items:flex-start}
+  .projects-track{margin-inline-end:0}
+  .projects-head .sec-title{align-self:flex-start}
+  .tabs{gap:20px;overflow-x:auto;scrollbar-width:none;margin-bottom:24px}
+  .tabs::-webkit-scrollbar{display:none}
+  .tab{font-size:15px}
+  /* one card per screen: a partial peek would show the next card's headline and
+     link as loose fragments at the edge, so the slide fills the gutter instead */
+  .slider{scroll-snap-type:x mandatory}
+  .pcard{flex-basis:100%;scroll-snap-align:center}
+  .pcard-img{height:auto;aspect-ratio:41/37}
+  .pcard-info{gap:16px}
+  .pcard-txt{width:100%;max-width:100%}
+  .arrows{margin-top:40px}
+  .quote{padding:56px 24px 80px}
+  .quote blockquote{font-size:28px;letter-spacing:-1px;line-height:1.1}
+  .about{min-height:520px;padding:80px 24px}
+  .about-inner h2{font-size:32px}
+  .ironit,.news{padding:56px 20px}
+  .ironit-head,.news-head{flex-direction:column;gap:24px;align-items:flex-start}
+  .ironit-img{height:auto;aspect-ratio:4/5}
+  .ironit-txt{max-width:100%}
+  .news-grid{flex-direction:column;gap:40px}
+  .ncard-body{padding-inline-start:0}
+  /* סקשן ״בואו נדבר״ במובייל — נדחס כדי שייכנס במסך אחד.
+     ב-390x844 יש 780px מתחת לנאבר, ובספארי עם שורת הכתובת כ-690px; הגרסה
+     הרחבה (כותרת 48px, ארבעה שדות בטור אחד, מרווחי 41px) הגיעה ל-853px
+     והכפתור נחתך תמיד. כאן: שם פרטי+שם משפחה זוג בשורה אחת — שמות בעברית
+     מגיעים ל-81px לכל היותר ב-16px, ונכנסים בנוח בעמודה של 167px — ואילו
+     אימייל וטלפון נשארים ברוחב מלא, כי אימייל ארוך מגיע ל-248px ובחצי שורה
+     היה נגלל בתוך השדה. סה״כ 506px. גודל האינפוט נשאר 16px בכוונה: מתחתיו
+     ספארי מזנק זום בפוקוס, וזה לבדו מחזיר את החריגה מהמסך. */
+  .formsec{padding:40px 20px}
+  .formsec-inner{gap:48px}
+  /* השדות מקבלים שוליים רחבים מגוף העמוד: 20px של הסקשן ועוד 24px של
+     העמודה, בסך הכל 44px מקצה המסך — אותו מרחק שכבר יש לטופס בעמוד צור
+     קשר (הכרטיס שם מוסיף 21px ל-20 של הסקשן) ולכרטיס ״מיקום הפרויקט״
+     בעמוד הפרויקט (padding:40px 24px). הכותרת נכנסת פנימה יחד עם השדות
+     כדי שהיישור ביניהן יישמר. */
+  .form-col{gap:26px;padding:0 24px}
+  .formsec .form-title{gap:12px}
+  .formsec .form-title svg{width:34px;height:34px}
+  .formsec .form-title h2{font-size:38px;letter-spacing:-1.6px}
+  .formsec form{gap:22px}
+  .formsec .frow{gap:16px}
+  .formsec .frow+.frow{flex-direction:column;gap:22px}
+  .formsec .field label{font-size:15px;line-height:24px}
+  .formsec .field input{padding:8px 0}
+  .formsec .fcheck{--cbx-lh:22px;font-size:14px;line-height:22px}
+  .form-col .btn{align-self:stretch;justify-content:center;padding:15px 17px}
+  .form-img{display:none}
+  /* השבירה למובייל: עמודה אחת ממורכזת — הלוגו, הכותרות והקישורים יושבים
+     על ציר האמצע, והקווים המפרידים נפרשים לרוחב בין החלקים.
+     display:flex מבטל את הרשת של 1024 (ואיתה כל ה-grid-area שלה). */
+  .f-cols{display:flex;flex-direction:column;align-items:center;text-align:center;gap:32px;padding:40px 20px 44px;min-height:0}
+  .f-col{width:100%;flex:0 0 auto;align-items:center}
+  .f-divider{width:100%;height:.5px;align-self:stretch;margin:0}
+  .f-cols>:nth-child(4){width:100%;height:.5px;margin:0}
+  .f-logo img{width:120px;height:auto}
+  .f-bottom-row{flex-direction:column;align-items:center;text-align:center;gap:20px}
+  /* אקורדיון: שלוש הקטגוריות מתקפלות לשורות שנפתחות בלחיצה, והפוטר יורד
+     מ-1225px לכ-505px — פחות ממסך טלפון אחד. הכל נשאר על ציר האמצע:
+     הכותרת והחץ ממורכזים כזוג, והרשימה שנפתחת ממורכזת מתחתיהם.
+     .acc מתווסף על ידי הסקריפט בלבד — בלי ג׳אווהסקריפט הרשימות נשארות
+     פרושות וכל הקישורים נגישים, במקום ul עם max-height:0 שאין מי שיפתח. */
+  .f-cols.acc{gap:0;padding:28px 0 28px}
+  .f-cols.acc>.f-logo{padding-bottom:26px}
+  .f-cols.acc .f-col{gap:0}
+  .f-cols.acc .f-col h4{width:100%;margin:0}
+  .f-cols.acc .acc-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:17px 20px;background:none;border:0;cursor:pointer;font:400 18px/1.3 'Almoni';letter-spacing:-.36px;color:#76c9ff;-webkit-tap-highlight-color:transparent}
+  .f-cols.acc .acc-ch{flex:0 0 auto;transition:transform .25s}
+  .f-cols.acc .f-col.open .acc-ch{transform:rotate(180deg)}
+  .f-cols.acc .f-col ul{max-height:0;overflow:hidden;align-items:center;padding:0 20px;transition:max-height .3s ease,padding-bottom .3s ease}
+  .f-cols.acc .f-col.open ul{max-height:340px;padding-bottom:24px}
+  .f-cols.acc .f-col.biglinks ul{gap:14px}
+  .f-cols.acc .f-col.biglinks li a{font-size:20px;line-height:1.1;letter-spacing:-.4px}
+  .f-cols.acc .f-col.contact ul{gap:8px;margin-top:0}
+  .f-cols.acc .f-col.contact li,.f-cols.acc .f-col.contact a{font-size:15px}
+  .f-cols.acc .f-col.contact .f-social{margin-top:18px}
+  .f-cols.acc .f-col.contact .f-insta{margin-top:0}
+  footer{padding:0 0 32px}
+  .f-bottom-line{margin-bottom:28px}
+}
+
+/* ---- שולי הפוטר מתחת ל-1440 ----
+   מ-1440 ומעלה השוליים נולדים מ-max-width (הבלוק בסוף הקובץ) ועומדים על
+   106px. מתחת לזה הפוטר היה נצמד ל-20px — שוליים של טלפון — גם בחלון של
+   960, ולכן התוכן נראה דבוק לקצוות. כאן השוליים גדלים ברציפות עם החלון
+   ונוחתים בדיוק על 106px ב-1439 (106/1440 = 7.36vw), כך שאין קפיצה בגבול.
+   הטלפון (עד 768) נשאר על 20px כדי להתיישר עם גוף העמוד. */
+@media (min-width:769px) and (max-width:1439px){
+  .f-cols,.f-bottom{max-width:none;padding-inline:clamp(20px,7.36vw,106px)}
+  .f-divider{margin-inline:clamp(14px,1.875vw,27px)}
+}
+
+/* בשורה האחת (מעל הרשת) גם העמודות והלוגו מתכווצים באותו יחס מהחלון כמו
+   השוליים — 237/1440 ו-233/1440 — ולכן הרווח בין הפריטים ב-1439 יוצא זהה
+   לזה שב-1440. ה-gap מתאפס: המרווח מגיע משולי הקווים המפרידים. */
+@media (min-width:1025px) and (max-width:1439px){
+  .f-cols{gap:0}
+  .f-col{width:clamp(176px,16.46vw,237px);min-width:0}
+  .f-logo img{width:clamp(150px,16.18vw,233px);height:auto}
+}
+
+@media (max-width:1439px){.fig-page{width:100% !important;overflow-x:hidden}body{overflow-x:hidden}}
+
+@media (max-width:1439px){.cards-grid{width:100% !important;flex-direction:column !important;flex-wrap:nowrap !important;gap:48px !important}.cards-grid>div{width:100% !important;flex:0 0 auto !important}}
+
+[data-name="ArrowUp"]{width:32px !important;height:32px !important}[data-name="ArrowUp"] svg{width:100% !important;height:100% !important}
+
+/* ============ image gallery (.pgal) ============ */
+/* track is forced LTR so translateX math stays direction-independent */
+.pgal{position:relative;overflow:hidden;touch-action:pan-y}
+.pgal-track{position:absolute;inset:0;display:flex;direction:ltr;transition:transform .6s cubic-bezier(.22,.61,.36,1);will-change:transform}
+.pgal-slide{flex:0 0 100%;height:100%;background-position:center;background-size:cover;background-repeat:no-repeat}
+
+.pgal-arrow{position:absolute;top:50%;transform:translateY(-50%);width:32px;height:32px;display:flex;align-items:center;justify-content:center;padding:0;background:none;border:none;cursor:pointer;z-index:3;filter:drop-shadow(0 1px 3px rgba(0,0,0,.45));transition:opacity .25s}
+.pgal-prev{left:16px}   /* LTR: left arrow steps back */
+.pgal-next{right:16px}   /* LTR: right arrow steps forward */
+.pgal-arrow:hover{opacity:.75}
+.pgal-arrow[disabled]{opacity:.4;cursor:default;pointer-events:none}
+
+.pgal-dots{position:absolute;right:0;left:0;bottom:18px;display:flex;gap:8px;justify-content:center;z-index:3}
+.pgal-dot{width:8px;height:8px;padding:0;border:none;border-radius:50%;background:rgba(255,255,255,.45);cursor:pointer;filter:drop-shadow(0 1px 2px rgba(0,0,0,.35));transition:background .25s,transform .25s}
+.pgal-dot.on{background:#fff;transform:scale(1.15)}
+.pgal[data-single="1"] .pgal-dot{cursor:default}
+
+@media (prefers-reduced-motion:reduce){.pgal-track{transition:none}}
+
+/* ============ consent checkbox (.cbx) ============ */
+/* One implementation for every checkbox on the site — there were four different ones.
+   The 16x16 square is drawn in CSS so it always lines up with the text, and the SVG
+   carries only the check. Horizontally the mark is placed by its elbow — left:2 puts
+   the corner where the two arms meet at 2+6 = 8, the middle of the square. Vertically
+   it is placed by the mark itself: the drawn path runs from y 0.56 to 12.53 (ends
+   included), so top:-6.5 lands its middle, 6.54, on the square's middle. Centring the
+   elbow instead would hang the whole tick above the centre line, which is what it
+   looked like — the box read as empty at the bottom and the arm shot out of the top
+   corner. The 45 degree angles and both arm lengths are the original design's. The 45 degree angles and both arm lengths are taken
+   from the original design's path, so the tick keeps its drawn proportions. */
+/* The box is as tall as one line of the label (--cbx-lh) with the 16px square centred
+   inside it, so with align-items:flex-start on the row it lands on the FIRST line
+   however many lines the consent text wraps to. On a single line it renders exactly
+   where the old centred version did. */
+.cbx{position:relative;display:block;flex:0 0 auto;align-self:flex-start;width:16px;height:var(--cbx-lh,27px)}
+.cbx::before{content:'';position:absolute;left:0;width:16px;height:16px;top:calc(50% - 8px);border:1px solid var(--marine)}
+.cbx svg{position:absolute;left:2px;top:calc(50% - 6.5px);transition:opacity .18s ease}
+.fcheck input:not(:checked)+.cbx svg{opacity:0}
+
+/* ============ ONCE wordmark inside a heading (.once-mark) ============ */
+/* Drops the logo into a line of text in place of the word "ONCE", without the
+   star above it. Sized in em so one rule serves any heading size (40px on
+   article.html, 48px / 30px on urban-renewal). The span occupies only the cap
+   height of the letters, so the line box stays the height of the text; the SVG
+   is absolutely positioned and hangs below by --drop, which is what puts the
+   ONCE letters on the same baseline as the Hebrew around them. Ratios measured
+   off the artwork: cap .6292, width 2.3313, full height 2.0708, drop .675.
+   The SVG paths are fill="currentColor" so the mark takes the heading's colour
+   (dark blue on urban-renewal, white on article) — and they also carry a
+   stroke="currentColor" that must stay killed, hence the path{stroke:none}. */
+.once-mark{--cap:.6292em;--w:2.3313em;--full:2.0708em;--drop:.675em;
+  display:inline-block;position:relative;width:var(--w);height:var(--cap);
+  vertical-align:baseline;line-height:0;margin:0 .04em}
+.once-mark svg{position:absolute;left:0;bottom:calc(-1 * var(--drop));
+  width:var(--w);height:var(--full);display:block;overflow:visible}
+.once-mark svg path{stroke:none}
+
+/* ============ nav search panel (.nsx) ============ */
+/* Drops out from under the fixed nav when the magnifier is clicked. Everything
+   inside is aligned to the LEFT, because the magnifier that opens it lives at
+   the left end of the nav — the panel should read as an extension of it.
+   Sits BELOW the nav (z 48 vs 50) so the bar stays put and the panel slides
+   out from behind it; the scrim (46) dims the page underneath. */
+.nsx-scrim{position:fixed;inset:0;z-index:46;background:rgba(6,40,64,.35);
+  opacity:0;pointer-events:none;transition:opacity .35s ease}
+.nsx-scrim.open{opacity:1;pointer-events:auto}
+.nsx{position:fixed;top:93px;left:0;right:0;z-index:48;background:#fff;
+  border-bottom:.5px solid rgba(0,65,108,.25);
+  opacity:0;visibility:hidden;transform:translateY(-14px);
+  transition:transform .42s cubic-bezier(.25,.72,.25,1),opacity .3s ease,visibility .42s}
+.nsx.open{opacity:1;visibility:visible;transform:none}
+.nsx-in{position:relative;width:min(1188px,100% - 200px);margin-inline:auto;
+  padding:44px 0 40px;display:flex;flex-direction:column;align-items:flex-start;gap:26px}
+.nsx-close{position:absolute;top:4px;right:0;width:32px;height:32px;display:flex;
+  align-items:center;justify-content:center;padding:0;color:var(--marine)}
+.nsx-close svg{transition:transform .3s}
+.nsx-close:hover svg{transform:rotate(90deg)}
+.nsx-field{display:flex;flex-direction:row;align-items:center;gap:16px;
+  width:min(620px,100%);padding:6px 2px 14px;border-bottom:.75px solid rgba(0,65,108,.35);
+  transition:border-color .25s}
+.nsx-field:focus-within{border-bottom-color:var(--marine)}
+.nsx-ico{flex:0 0 auto;width:19px;height:20px;color:var(--marine);display:block}
+.nsx-in input{flex:1;min-width:0;border:0;background:none;outline:none;padding:0;
+  font:400 30px/1.25 'Almoni','GoogleSans',Arial,sans-serif;letter-spacing:-1px;
+  color:var(--night-sky);border-radius:0}
+.nsx-in input::placeholder{color:#9fb1bd}
+.nsx-in input::-webkit-search-cancel-button{display:none}
+.nsx-clear{flex:0 0 auto;width:26px;height:26px;display:flex;align-items:center;
+  justify-content:center;padding:0;color:var(--gray-txt);
+  opacity:0;pointer-events:none;transition:opacity .2s,color .2s}
+.nsx-field.has .nsx-clear{opacity:1;pointer-events:auto}
+.nsx-clear:hover{color:var(--marine)}
+.nsx-quick{display:flex;flex-direction:row;align-items:center;flex-wrap:wrap;gap:10px}
+.nsx-quick-t{font:400 13px/1 'GoogleSans';color:var(--gray-txt);margin-inline-end:6px}
+.nsx-chip{padding:8px 14px;border:.5px solid rgba(0,65,108,.28);background:#fff;
+  font:400 14px/1.3 'GoogleSans';color:var(--marine);
+  transition:background .2s,color .2s,border-color .2s}
+.nsx-chip:hover{background:var(--marine);border-color:var(--marine);color:#fff}
+@media (max-width:1280px){.nsx-in{width:min(1188px,100% - 96px)}}
+@media (max-width:768px){
+  .nsx{top:64px}
+  .nsx-in{width:min(1188px,100% - 40px);padding:54px 0 26px;gap:20px}
+  .nsx-close{top:14px}
+  .nsx-field{width:100%;gap:12px;padding-bottom:10px}
+  .nsx-in input{font-size:20px;letter-spacing:-.5px}
+  .nsx-quick-t{width:100%;margin-bottom:-4px}
+  .nsx-chip{padding:7px 12px;font-size:13px}
+}
+@media (prefers-reduced-motion:reduce){.nsx,.nsx-scrim{transition:none}}
+
+/* ---- touch targets ----
+   icon buttons and inline links keep the size they are drawn at; only the hit
+   area grows, via a transparent ::after, so a finger has ~44px to land on. */
+@media (max-width:768px){
+  .nav-icons button,.menu-search,.menu-close,.arrows button,.pgal-dot,.nsx-clear,.tab,.plink,.f-insta{position:relative}
+  .nav-icons button::after,.menu-search::after,.menu-close::after,.nsx-clear::after,.f-insta::after{content:'';position:absolute;inset:-12px}
+  .arrows button::after,.pgal-arrow::after{content:'';position:absolute;inset:-8px}
+  .pgal-dot::after{content:'';position:absolute;inset:-14px -4px}
+  .tab::after,.plink::after{content:'';position:absolute;inset:-11px 0}
+}
+
+/* ============ POPUP — השארת פרטים (רכיב כללי, לכל עמוד באתר) ============ */
+/* פאנל קטן שנצמד לפינה התחתונה של המסך. לא מודאל, אין scrim ואין רקע
+   שחוסם את העמוד — הגלישה נמשכת מאחוריו. אין בו תמונה ואין בו פרטי
+   פרויקט, ולכן אותו רכיב בדיוק משרת כל עמוד באתר.
+   הפינה: תחתונה־שמאלית ב-RTL, ומתהפכת לתחתונה־ימנית בגרסה האנגלית.
+   רוחב 380px; במובייל הוא נצמד לתחתית עם שולי 10px — לא מסך מלא. */
+.pop-dock{position:fixed;z-index:70;bottom:28px;right:28px;
+  width:min(380px,calc(100vw - 56px));pointer-events:none}
+.pop{position:relative;background:#fff;border:.5px solid rgba(0,65,108,.22);
+  box-shadow:0 22px 54px rgba(6,40,64,.24);pointer-events:none;
+  opacity:0;transform:translateY(16px);
+  transition:opacity .38s ease,transform .5s cubic-bezier(.25,.72,.25,1)}
+.pop-dock.open .pop{opacity:1;transform:none;pointer-events:auto}
+/* בעמוד אמיתי הפאנל מפנה את המקום לשכבות שמעליו: תפריט הצד ופאנל
+   החיפוש פורשים האפלה על כל המסך, והפאנל לא אמור לצוף מעליה.
+   שניהם אחים שלו ישירות מתחת ל-body, ולכן ~ מספיק. */
+.menu.open ~ .pop-dock,.nsx.open ~ .pop-dock{opacity:0;visibility:hidden;transition:opacity .25s ease}
+
+.pop-body{display:flex;flex-direction:column;align-items:flex-start;gap:22px;
+  padding:26px 28px 28px;max-height:calc(100vh - 56px);overflow-y:auto}
+.pop-head{display:flex;flex-direction:column;align-items:flex-start;gap:9px;width:100%}
+.pop-title{display:inline-flex;align-items:center;gap:10px}
+.pop-title svg{flex:0 0 auto;width:26px;height:26px}
+.pop-title h2{font:400 30px/1 'Almoni','GoogleSans',Arial,sans-serif;letter-spacing:-1.1px;color:var(--marine)}
+.pop-lead{font:400 14.5px/23px 'GoogleSans',Arial,sans-serif;color:var(--marine)}
+
+/* הסגירה יושבת בפינה ה"רחוקה" של הכרטיס, מעל שורת הכותרת ולא בתוכה */
+.pop-close{position:absolute;z-index:4;top:11px;right:11px;width:30px;height:30px;
+  display:flex;align-items:center;justify-content:center;color:var(--marine);
+  transition:background .2s}
+.pop-close:hover{background:rgba(0,65,108,.08)}
+.pop-close svg{transition:transform .3s}
+.pop-close:hover svg{transform:rotate(90deg)}
+
+/* השדות — אותה שפה של טופס יצירת קשר, בקנה מידה של פאנל */
+.pop form.pop-form{display:flex;flex-direction:column;align-items:flex-start;gap:18px;width:100%}
+.pop .frow{display:flex;flex-direction:row;gap:18px;width:100%}
+/* קו תחתון 1px בשקיפות 40% ולא קו שיער אטום: בטור צר של שדות מוערמים
+   זה נשאר במשקל של קו שיער (נמדד: 153,179,196 על לבן) ובלי חצאי פיקסלים. */
+.pop .fld{flex:1 1 0;width:100%;min-width:0;display:flex;flex-direction:column;
+  border-bottom:1px solid rgba(0,65,108,.4)}
+.pop .fld label{font:400 13px/20px 'GoogleSans',Arial,sans-serif;color:var(--gray-txt)}
+.pop .fld input{width:100%;height:30px;padding:4px 0;border:0;background:none;outline:none;
+  border-radius:0;font:400 15px/22px 'GoogleSans',Arial,sans-serif;color:var(--night-sky)}
+.pop .fld input::placeholder{color:rgba(0,65,108,.4)}
+.pop .fld.on{border-bottom-color:var(--night-sky)}
+/* עטיפת שדה — הקו התחתון נשאר על .fld, והודעת השגיאה יורדת מתחתיו */
+.pop .fwrap{flex:0 0 auto;width:100%;min-width:0;display:flex;flex-direction:column}
+
+.pop .fcheck{--cbx-lh:20px;width:100%;gap:9px;font-size:12.5px;line-height:20px}
+.pop-actions{display:flex;flex-direction:row;align-items:center;gap:18px;width:100%}
+.pop .btn{padding:13px 16px;gap:12px;font-size:15px}
+
+/* מסך התודה שמחליף את הטופס בתוך אותו פאנל */
+.pop-thanks{display:none;flex-direction:column;align-items:flex-start;gap:14px;width:100%}
+.pop.done .pop-form,.pop.done .pop-head{display:none}
+.pop.done .pop-thanks{display:flex}
+.pop-thanks>svg{flex:0 0 auto;width:32px;height:32px}
+.pop-thanks h3{font:400 28px/1.05 'Almoni','GoogleSans',Arial,sans-serif;letter-spacing:-1px;color:var(--marine)}
+.pop-thanks p{font:400 14.5px/23px 'GoogleSans',Arial,sans-serif;color:var(--marine)}
+.pop-thanks .rule{width:100%;height:.5px;background:rgba(0,65,108,.25);margin:2px 0}
+
+/* מצבי ההצלחה/שגיאה מ-css/form-states.css, בקנה מידה של הפאנל.
+   הקובץ ההוא נטען אחרי זה, ולכן כל כלל כאן מקדים אותו במחלקה .pop */
+.pop .fstate{gap:14px}
+.pop .fstate>svg{width:32px;height:32px}
+.pop .fstate h3{font-size:28px;line-height:1.05;letter-spacing:-1px}
+.pop .fstate p{font-size:14.5px;line-height:23px;max-width:none}
+.pop .fstate .fstate-meta{font-size:12.5px;line-height:21px}
+.pop .fstate-actions{gap:16px;margin-top:2px}
+.pop .fbanner{padding:14px 15px;gap:11px}
+.pop .fbanner-ico{width:20px;height:20px;margin-top:1px}
+.pop .fbanner h4{font-size:15px;line-height:22px}
+.pop .fbanner p{font-size:13px;line-height:21px}
+.pop .fmsg{font-size:12px;line-height:18px;margin-top:7px}
+
+/* בלי תכונות אופקיות (left/right/text-align) בתוך @media: בניית הגרסה
+   האנגלית מהפכת RTL→LTR רק בכללים ברמה הראשונה של גיליון, וכלל בתוך
+   @media היה נשלח ל-en/ בלי היפוך. המיקום בפינה נשאר מהכלל שלמעלה,
+   והרוחב שם כבר מוריד 28px משני הצדדים — כך שבטלפון לא צריך למקם מחדש. */
+@media (max-width:640px){
+  .pop-body{padding:20px 18px 22px;gap:18px;max-height:calc(100vh - 20px)}
+  .pop-title h2{font-size:26px;letter-spacing:-.9px}
+  .pop-title svg{width:22px;height:22px}
+  .pop-lead{font-size:14px;line-height:22px}
+  .pop form.pop-form{gap:16px}
+  .pop .frow{gap:14px}
+  .pop-thanks h3,.pop .fstate h3{font-size:25px}
+}
+@media (prefers-reduced-motion:reduce){
+  .pop{transition:none;transform:none}
+  .pop-close svg{transition:none}
+}
+
+/* ============ פירורי לחם (.bcr) ============ */
+/* השובל יושב בפס לבן: ב-project.html מתחת ל-hero, וב-article.html מתחת
+   לתפריט — באפיון שכבר נקבע בעיצוב עמוד הכתבה: 13px/18px, מפריד "/",
+   האבות באפור והעמוד הנוכחי ב-night-sky ובמשקל 500.
+   העטיפה (.bcr-wrap) היא צומת בסגנון הייצוא ולכן היא זו שמיישרת לימין;
+   ה-nav עצמו מכריז direction:rtl, וכך ה-ol זורם מימין לשמאל בלי טריקי
+   flex — ובבניית en/ ההכרזה הזו מתהפכת ל-ltr מעצמה.
+   הפריט האחרון הוא העמוד הנוכחי ולכן אינו קישור. הוא גם היחיד שמוותר על
+   רוחבו כשהשורה צרה (flex:0 1 auto + min-width:0), כדי שכותרת כתבה ארוכה
+   תיחתך בשלוש נקודות במקום לדחוף את השורה מהמסך. */
+.bcr{direction:ltr}
+.bcr ol{display:flex;align-items:center;gap:6px;list-style:none;font:400 13px/18px 'GoogleSans','Almoni',Arial,sans-serif;color:var(--gray-txt)}
+.bcr li{display:flex;align-items:center;gap:6px;flex:0 0 auto}
+.bcr li+li::before{content:'/'}
+.bcr li:last-child{flex:0 1 auto;min-width:0}
+.bcr a{color:inherit;transition:color .25s}
+.bcr a:hover{color:var(--marine);text-decoration:underline;text-underline-offset:4px}
+.bcr-cur{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--night-sky);font-weight:500}
+/* padding-inline ולא left/right: המראה מהפכת שמות תכונות אופקיות גם בתוך
+   @media, ושתי ההצהרות היו נדרסות זו על זו בגיליון של en/. */
+@media (max-width:1439px){.bcr-wrap{padding-inline:20px !important}}
+/* בדסקטופ השובל יושב 60px מתחת לתפריט או 40px מתחת לתמונת הירו. במובייל
+   התפריט מתכווץ ל-64px, אבל מרווח הפינוי שהלוח מייצא (.nav-gap) נשאר 93px —
+   וכך בעמוד שנפתח בכותרת ולא בתמונה נערמו 89px של לובן ריק מעל שורת השובל,
+   והיא כבר לא נקראת כחלק מראש העמוד. המרווח מיושר לגובה התפריט בפועל,
+   והשובל יורד ל-40px — אותו מרווח שכבר יש ב-search.html ובעמודי ההירו. */
+@media (max-width:768px){
+  .nav-gap{height:64px !important}
+  .bcr-wrap{padding-top:40px !important}
+}
+/* בעמודים שנפתחים בתמונת ירו (project, kablanit, urban-renewal, contact*)
+   ההירו פורץ את נעילת 1660 וממשיך לגעת בשולי החלון, ולכן כותרת ההירו יושבת
+   100px (וב-project 106) מקצה המסך בעוד ‎.fig-page ננעלת על 1660. מעל 1660
+   השובל נשאר מאחור — עד 350px משמאל לכותרת שמעליו. ‎.bcr-hero פורץ באותו
+   טריק בדיוק, וכך תחילת השובל יושבת מתחת לתחילת הכותרת בכל רוחב; הריפוד
+   האופקי של כל עמוד כבר שווה לריפוד ההירו שלו (בסגנון ה-inline של הצומת).
+   עד 1660 ‎.fig-page ממילא ברוחב מלא ושתי הרצועות זהות. */
+@media (min-width:1660px){
+  .bcr-wrap.bcr-hero{width:100vw !important;max-width:100vw !important;
+                     margin-inline:calc(50% - 50vw) !important}
+}
+
+/* ============ סינון מקופל במובייל (.mfx) ============
+   במסך צר סרגל הסינון נפרס על שתי שורות ואוכל את כל הקיפול הראשון — עוד
+   לפני שנראה פרויקט אחד. מתחת ל-769px הסרגל נסגר לשורה אחת ("סינון · הכל"),
+   והקטגוריות עצמן הופכות לרשימה שנפתחת בלחיצה בתוך העמוד — בלי שכבה, בלי
+   רקע כהה ובלי כפתור "החל": בחירה סוגרת מיד.
+   הרכיב גנרי ואינו יודע דבר על העמוד שהוא יושב בו: ‎.mfx-panel עוטף את סרגל
+   הטאבים הקיים כמו שהוא, ו-chrome.js קורא מתוכו את הקטגוריה הפעילה
+   (‎.tab.active / .stab.on / .tab-on) אל תוך השורה הסגורה. מעל 768px הכותרת
+   מוסתרת והפאנל פתוח תמיד — כלומר הסרגל נשאר בדיוק כפי שהיה בדסקטופ, ואותו
+   DOM משרת את שני המצבים בלי כפילות תוויות.
+   העיצוב של השורות עצמן יושב אצל כל עמוד, כי הטאבים שלו הם שלו: ‎.tab
+   בדף הבית, ‎.stab בעמוד החיפוש, וצומתי הייצוא ב-projects.html. */
+.mfx-head{display:none}
+@media (max-width:768px){
+  .mfx{border-top:.5px solid rgba(0,65,108,.25);border-bottom:.75px solid var(--marine)}
+  .mfx-head{display:flex;align-items:center;gap:10px;width:100%;padding:15px 2px;
+            direction:ltr;text-align:start;cursor:pointer}
+  .mfx-lab{font:400 15px/1 'GoogleSans';color:var(--gray-txt)}
+  .mfx-val{display:inline-flex;align-items:center;gap:8px;font:700 16px/1 'GoogleSans';
+           color:var(--night-sky)}
+  .mfx-n{font:400 12px/1 'GoogleSans';color:var(--gray-txt);
+         background:rgba(58,179,255,.1);padding:4px 6px}
+  .mfx-chev{flex:0 0 auto;width:11px;height:8px;color:var(--marine);
+            margin-inline-start:auto;transition:transform .3s ease}
+  .mfx.open .mfx-chev{transform:rotate(180deg)}
+  /* max-height ולא height:auto — רק למספר יש מה להנפיש. 420px גדול מכל פאנל
+     בפועל (חמש שורות ועוד שדה חיפוש) ולכן אינו חותך דבר. */
+  .mfx-panel{max-height:0;overflow:hidden;
+             transition:max-height .42s cubic-bezier(.25,.72,.25,1)}
+  .mfx.open .mfx-panel{max-height:420px}
+}
+@media (max-width:768px) and (prefers-reduced-motion:reduce){
+  .mfx-panel,.mfx-chev{transition:none}
+}
+
+/* ============ מודל הרוחב של לוח ה-Figma (.fig-page) ============
+   ‎.fig-page נושא style="width:1440px" בתוך ה-HTML — זהו רוחב הלוח שנוצר
+   ב-Figma. פעם הוא הוקטן/הוגדל ל-viewport ב-transform:scale, וזה גרר גם את
+   הטיפוגרפיה (16px ירדו ל-9px ב-800px, וגדלו ל-21px ב-1920). ההקטנה בוטלה:
+
+   • עד 1439px — חלים כללי המובייל של כל עמוד (@media max-width:1439px):
+     פריסה זורמת, גדלי גופן אמיתיים, וכך גם הניווט והפוטר (שיושבים מחוץ
+     ל-.fig-page) נמצאים באותו קנה מידה כמו גוף העמוד.
+   • 1440–1660px — עיצוב הדסקטופ. הלוח מתרחב לרוחב החלון והתוספת נבלעת
+     במרווחים, ב-justify-content ובתמונות המתוחות. הגופן אינו גדל.
+   • מ-1660px — הרוחב ננעל על 1660 ורק השוליים משני הצדדים גדלים. */
+@media (min-width:1440px){
+  /* הלוח וכל צומת שהייצוא קיבע לו width:1440px גדלים לרוחב החלון; התוספת
+     נבלעת במרווחים (align-self:stretch, justify-content, gap) ובתמונות
+     המתוחות. גדלי הגופן אינם משתנים כלל. */
+  .fig-page{width:100% !important;max-width:1660px}
+  /* 1437px הוא רוחב הלוח בשני סקשנים שיצאו כך מ-Figma (Frame 128452) */
+  .fig-page [style*="width:1440px"],
+  .fig-page [style*="width:1437px"]{width:100% !important;max-width:100% !important}
+}
+
+@media (min-width:1660px){
+  /* מכאן רוחב התוכן נעול על 1660 ורק השוליים גדלים — פרט לסקשנים שכל
+     רוחבם צילום (ההירו של project/kablanit/urban-renewal/contact ורצועת
+     הפרויקט ב-urban-renewal), שממשיכים לגעת בשולי המסך.
+     overflow-x של .fig-page נפתח כדי לא לחתוך את הפריצה; ל-body כבר יש
+     overflow-x:hidden ולכן 100vw אינו יוצר גלילה אופקית. */
+  .fig-page{overflow-x:visible}
+  .fig-page > [data-name] > [style*="url("]{
+    width:100vw !important;max-width:100vw !important;
+    margin-inline:calc(50% - 50vw) !important;
+  }
+  /* הרצועה היא position:absolute בתוך הסקשן, ולכן left ולא margin */
+  [data-name="nf — 404 over the project"] > [style*="url("]{
+    width:100vw !important;max-width:100vw !important;right:calc(50% - 50vw) !important;
+  }
+}
+
+/* ---- תגית סטטוס בשורת כותרת של כרטיס, במסכים צרים ----
+   תווית התגית מיוצאת מ-Figma עם white-space:nowrap ו-flex-shrink:0, ולכן
+   ב-320px היא רחבה מהתגית עצמה וגולשת מעבר לרקע שלה (בולט באנגלית, שבה
+   "In marketing & construction" ארוך בהרבה מהמקבילה העברית). מרשים לתגית
+   ולתווית להתכווץ ולעטוף — הכלל רדום בכל רוחב שבו הטקסט ממילא נכנס. */
+@media (max-width:400px){
+  [data-name="שורת כותרת"] > [data-name="tag"]{min-width:0 !important;flex-shrink:1 !important}
+  [data-name="שורת כותרת"] > [data-name="tag"] > [data-name]{min-width:0 !important;flex-shrink:1 !important}
+  [data-name="שורת כותרת"] > [data-name="tag"] div:not([data-name]){
+    white-space:normal !important;min-width:0 !important;flex-shrink:1 !important}
+}
+
+/* ---- כרטיס פרויקט באנגלית, במובייל: תגית וכותרת מיושרות למעלה ----
+   התווית האנגלית ("Project in marketing & construction") נשברת לשתיים־שלוש
+   שורות בטלפון. שורת הכותרת והתגית עצמה היו align-items:center, ולכן הכותרת
+   והאייקון צנחו לאמצע התגית. כאן: התגית נשארת בשורה של הכותרת, שתיהן
+   מיושרות לראש השורה, והאייקון יושב במרכז השורה הראשונה של התווית — קופסת
+   האייקון בגובה שורה אחת (18px) והגליף ממורכז בתוכה.
+   'start' ולא 'flex-start' — המראה של en/ הופך flex-start ל-flex-end. */
+@media (max-width:768px){
+  html[lang="en"] .ptag,html[lang="en"] .rtag,
+  html[lang="en"] [data-name="שורת כותרת"] [data-name="tag"] div:not([data-name]),
+  html[lang="en"] [data-name="שורת כותרת"] [data-name="תגית"] > div:not([data-name]){
+    line-height:18px !important;white-space:normal !important}
+  html[lang="en"] .pcard-head,html[lang="en"] .pjcard-head,
+  html[lang="en"] [data-name="שורת כותרת"]{flex-wrap:nowrap !important;align-items:start !important}
+  html[lang="en"] .ptag,html[lang="en"] .rtag,
+  html[lang="en"] [data-name="שורת כותרת"] [data-name="tag"],
+  html[lang="en"] [data-name="שורת כותרת"] [data-name="tag"] > [data-name],
+  html[lang="en"] [data-name="שורת כותרת"] [data-name="תגית"]{
+    align-items:start !important;min-width:0 !important;flex-shrink:1 !important}
+  html[lang="en"] .ptag > svg,html[lang="en"] .rtag > svg{height:18px !important;flex-shrink:0}
+  html[lang="en"] [data-name="שורת כותרת"] [data-name="tag"] [data-name]:has(> svg),
+  html[lang="en"] [data-name="שורת כותרת"] [data-name="תגית"] [data-name]:has(> svg){height:18px !important}
+}
+
+/* ---- הפוטר גדל ומתכווץ יחד עם גוף העמוד ----
+   הפוטר יושב מחוץ ל-.fig-page. עד 1439px שניהם זהים ממילא (רוחב מלא עם
+   שוליים של 20px). בין 1440 ל-1660, שבו גוף העמוד מתרחב, גם עמודות הפוטר
+   מתרחבות באותו יחס (רוחב הלוח פחות 172px — בדיוק 1268px ב-1440, כמו קודם),
+   ומ-1660 שתי הרצועות ננעלות יחד ורק השוליים גדלים. */
+@media (min-width:1440px){
+  .f-cols{max-width:calc(min(100vw, 1660px) - 172px)}
+}
+
+/* ============ HOVER — מצבי ריחוף שהיו חסרים ============
+   שלושה פערים נסגרים כאן.
+   (1) עמודי ה-Figma: כל כפתור וכל קישור־שברון שם הוא <a>/<div> עם סגנון
+       inline ובלי מחלקה, ולכן אף כלל hover של ‎.btn/.plink לא הגיע אליהם —
+       אותו כפתור הגיב בעמוד הבית ולא הגיב בעמוד פנימי. ‎chrome.js מסמן אותם
+       ב-‎.fx-btn/.fx-link, וה-‎!important נדרש כי inline גובר על גיליון חיצוני.
+   (2) פקדים משותפים שנשארו בלי משוב: זכוכית המגדל בניווט, הלוגו, החיצים,
+       הנקודות בגלריה ותיבת הסימון.
+   (3) הכרטיסים: אלה שהם קליקביליים מקבלים סמן יד גם כשהקליק נולד ב-JS. */
+
+/* --- (1) הכפתורים והקישורים של עמודי ה-Figma --- */
+.fx-btn,.fx-link{cursor:pointer;transition:background-color .25s,border-color .25s}
+.fx-btn a,.fx-link a{transition:color .25s}
+.fx-btn:hover{background-color:var(--marine) !important;border-color:var(--marine) !important}
+a.fx-btn:hover,.fx-btn:hover a,.fx-btn:hover>div:last-child{color:#fff !important}
+.fx-btn:hover svg path{stroke:#fff}
+.fx-btn:hover svg{animation:nudge .6s ease}
+/* הווריאנט הבהיר יושב על תצלום: מילוי שקוף במקום היפוך צבע */
+.fx-btn-light:hover{background-color:rgba(255,255,255,.18) !important;border-color:#fff !important}
+a.fx-btn-light:hover,.fx-btn-light:hover a,.fx-btn-light:hover>div:last-child{color:#fff !important}
+.fx-btn-light:hover svg path{stroke:#fff}
+a.fx-link:hover,.fx-link:hover a,.fx-link:hover>div:last-child{color:var(--marine) !important}
+.fx-link:hover svg{animation:nudge .6s ease}
+
+/* --- (2) פקדים משותפים --- */
+.nav-search svg,.menu-search svg{transition:transform .25s ease}
+.nav-search:hover svg,.menu-search:hover svg{transform:scale(1.12)}
+.nav-logo{transition:opacity .25s ease}
+.nav-logo:hover{opacity:.75}
+.arrows button:not([disabled]):hover svg path{stroke:var(--marine)}
+.arrows button:not([disabled]):hover svg{animation:nudge .6s ease}
+.arrows button svg path{transition:stroke .2s ease}
+.pgal:not([data-single="1"]) .pgal-dot:not(.on):hover{background:rgba(255,255,255,.8)}
+.fcheck:hover .cbx::before,.cbx:hover::before{border-color:var(--night-sky);background:rgba(58,179,255,.08)}
+.cbx::before{transition:border-color .2s ease,background .2s ease}
+.tab:not(.active):hover{color:var(--night-sky)}
+.tab:not(.active):hover svg path{stroke:var(--night-sky)}
+.tab svg path{transition:stroke .2s ease}
+.tab{transition:color .2s ease}
+
+/* --- (3) כרטיסים שה-JS הופך לקליקביליים --- */
+[data-name="project card"],[data-name^="כרטיס — "],[data-name^="כרטיס כתבה"]{cursor:pointer}
+
+/* --- ריחוף על הכרטיס כולו ---
+   התצלום כבר התקרב ב-hover, אבל רק כשהעכבר היה ממש עליו: חצי התחתון של
+   הכרטיס (הכותרת, הטקסט והקישור) לא עשה כלום, למרות שכל הכרטיס קליקבילי.
+   עכשיו הריחוף נתפס בכרטיס — בדיוק כמו ב-.pjcard בעמוד החיפוש. */
+[data-name="project card"]:hover>.bgz::after,
+[data-name^="כרטיס — "]:hover .bgz::after,
+[data-name^="כרטיס כתבה"]:hover .bgz::after{transform:scale(1.045)}
+
+/* ============ פרטי יצירת קשר: מייל · חיוג · ניווט ============
+   כל פרט קשר באתר הוא קישור ישיר — mailto למייל, tel לחיוג ו-Waze לכתובת
+   המשרד. החיווט בפועל נעשה בפיתוח; כאן נקבעת השפה הוויזואלית, והיא אותה
+   שפה שכבר קיימת ב-‎.flink ו-‎.fbanner a במצבי הטופס: קו שיער בשקיפות מתחת
+   לערך כבר במנוחה — כדי שיהיה ברור שאפשר ללחוץ בלי להמתין לריחוף — והוא
+   מתמלא לצבע המלא ב-hover/focus. ‎--clink-line נותן גרסה בהירה על רקע כהה.
+   ------------------------------------------------------------------ */
+.clink{color:inherit;cursor:pointer;
+  border-bottom:.75px solid var(--clink-line,rgba(0,65,108,.38));
+  transition:border-color .25s ease,color .25s ease}
+.clink:hover,.clink:focus-visible{border-bottom-color:currentColor}
+
+/* בתפריט ובפוטר הטקסט לבן על כחול, אז הקו יורד לשקיפות לבנה.
+   הוא חל על ‎.clink בלבד ולא על ‎.f-col.contact a — שם יושבים גם אייקוני
+   הרשתות החברתיות, שאסור שיקבלו קו תחתון. */
+.menu-contact .clink,.f-col.contact .clink{--clink-line:rgba(255,255,255,.45)}
+
+/* שורת קשר שלמה (עמוד צור קשר ומצבי הטופס שלו): הריבוע הכחול והטקסט הם
+   קישור אחד — יעד הקלקה של 46px ולא של שורת טקסט. הקו מסומן על הערך
+   בלבד, כלומר על הילד האחרון בעמודת הטקסט (הראשון הוא התווית). */
+a.clink-row{color:inherit;cursor:pointer}
+a.clink-row [data-name="text"]>div:last-child{
+  border-bottom:.75px solid rgba(0,65,108,.38);transition:border-color .25s ease}
+a.clink-row:hover [data-name="text"]>div:last-child,
+a.clink-row:focus-visible [data-name="text"]>div:last-child{border-bottom-color:currentColor}
+a.clink-row svg rect{transition:fill .25s ease}
+a.clink-row:hover svg rect{fill:var(--dark-blue)}
+
+/* ============ קווי השיער שמיוצאים מ-Figma כ-SVG ============
+   הייצוא מצייר כל קו מפריד כ-‎<svg width="1237" height="1">‎ עם
+   ‎stroke-width:0.5‎. כשהעטיפה מצטמצמת במובייל ה-svg מצטמצם איתה,
+   ו-preserveAspectRatio (ברירת המחדל, meet) מקטין באופן אחיד את כל
+   הציור — כולל עובי הקו: ‎0.5 × (350/1237) = 0.14px‎, ובשקיפות 25%
+   הקו פשוט נעלם. אורך הקו דווקא נכון (הוא ממלא את הרוחב), ולכן זה
+   נראה כאילו אין קו בכלל. non-scaling-stroke מנתק את עובי הקו
+   מהסקייל של ה-viewBox — 0.5px על המסך בכל רוחב, בדיוק כמו בדסקטופ.
+   הסלקטור תופס רק קווי שיער אמיתיים (ממד אחד בגודל 1) ולא אייקונים,
+   שאצלם ההקטנה האחידה של הקו היא ההתנהגות הרצויה.
+   ------------------------------------------------------------ */
+svg[height="1"] path,svg[height="1"] line,svg[height="1"] rect,
+svg[width="1"] path,svg[width="1"] line,svg[width="1"] rect{vector-effect:non-scaling-stroke}

@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<title>ONCE | Leave-your-details pop-up</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/site.css?v=en17">
+<link rel="stylesheet" href="css/chrome.css?v=en55">
+<style>
+  /* ==========================================================
+     POPUP — השארת פרטים (רכיב כללי לכל האתר)
+     העיצוב עצמו יושב ב-css/chrome.css תחת "POPUP", כדי שאותו
+     רכיב אחד ייכנס לכל עמוד באתר. כאן רק מה שדרוש לעמוד
+     ההדגמה: העמוד שנראה מאחוריו וכפתור פתיחה מחדש לסקירה.
+     ========================================================== */
+  body{margin:0;background:#062840;
+    font-family:'GoogleSans','Almoni',Arial,sans-serif}
+
+  /* רקע: עמוד הפרויקט — העמוד שנושא את הפאנל באתר החי.
+     הרקע הוא absolute בגובה התוכן המלא (ולא fixed בגובה החלון), כדי
+     שעמוד ההדגמה עצמו ייגלל — הפאנל fixed ונשאר בפינה, בלי לנעול את
+     הגלילה ובלי scrim. ה-iframe הוא pointer-events:none, ולכן גלגלת
+     מעליו גוללת את העמוד. גובהו נקבע בסקריפט מגובה התוכן.
+     גיבוי: אם הדפדפן חוסם iframe מקומי, נשארת תמונת רקע. */
+  .page-bg{position:absolute;top:0;right:0;width:100%;min-height:100%;overflow:hidden;
+    pointer-events:none;z-index:0;
+    background:url('../images/e46bfabded4ae10a.jpg') center top/cover no-repeat,#062840}
+  .page-bg iframe{display:block;width:100%;height:300vh;border:0}
+
+  /* בקרת תצוגה — לפתיחה חוזרת בזמן סקירת העיצוב. לא חלק מהמסך. */
+  .reopen{position:fixed;z-index:80;bottom:28px;left:28px;display:none;
+    align-items:center;gap:10px;padding:13px 18px;background:rgba(255,255,255,.9);
+    border:.5px solid var(--marine);color:var(--marine);font:500 15px/1 'GoogleSans';
+    cursor:pointer;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+  .reopen.show{display:inline-flex}
+  .reopen:hover{background:var(--marine);color:#fff}
+  .reopen:hover svg path{stroke:#fff}
+  /* בלי left/right בתוך @media — בניית הגרסה האנגלית מהפכת רק כללים
+     ברמה הראשונה של הגיליון. המיקום נשאר מהכלל שלמעלה. */
+  @media (max-width:640px){.reopen{padding:11px 15px;font-size:14px}}
+</style>
+</head>
+<body>
+
+<!-- ===== רקע: עמוד מהאתר ===== -->
+<div class="page-bg" aria-hidden="true">
+  <iframe id="bgframe" src="project.html" scrolling="no" tabindex="-1" title="Background — a page from the site"></iframe>
+</div>
+
+<!-- ===== POPUP — פאנל צמוד לפינה, לא מודאל ===== -->
+<div class="pop-dock" id="dock">
+  <div class="pop" id="pop" role="dialog" aria-labelledby="pop-title-txt">
+    <button class="pop-close" id="popClose" aria-label="Close">
+      <svg width="13" height="13" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M2 2L20 20M20 2L2 20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>
+    </button>
+
+    <div class="pop-body">
+
+      <div class="pop-head">
+        <div class="pop-title">
+          <svg width="26" height="26" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M48 23.7922L31.5809 25.4544C28.3738 25.774 25.8486 28.3418 25.5822 31.5596L24.2078 48L22.5456 31.5809C22.2153 28.3738 19.6582 25.8486 16.4404 25.5822L0 24.2078L16.4191 22.5456C19.6262 22.226 22.1407 19.6582 22.4178 16.4404L23.7922 0L25.4544 16.4191C25.7847 19.6262 28.3418 22.1514 31.5596 22.4178L48 23.7922Z" fill="#003A5E"/><path d="M33.905 33.7326L26.4999 27.6913C25.0508 26.5086 22.9731 26.5299 21.556 27.7339L14.2681 33.903L20.3094 26.5086C21.4921 25.0595 21.4708 22.9818 20.2668 21.5541L14.0977 14.2662L21.4921 20.3075C22.9412 21.4902 25.0189 21.4688 26.4466 20.2648L33.7345 14.0957L27.6932 21.4902C26.5105 22.9392 26.5318 25.0169 27.7358 26.4446L33.905 33.7326Z" fill="#003A5E"/></svg>
+          <h2 id="pop-title-txt">Want to hear more?</h2>
+        </div>
+        <p class="pop-lead">Leave your details and a member of our team will get back to you shortly.</p>
+      </div>
+
+      <form class="pop-form" id="popForm" novalidate>
+        <div class="frow">
+          <div class="fld">
+            <label for="pf-first">First name</label>
+            <input id="pf-first" name="first" type="text" autocomplete="given-name">
+          </div>
+          <div class="fld">
+            <label for="pf-last">Last name</label>
+            <input id="pf-last" name="last" type="text" autocomplete="family-name">
+          </div>
+        </div>
+          <div class="fld">
+            <label for="pf-mail">Email</label>
+            <input id="pf-mail" name="email" type="email" autocomplete="email">
+          </div>
+          <div class="fld">
+            <label for="pf-phone">Phone</label>
+            <input id="pf-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel">
+          </div>
+
+        <label class="fcheck">
+          <input type="checkbox" name="approve">
+          <span class="cbx"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M1.2252 7.2252L6 12L16.9138 1.0862" stroke="#00416C" stroke-width="1.05" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <span class="txt">I agree to receive marketing material from the Assaf Nachshoni Group, including via WhatsApp</span>
+        </label>
+
+        <div class="pop-actions">
+          <button class="btn" type="submit"><span>Send message</span><svg width="13" height="9" viewBox="0 0 13 9" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M0.4998 4.26172H11.1665" stroke="#00416C" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.5 8.5L12.5 4.5L8.5 0.5" stroke="#00416C" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        </div>
+      </form>
+
+      <div class="pop-thanks">
+        <svg width="32" height="32" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M48 23.7922L31.5809 25.4544C28.3738 25.774 25.8486 28.3418 25.5822 31.5596L24.2078 48L22.5456 31.5809C22.2153 28.3738 19.6582 25.8486 16.4404 25.5822L0 24.2078L16.4191 22.5456C19.6262 22.226 22.1407 19.6582 22.4178 16.4404L23.7922 0L25.4544 16.4191C25.7847 19.6262 28.3418 22.1514 31.5596 22.4178L48 23.7922Z" fill="#003A5E"/><path d="M33.905 33.7326L26.4999 27.6913C25.0508 26.5086 22.9731 26.5299 21.556 27.7339L14.2681 33.903L20.3094 26.5086C21.4921 25.0595 21.4708 22.9818 20.2668 21.5541L14.0977 14.2662L21.4921 20.3075C22.9412 21.4902 25.0189 21.4688 26.4466 20.2648L33.7345 14.0957L27.6932 21.4902C26.5105 22.9392 26.5318 25.0169 27.7358 26.4446L33.905 33.7326Z" fill="#003A5E"/></svg>
+        <h3>Thank you — we’ve received your details.</h3>
+        <div class="rule"></div>
+        <p>A member of our team will get back to you shortly.<br>For urgent enquiries: <a class="clink" href="tel:*9240" dir="ltr">*9240</a></p>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- בקרת תצוגה — לפתיחה חוזרת בזמן סקירת העיצוב -->
+<button class="reopen" id="reopen">
+  <span>Reopen the pop-up</span>
+  <svg width="13" height="9" viewBox="0 0 13 9" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M0.4998 4.26172H11.1665" stroke="#00416C" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.5 8.5L12.5 4.5L8.5 0.5" stroke="#00416C" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</button>
+
+<script>
+(function(){
+  var dock=document.getElementById('dock'),
+      pop=document.getElementById('pop'),
+      form=document.getElementById('popForm'),
+      reopen=document.getElementById('reopen');
+
+  /* הפאנל אינו מודאל, ולכן אינו לוקח פוקוס בפתיחה ואינו נסגר
+     בלחיצה על העמוד — רק ב-X או ב-Escape. */
+  function open(){ dock.classList.add('open'); reopen.classList.remove('show'); }
+  function close(){ dock.classList.remove('open'); reopen.classList.add('show'); }
+
+  setTimeout(open,900);
+
+  /* גובה ה-iframe = גובה התוכן, כדי שעמוד ההדגמה ייגלל כמו עמוד אמיתי */
+  var frame=document.getElementById('bgframe');
+  function fitBg(){
+    try{
+      var d=frame.contentDocument;
+      if(d) frame.style.height=Math.max(d.documentElement.scrollHeight,d.body.scrollHeight)+'px';
+    }catch(e){}
+  }
+  frame.addEventListener('load',function(){ fitBg(); setTimeout(fitBg,600); });
+  window.addEventListener('resize',fitBg);
+
+  document.getElementById('popClose').addEventListener('click',close);
+  reopen.addEventListener('click',open);
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Escape'&&dock.classList.contains('open')) close();
+  });
+  var doneBtn=document.getElementById('popDone');
+  if(doneBtn) doneBtn.addEventListener('click',close);
+
+  /* קו תחתון מתחדד בפוקוס / בשדה מלא */
+  Array.prototype.forEach.call(document.querySelectorAll('.fld input'),function(i){
+    function sync(){ i.closest('.fld').classList.toggle('on', document.activeElement===i || i.value.trim()!==''); }
+    i.addEventListener('focus',sync); i.addEventListener('blur',sync); i.addEventListener('input',sync);
+    sync();
+  });
+
+  if(form) form.addEventListener('submit',function(e){
+    e.preventDefault();
+    pop.classList.add('done');
+    pop.querySelector('.pop-body').scrollTop=0;
+  });
+})();
+</script>
+</body>
+</html>

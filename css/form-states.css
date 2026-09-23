@@ -1,0 +1,122 @@
+/* ==========================================================
+   ONCE — מצבי טופס יצירת קשר: הצלחה / שגיאה
+   ----------------------------------------------------------
+   קובץ אחד שמשרת את שלושת הטפסים באתר:
+     · עמוד צור קשר            (contact-success / contact-error)
+     · סקשן הטופס בעמוד הבית   (home-form-success / home-form-error)
+     · פופ-אפ בעמוד פרויקט     (project-popup-success / -error)
+
+   השפה העיצובית זהה לשאר האתר — כוכב ONCE, Almoni לכותרות,
+   GoogleSans לטקסט, מרין #00416C, קווי שיער 0.5px, בלי פינות
+   מעוגלות ובלי צללים. הצלחה נשארת לגמרי בפלטת המותג; לשגיאה
+   נוסף גוון לבנה חמים אחד בלבד (--err), שיושב עם ה-warm cream.
+   ========================================================== */
+
+:root{
+  --err:#b0453c;                       /* לבנה — 5.6:1 על לבן */
+  --err-soft:rgba(176,69,60,.06);
+  --err-line:rgba(176,69,60,.34);
+  --ok-line:rgba(0,65,108,.25);
+}
+
+/* ==========================================================
+   1. פאנל מצב — מחליף את הטופס אחרי שליחה מוצלחת
+   ========================================================== */
+.fstate{direction:rtl;text-align:right;display:flex;flex-direction:column;
+  align-items:flex-start;gap:22px;width:100%}
+.fstate>svg{flex:0 0 auto}
+.fstate h3{font:400 48px/1 'Almoni','GoogleSans',Arial,sans-serif;letter-spacing:-2px;color:var(--marine)}
+.fstate .rule{width:100%;height:.5px;background:var(--ok-line);margin:2px 0}
+.fstate p{font:400 16px/28px 'GoogleSans',Arial,sans-serif;color:var(--marine);max-width:46ch}
+.fstate .fstate-meta{font:400 14px/24px 'GoogleSans',Arial,sans-serif;color:var(--gray-txt)}
+.fstate .fstate-meta a{color:var(--gray-txt);border-bottom:.75px solid rgba(113,124,131,.5)}
+.fstate .fstate-meta a:hover{color:var(--marine);border-bottom-color:var(--marine)}
+.fstate-actions{display:flex;flex-direction:row;align-items:center;gap:30px;flex-wrap:wrap;margin-top:8px}
+
+/* קישור-טקסט משני לצד הכפתור */
+.flink{display:inline-flex;align-items:center;gap:10px;
+  font:500 16px/1 'GoogleSans',Arial,sans-serif;color:var(--night-sky);
+  padding-bottom:5px;border-bottom:.75px solid rgba(0,65,108,.35);transition:border-color .25s}
+.flink:hover{border-bottom-color:var(--night-sky)}
+.flink:hover svg{animation:nudge .6s ease}
+
+/* ==========================================================
+   2. באנר שגיאה — יושב מעל הטופס, הטופס נשאר על הפרטים שמולאו
+   ========================================================== */
+.fbanner{direction:rtl;text-align:right;display:flex;flex-direction:row;align-items:flex-start;
+  gap:16px;width:100%;padding:20px 22px;background:var(--err-soft);
+  border:.5px solid var(--err-line);border-inline-start-width:.5px}
+.fbanner-ico{flex:0 0 auto;width:26px;height:26px;margin-top:2px}
+.fbanner-txt{display:flex;flex-direction:column;gap:6px;min-width:0}
+.fbanner h4{font:500 18px/26px 'GoogleSans',Arial,sans-serif;color:var(--err)}
+.fbanner p{font:400 15px/25px 'GoogleSans',Arial,sans-serif;color:var(--marine)}
+.fbanner a{color:var(--marine);border-bottom:.75px solid rgba(0,65,108,.45)}
+.fbanner a:hover{border-bottom-color:var(--marine)}
+.fbanner [dir="ltr"]{display:inline-block}
+
+/* ==========================================================
+   3. שדה שגוי — קו תחתון בלבנה + הודעה מתחתיו
+   ========================================================== */
+.field.is-err input,
+.fld.is-err,
+.figfield.is-err{border-bottom-color:var(--err) !important;border-bottom-width:1.25px !important}
+.field.is-err label,
+.fld.is-err label{color:var(--err)}
+.fmsg{direction:rtl;display:flex;flex-direction:row;align-items:center;gap:7px;margin-top:9px;
+  font:400 13px/20px 'GoogleSans',Arial,sans-serif;color:var(--err);text-align:right}
+.fmsg svg{flex:0 0 auto}
+
+/* ==========================================================
+   4. בקרת תצוגה — מחליפה בין שתי שגיאות. לסקירת העיצוב בלבד,
+      לא חלק מהמסך שנמסר לפיתוח.
+   ========================================================== */
+.revbar{position:fixed;z-index:90;bottom:26px;left:26px;display:flex;flex-direction:row;align-items:center;
+  gap:2px;padding:6px;background:rgba(255,255,255,.92);border:.5px solid var(--marine);
+  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);direction:rtl}
+.revbar b{font:400 12px/1 'GoogleSans',Arial,sans-serif;color:var(--gray-txt);padding:0 10px 0 6px;white-space:nowrap}
+.revbar button{padding:9px 14px;font:500 14px/1 'GoogleSans',Arial,sans-serif;color:var(--marine);
+  background:none;border:none;cursor:pointer;transition:background .2s,color .2s;white-space:nowrap}
+.revbar button:hover{background:rgba(0,65,108,.08)}
+.revbar button.on{background:var(--marine);color:#fff}
+
+/* מה מוצג בכל מצב */
+body.st-send .only-val{display:none !important}
+body.st-val  .only-send{display:none !important}
+
+/* ==========================================================
+   5. רספונסיבי
+   ========================================================== */
+@media (max-width:768px){
+  .fstate{gap:18px}
+  .fstate>svg{width:36px;height:36px}
+  .fstate h3{font-size:30px;letter-spacing:-1.1px}
+  .fstate p{font-size:15px;line-height:26px}
+  .fstate-actions{gap:22px}
+  .fbanner{padding:16px 16px;gap:12px}
+  .fbanner-ico{width:22px;height:22px}
+  .fbanner h4{font-size:16px;line-height:24px}
+  .fbanner p{font-size:14px;line-height:23px}
+  .revbar{left:12px;bottom:12px;padding:5px}
+  .revbar b{display:none}
+  .revbar button{padding:8px 11px;font-size:13px}
+}
+@media (prefers-reduced-motion:reduce){
+  .flink,.revbar button{transition:none}
+  .flink:hover svg{animation:none}
+}
+
+/* ==========================================================
+   6. עמוד צור קשר — הטופס שם הוא ייצוא Figma (divים עם inline
+      style), ולכן סימון שדה שגוי נעשה על מחלקות ייעודיות עם
+      !important, ומופעל רק במצב "שגיאת מילוי".
+   ========================================================== */
+.figval{align-self:stretch;padding-top:9px;direction:rtl;text-align:right;
+  font:400 16px/24px 'GoogleSans','Almoni',Arial,sans-serif;color:rgb(0,58,94)}
+body.st-val .figlabel-err{color:var(--err) !important}
+body.st-val .figfield-err{border-bottom-color:var(--err) !important;border-bottom-width:1.25px !important}
+
+/* שדות אמיתיים (עמוד הבית / הפופ-אפ) — הסימון פעיל רק במצב "שגיאת מילוי" */
+body.st-val .field.field-err input{border-bottom-color:var(--err) !important;border-bottom-width:1.25px !important}
+body.st-val .field.field-err label{color:var(--err)}
+body.st-val .fld.field-err{border-bottom-color:var(--err) !important;border-bottom-width:1.25px !important}
+body.st-val .fld.field-err label{color:var(--err)}
