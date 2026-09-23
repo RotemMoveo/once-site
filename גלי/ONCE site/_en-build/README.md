@@ -7,6 +7,19 @@ any change to the Hebrew pages:
 python3 "_en-build/build.py"
 ```
 
+Or let it decide for itself — `_en-build/sync.sh` rebuilds only when a Hebrew
+source is newer than the last build (~50ms when there is nothing to do), so it
+is cheap to call constantly:
+
+```bash
+"_en-build/sync.sh"
+```
+
+`deploy.sh` runs it before publishing, so a deploy can never ship an `en/` that
+lags the Hebrew site, and it aborts if the build fails. It also backs the
+PostToolUse hook in `.claude/settings.json`, which re-syncs `en/` after every
+edit Claude makes.
+
 The build reads `../*.html`, `../css/*.css` and `../js/chrome.js`, and writes
 `../en/`. Images and videos are not copied — the pages point at `../images/`
 and `../videos/`.

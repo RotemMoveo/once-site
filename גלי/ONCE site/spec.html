@@ -1,4 +1,4 @@
-<!doctype html><html lang="he" dir="rtl"><head><meta charset="utf-8"><meta http-equiv="Cache-Control" content="no-cache, must-revalidate"><title>ONCE | מפרט טכני — אייזנברג 38-40</title><meta name="description" content="עיקרי המפרט הטכני של פרויקט אייזנברג 38-40 ברחובות — הבניין, הדירה וכל מה שביניהם."><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="css/site.css?v=17"><link rel="stylesheet" href="css/chrome.css?v=30"><style>
+<!doctype html><html lang="he" dir="rtl"><head><meta charset="utf-8"><meta http-equiv="Cache-Control" content="no-cache, must-revalidate"><title>ONCE | מפרט טכני — אייזנברג 38-40</title><meta name="description" content="עיקרי המפרט הטכני של פרויקט אייזנברג 38-40 ברחובות — הבניין, הדירה וכל מה שביניהם."><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="css/site.css?v=17"><link rel="stylesheet" href="css/chrome.css?v=54"><style>
 /* ============ מפרט טכני =========================================== */
 :root{--nav-h:93px;--pad:100px;--sp-tab-off:#86939c;--sp-rule:rgba(0,65,108,.16);--sp-rule-soft:rgba(0,65,108,.10)}
 .sp-skip{position:absolute;inset-inline-start:-9999px;top:0;z-index:60;background:#fff;color:var(--marine);padding:12px 20px;font:500 16px/1 'GoogleSans'}
@@ -33,6 +33,7 @@
 .sp-tab .tlab{display:flex;flex-direction:column;align-items:center}
 .sp-tab .tshort{display:none}
 .sp-tab:hover{color:var(--marine)}
+.sp-skip:hover{text-decoration:underline}
 .sp-tab[aria-selected="true"]{color:var(--night-sky)}
 /* one bar that slides between tabs, rather than a border that blinks on and off */
 .sp-ink{position:absolute;bottom:-.5px;height:2px;background:var(--night-sky);inset-inline-start:0;width:0;transform:translateX(0);transition:width .42s cubic-bezier(.22,.61,.36,1),transform .42s cubic-bezier(.22,.61,.36,1)}
@@ -62,7 +63,6 @@
 .sp-info>div{display:flex;flex-direction:column;gap:6px}
 .sp-info dt{font:400 12px/17px 'GoogleSans';color:var(--gray-txt)}
 .sp-info dd{font:400 20px/26px 'GoogleSans';color:var(--night-sky)}
-.sp-info a:hover{text-decoration:underline}
 
 @media (max-width:1280px){
   :root{--pad:72px}
@@ -166,9 +166,9 @@
   <div class="menu-contact">
     <h4>יצירת קשר</h4>
     <ul>
-      <li><a href="tel:*9240" dir="ltr">*9240</a></li>
-      <li><a href="mailto:info@once-estate.com">info@once-estate.com</a></li>
-      <li>יעקב 26, רחובות</li>
+      <li><a class="clink" href="tel:*9240" dir="ltr">*9240</a></li>
+      <li><a class="clink" href="mailto:info@once-estate.com">info@once-estate.com</a></li>
+      <li><a class="clink" href="https://waze.com/ul?q=%D7%99%D7%A2%D7%A7%D7%91%2026%2C%20%D7%A8%D7%97%D7%95%D7%91%D7%95%D7%AA&amp;navigate=yes" target="_blank" rel="noopener" aria-label="ניווט בוויז אל משרדי ONCE, יעקב 26, רחובות">יעקב 26, רחובות</a></li>
     </ul>
   </div>
 </aside><nav class="nav">
@@ -268,9 +268,9 @@
       <a class="btn" href="contact.html"><svg width="16" height="11" viewBox="0 0 16 11" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g clip-path="url(#sp_arrow)"><path d="M15.334 5.20703H2.29688" stroke="#00416C" stroke-width="1.22222" stroke-linecap="round" stroke-linejoin="round"/><path d="M5.5549 10.3872L0.666016 5.49826L5.5549 0.609375" stroke="#00416C" stroke-width="1.22222" stroke-linecap="round" stroke-linejoin="round"/></g><defs><clipPath id="sp_arrow"><rect width="16" height="11" fill="white"/></clipPath></defs></svg><span>ליצירת קשר</span></a>
     </div>
     <dl class="sp-info">
-      <div><dt>טלפון</dt><dd><a href="tel:*9240" dir="ltr">*9240</a></dd></div>
-      <div><dt>דוא״ל</dt><dd><a href="mailto:info@once-estate.com">info@once-estate.com</a></dd></div>
-      <div><dt>כתובת</dt><dd>יעקב 26, רחובות</dd></div>
+      <div><dt>טלפון</dt><dd><a class="clink" href="tel:*9240" dir="ltr">*9240</a></dd></div>
+      <div><dt>דוא״ל</dt><dd><a class="clink" href="mailto:info@once-estate.com">info@once-estate.com</a></dd></div>
+      <div><dt>כתובת</dt><dd><a class="clink" href="https://waze.com/ul?q=%D7%99%D7%A2%D7%A7%D7%91%2026%2C%20%D7%A8%D7%97%D7%95%D7%91%D7%95%D7%AA&amp;navigate=yes" target="_blank" rel="noopener" aria-label="ניווט בוויז אל משרדי ONCE, יעקב 26, רחובות">יעקב 26, רחובות</a></dd></div>
     </dl>
   </div>
 </section>
@@ -284,7 +284,7 @@
     <div class="f-col biglinks">
       <h4>ניווט</h4>
       <ul>
-        <li><a href="#">בית</a></li>
+        <li><a href="index.html">בית</a></li>
         <li><a href="about.html">אודות</a></li>
         <li><a href="news.html">כתבות</a></li>
         <li><a href="kablanit.html">חברה קבלנית</a></li>
@@ -294,9 +294,9 @@
     <div class="f-col biglinks">
       <h4>פרויקטים</h4>
       <ul>
-        <li><a href="projects.html">מאוכלסים</a></li>
         <li><a href="projects.html">בשיווק</a></li>
         <li><a href="projects.html">ברישוי</a></li>
+        <li><a href="projects.html">מאוכלסים</a></li>
         <li><a href="urban-renewal.html">התחדשות עירונית</a></li>
       </ul>
     </div>
@@ -304,11 +304,11 @@
     <div class="f-col contact">
       <h4>יצירת קשר</h4>
       <ul>
-        <li><a href="tel:*9240" dir="ltr">*9240</a></li>
-        <li><a href="mailto:info@once-estate.com" style="text-decoration:underline">info@once-estate.com</a></li>
-        <li>יעקב 26, רחובות</li>
+        <li><a class="clink" href="tel:*9240" dir="ltr">*9240</a></li>
+        <li><a class="clink" href="mailto:info@once-estate.com">info@once-estate.com</a></li>
+        <li><a class="clink" href="https://waze.com/ul?q=%D7%99%D7%A2%D7%A7%D7%91%2026%2C%20%D7%A8%D7%97%D7%95%D7%91%D7%95%D7%AA&amp;navigate=yes" target="_blank" rel="noopener" aria-label="ניווט בוויז אל משרדי ONCE, יעקב 26, רחובות">יעקב 26, רחובות</a></li>
       </ul>
-      <a class="f-insta" href="#" aria-label="אינסטגרם"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="17.6" cy="6.4" r="1.15" fill="currentColor" stroke="none"/></svg></a>
+      <div class="f-social"><a class="f-insta" href="#" aria-label="אינסטגרם"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="17.6" cy="6.4" r="1.15" fill="currentColor" stroke="none"/></svg></a><a class="f-insta f-fb" href="#" aria-label="פייסבוק"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2.8h-2.7A4.8 4.8 0 0 0 10.5 7.6v3H7.6v4h2.9v6.6h4v-6.6h2.9l.9-4h-3.8V7.6c0-.5.4-.9.9-.9H18z"/></svg></a></div>
     </div>
   </div>
   <div class="f-bottom-line"></div>
@@ -316,14 +316,14 @@
     <div class="f-bottom-row">
       <div class="f-links">
         <span dir="ltr">2026 @ ONCE אסף נחשוני</span>
-        <a href="#">מדיניות פרטיות</a>
-        <a href="#">הצהרת נגישות</a>
+        <a href="privacy.html">מדיניות פרטיות</a>
+        <a href="accessibility.html">הצהרת נגישות</a>
         <a class="langsw" href="en/spec.html" hreflang="en" lang="en" dir="ltr"><svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.1" aria-hidden="true"><circle cx="8" cy="8" r="6.4"/><path d="M1.6 8h12.8"/><path d="M8 1.6c1.73 1.76 2.6 3.9 2.6 6.4S9.73 12.64 8 14.4C6.27 12.64 5.4 10.5 5.4 8S6.27 3.36 8 1.6z"/></svg><span class="ls-t">English</span></a>
       </div>
       <span dir="ltr">Created by moveo creative</span>
     </div>
   </div>
-</footer><script src="js/chrome.js?v=30"></script><script>
+</footer><script src="js/chrome.js?v=54"></script><script>
 /* the specification tabs: one panel at a time, the bar slides to the tab that
    was picked, and the lines of the new panel arrive one after another */
 (function () {

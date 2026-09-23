@@ -97,7 +97,6 @@ button{font-family:inherit;background:none;border:none;cursor:pointer}
 .menu-contact h4{font:400 13px/1.3 'GoogleSans';color:#76c9ff;margin-bottom:12px}
 .menu-contact ul{list-style:none;display:flex;flex-direction:column;gap:8px}
 .menu-contact li,.menu-contact a{font:400 15px/1.5 'GoogleSans';color:#fff}
-.menu-contact a:hover{text-decoration:underline}
 
 /* ============ language switch ============ */
 .langsw{display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border:.5px solid var(--hairline);background:rgba(251,251,251,.08);color:#fff;font:500 13px/1 'GoogleSans';white-space:nowrap;transition:background .25s,border-color .25s,color .25s}
@@ -230,6 +229,7 @@ form{display:flex;flex-direction:column;gap:41px}
 .field label{font:400 16px/27px 'GoogleSans';color:var(--marine)}
 .field input{border:none;border-bottom:.75px solid var(--marine);background:transparent;padding:10px 0;font:400 16px/1.4 'GoogleSans';color:var(--night-sky);border-radius:0;outline:none;width:100%}
 .field input:focus{border-bottom-width:1.5px}
+.field input[type=email],.field input[type=tel]{direction:ltr;text-align:left}
 .fcheck{display:flex;align-items:flex-start;gap:10px;color:var(--marine);font:400 16px/27px 'GoogleSans';cursor:pointer;user-select:none}
 .fcheck input{position:absolute;opacity:0;pointer-events:none}
 .fcheck .box{position:relative;width:16px;height:16px;flex:0 0 auto}
@@ -241,14 +241,13 @@ form{display:flex;flex-direction:column;gap:41px}
 /* ============ FOOTER ============ */
 footer{background:var(--dark-blue);color:#fff;padding:48px 0 32px}
 .f-top-line{border-top:.5px solid var(--hairline)}
-.f-cols{max-width:1268px;margin:0 auto;padding:0 20px;min-height:423px;display:flex;justify-content:space-between;align-items:flex-start;gap:11px}.f-cols>.f-col{padding-top:72px}@media (max-width:768px){.f-cols>.f-col{padding-top:0}}.f-col.contact .f-insta{display:inline-flex;margin-top:20px;color:#fff;opacity:.85}.f-col.contact .f-insta:hover{opacity:1}
+.f-cols{max-width:1268px;margin:0 auto;padding:0 20px;min-height:423px;display:flex;justify-content:space-between;align-items:flex-start;gap:11px}.f-cols>.f-col{padding-top:72px}@media (max-width:768px){.f-cols>.f-col{padding-top:0}}.f-col.contact .f-insta{display:inline-flex;margin-top:20px;color:#fff;opacity:.85}.f-col.contact .f-insta:hover{opacity:1}.f-col.contact .f-social{display:flex;align-items:center;gap:24px}
 .f-col{width:237px;display:flex;flex-direction:column;align-items:flex-start;gap:8px}
 .f-col h4{font:400 14px/1.3 'GoogleSans';color:#76c9ff;font-weight:400;margin-bottom:0}
 .f-col.contact ul{margin-top:-2px}
 .f-col ul{list-style:none;display:flex;flex-direction:column;gap:16px}
 .f-col.contact ul{gap:6px}
 .f-col.contact li,.f-col.contact a{font:400 16px/1.3 'GoogleSans';color:#fff}
-.f-col.contact a:hover{text-decoration:underline}
 .f-col.biglinks li a{font:400 28px/1 'Almoni';letter-spacing:-.56px;color:#fff;transition:color .2s}
 .f-col.biglinks li a:hover{color:#76c9ff}
 .f-divider{width:.5px;align-self:stretch;background:var(--hairline);margin:0 27px}
@@ -256,7 +255,10 @@ footer{background:var(--dark-blue);color:#fff;padding:48px 0 32px}
 .f-bottom{max-width:1268px;margin:0 auto;padding:0 20px}
 .f-bottom-line{border-top:.5px solid var(--hairline);margin-bottom:32px}
 .f-bottom-row{display:flex;justify-content:space-between;align-items:center;font:400 12px/1.3 'GoogleSans';color:#fff}
-.f-links{display:flex;gap:32px}
+/* align-items:center — בלי זה הקישורים נמתחים לגובה השורה (שנקבע ע"י כפתור
+   חילוף השפה, 28px) והטקסט שלהם יושב בראש התיבה, בעוד התווית בתוך הכפתור
+   ממורכזת: פער של 6.5px בין השניים. */
+.f-links{display:flex;gap:32px;align-items:center}
 .f-links a:hover{text-decoration:underline}
 
 /* ============ RESPONSIVE ============ */
@@ -278,7 +280,21 @@ footer{background:var(--dark-blue);color:#fff;padding:48px 0 32px}
   .pcard-img{height:436px}
   .formsec-inner{flex-direction:column;align-items:center}
   .form-img{max-width:100%;width:520px}
-  .f-cols{flex-wrap:wrap;justify-content:center;row-gap:40px}
+  /* מ-1024 הפוטר נשבר לרשת 2x2 ולא לשורה עוטפת. שלושת הקווים המפרידים
+     נשארים בתפקיד: שניים אנכיים, אחד בכל שורה, באותה עמודת רשת בדיוק —
+     ולכן אחד מעל השני — והשלישי, זה שנשאר בלי זוג, נפרש לרוחב כקו אופקי
+     בין השורות. כל טור צמוד לקו, וכל טור יושב בדיוק מעל הטור שמתחתיו. */
+  .f-cols{display:grid;grid-template-columns:1fr auto 1fr;column-gap:0;row-gap:40px;min-height:0;padding-top:56px;padding-bottom:56px}
+  .f-cols>.f-col{padding-top:0}
+  .f-col{width:auto}
+  .f-cols>:nth-child(1){grid-area:1/1}
+  .f-cols>:nth-child(2){grid-area:1/2}
+  .f-cols>:nth-child(3){grid-area:1/3}
+  .f-cols>:nth-child(4){grid-area:2/1/3/4;width:auto;height:.5px;margin:0}
+  .f-cols>:nth-child(5){grid-area:3/1}
+  .f-cols>:nth-child(6){grid-area:3/2}
+  .f-cols>:nth-child(7){grid-area:3/3}
+  .f-logo img{width:200px}
 }
 @media (max-width:768px){
   .nav{height:64px}
@@ -290,14 +306,22 @@ footer{background:var(--dark-blue);color:#fff;padding:48px 0 32px}
   .menu-search{display:flex}
   .only-mobile{display:inline-flex}
   .projects-head .btn,.ironit-head .btn,.news-head .btn{display:none}
-  .arrows{justify-content:center}
-  .projects-more{margin-top:28px}
+  /* the arrows and the CTA are both slider-level controls, so one row keeps the
+     button anchored instead of floating alone under centred arrows */
+  .projects-foot{display:flex;align-items:center;justify-content:space-between;margin-top:40px}
+  .projects-foot .arrows,.projects-more{margin-top:0}
   .tab .tab-pre{display:none}
   .tab .tlab::after{content:attr(data-short)}
   .ironit-more{margin-top:28px}
   .news-more{margin-top:40px}
   .f-top-line{display:none}
-  .f-links{flex-direction:column;gap:16px;align-items:center}
+  /* ברוחב טלפון שורת הזכויות ושני הקישורים נדחסו לשורה אחת שנגעה בשני
+     השוליים, וכפתור השפה נתלה מתחתיה ב-8px. כאן זו רשת של שתי עמודות:
+     שורת הזכויות נפרשת לרוחב, שני הקישורים יושבים זה לצד זה, וכפתור
+     השפה מקבל שורה משלו — הכל ממורכז, עם אוויר בין השורות. */
+  .f-links{display:grid;grid-template-columns:auto auto;justify-content:center;justify-items:center;gap:14px 24px}
+  .f-links>span{grid-column:1/-1}
+  .f-links .langsw{grid-column:1/-1}
   .hero{height:560px}
   .hero-content{padding:0 20px 40px}
   .hero-content .star{width:32px;height:32px}
@@ -323,21 +347,90 @@ footer{background:var(--dark-blue);color:#fff;padding:48px 0 32px}
   .quote blockquote{font-size:28px;letter-spacing:-1px;line-height:1.1}
   .about{min-height:520px;padding:80px 24px}
   .about-inner h2{font-size:32px}
-  .ironit,.news,.formsec{padding:56px 20px}
+  .ironit,.news{padding:56px 20px}
   .ironit-head,.news-head{flex-direction:column;gap:24px;align-items:flex-start}
   .ironit-img{height:auto;aspect-ratio:4/5}
   .ironit-txt{max-width:100%}
   .news-grid{flex-direction:column;gap:40px}
   .ncard-body{padding-inline-start:0}
+  /* סקשן ״בואו נדבר״ במובייל — נדחס כדי שייכנס במסך אחד.
+     ב-390x844 יש 780px מתחת לנאבר, ובספארי עם שורת הכתובת כ-690px; הגרסה
+     הרחבה (כותרת 48px, ארבעה שדות בטור אחד, מרווחי 41px) הגיעה ל-853px
+     והכפתור נחתך תמיד. כאן: שם פרטי+שם משפחה זוג בשורה אחת — שמות בעברית
+     מגיעים ל-81px לכל היותר ב-16px, ונכנסים בנוח בעמודה של 167px — ואילו
+     אימייל וטלפון נשארים ברוחב מלא, כי אימייל ארוך מגיע ל-248px ובחצי שורה
+     היה נגלל בתוך השדה. סה״כ 506px. גודל האינפוט נשאר 16px בכוונה: מתחתיו
+     ספארי מזנק זום בפוקוס, וזה לבדו מחזיר את החריגה מהמסך. */
+  .formsec{padding:40px 20px}
   .formsec-inner{gap:48px}
-  .form-col{gap:40px}
-  .frow{flex-direction:column;gap:41px}
+  /* השדות מקבלים שוליים רחבים מגוף העמוד: 20px של הסקשן ועוד 24px של
+     העמודה, בסך הכל 44px מקצה המסך — אותו מרחק שכבר יש לטופס בעמוד צור
+     קשר (הכרטיס שם מוסיף 21px ל-20 של הסקשן) ולכרטיס ״מיקום הפרויקט״
+     בעמוד הפרויקט (padding:40px 24px). הכותרת נכנסת פנימה יחד עם השדות
+     כדי שהיישור ביניהן יישמר. */
+  .form-col{gap:26px;padding:0 24px}
+  .formsec .form-title{gap:12px}
+  .formsec .form-title svg{width:34px;height:34px}
+  .formsec .form-title h2{font-size:38px;letter-spacing:-1.6px}
+  .formsec form{gap:22px}
+  .formsec .frow{gap:16px}
+  .formsec .frow+.frow{flex-direction:column;gap:22px}
+  .formsec .field label{font-size:15px;line-height:24px}
+  .formsec .field input{padding:8px 0}
+  .formsec .fcheck{--cbx-lh:22px;font-size:14px;line-height:22px}
+  .form-col .btn{align-self:stretch;justify-content:center;padding:15px 17px}
   .form-img{display:none}
-  .f-cols{flex-direction:column;align-items:center;text-align:center;gap:40px;padding:48px 20px;min-height:0}
-  .f-col{width:100%;align-items:center}
-  .f-divider{width:100%;height:.5px;align-self:center;margin:0}
-  .f-logo img{width:180px;height:auto}
-  .f-bottom-row{flex-direction:column;gap:16px}
+  /* השבירה למובייל: עמודה אחת ממורכזת — הלוגו, הכותרות והקישורים יושבים
+     על ציר האמצע, והקווים המפרידים נפרשים לרוחב בין החלקים.
+     display:flex מבטל את הרשת של 1024 (ואיתה כל ה-grid-area שלה). */
+  .f-cols{display:flex;flex-direction:column;align-items:center;text-align:center;gap:32px;padding:40px 20px 44px;min-height:0}
+  .f-col{width:100%;flex:0 0 auto;align-items:center}
+  .f-divider{width:100%;height:.5px;align-self:stretch;margin:0}
+  .f-cols>:nth-child(4){width:100%;height:.5px;margin:0}
+  .f-logo img{width:120px;height:auto}
+  .f-bottom-row{flex-direction:column;align-items:center;text-align:center;gap:20px}
+  /* אקורדיון: שלוש הקטגוריות מתקפלות לשורות שנפתחות בלחיצה, והפוטר יורד
+     מ-1225px לכ-505px — פחות ממסך טלפון אחד. הכל נשאר על ציר האמצע:
+     הכותרת והחץ ממורכזים כזוג, והרשימה שנפתחת ממורכזת מתחתיהם.
+     .acc מתווסף על ידי הסקריפט בלבד — בלי ג׳אווהסקריפט הרשימות נשארות
+     פרושות וכל הקישורים נגישים, במקום ul עם max-height:0 שאין מי שיפתח. */
+  .f-cols.acc{gap:0;padding:28px 0 28px}
+  .f-cols.acc>.f-logo{padding-bottom:26px}
+  .f-cols.acc .f-col{gap:0}
+  .f-cols.acc .f-col h4{width:100%;margin:0}
+  .f-cols.acc .acc-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:17px 20px;background:none;border:0;cursor:pointer;font:400 18px/1.3 'Almoni';letter-spacing:-.36px;color:#76c9ff;-webkit-tap-highlight-color:transparent}
+  .f-cols.acc .acc-ch{flex:0 0 auto;transition:transform .25s}
+  .f-cols.acc .f-col.open .acc-ch{transform:rotate(180deg)}
+  .f-cols.acc .f-col ul{max-height:0;overflow:hidden;align-items:center;padding:0 20px;transition:max-height .3s ease,padding-bottom .3s ease}
+  .f-cols.acc .f-col.open ul{max-height:340px;padding-bottom:24px}
+  .f-cols.acc .f-col.biglinks ul{gap:14px}
+  .f-cols.acc .f-col.biglinks li a{font-size:20px;line-height:1.1;letter-spacing:-.4px}
+  .f-cols.acc .f-col.contact ul{gap:8px;margin-top:0}
+  .f-cols.acc .f-col.contact li,.f-cols.acc .f-col.contact a{font-size:15px}
+  .f-cols.acc .f-col.contact .f-social{margin-top:18px}
+  .f-cols.acc .f-col.contact .f-insta{margin-top:0}
+  footer{padding:0 0 32px}
+  .f-bottom-line{margin-bottom:28px}
+}
+
+/* ---- שולי הפוטר מתחת ל-1440 ----
+   מ-1440 ומעלה השוליים נולדים מ-max-width (הבלוק בסוף הקובץ) ועומדים על
+   106px. מתחת לזה הפוטר היה נצמד ל-20px — שוליים של טלפון — גם בחלון של
+   960, ולכן התוכן נראה דבוק לקצוות. כאן השוליים גדלים ברציפות עם החלון
+   ונוחתים בדיוק על 106px ב-1439 (106/1440 = 7.36vw), כך שאין קפיצה בגבול.
+   הטלפון (עד 768) נשאר על 20px כדי להתיישר עם גוף העמוד. */
+@media (min-width:769px) and (max-width:1439px){
+  .f-cols,.f-bottom{max-width:none;padding-inline:clamp(20px,7.36vw,106px)}
+  .f-divider{margin-inline:clamp(14px,1.875vw,27px)}
+}
+
+/* בשורה האחת (מעל הרשת) גם העמודות והלוגו מתכווצים באותו יחס מהחלון כמו
+   השוליים — 237/1440 ו-233/1440 — ולכן הרווח בין הפריטים ב-1439 יוצא זהה
+   לזה שב-1440. ה-gap מתאפס: המרווח מגיע משולי הקווים המפרידים. */
+@media (min-width:1025px) and (max-width:1439px){
+  .f-cols{gap:0}
+  .f-col{width:clamp(176px,16.46vw,237px);min-width:0}
+  .f-logo img{width:clamp(150px,16.18vw,233px);height:auto}
 }
 
 @media (max-width:1439px){.fig-page{width:100% !important;overflow-x:hidden}body{overflow-x:hidden}}
@@ -348,7 +441,7 @@ footer{background:var(--dark-blue);color:#fff;padding:48px 0 32px}
 
 /* ============ image gallery (.pgal) ============ */
 /* track is forced LTR so translateX math stays direction-independent */
-.pgal{position:relative;overflow:hidden}
+.pgal{position:relative;overflow:hidden;touch-action:pan-y}
 .pgal-track{position:absolute;inset:0;display:flex;direction:ltr;transition:transform .6s cubic-bezier(.22,.61,.36,1);will-change:transform}
 .pgal-slide{flex:0 0 100%;height:100%;background-position:center;background-size:cover;background-repeat:no-repeat}
 
@@ -480,6 +573,10 @@ footer{background:var(--dark-blue);color:#fff;padding:48px 0 32px}
   opacity:0;transform:translateY(16px);
   transition:opacity .38s ease,transform .5s cubic-bezier(.25,.72,.25,1)}
 .pop-dock.open .pop{opacity:1;transform:none;pointer-events:auto}
+/* בעמוד אמיתי הפאנל מפנה את המקום לשכבות שמעליו: תפריט הצד ופאנל
+   החיפוש פורשים האפלה על כל המסך, והפאנל לא אמור לצוף מעליה.
+   שניהם אחים שלו ישירות מתחת ל-body, ולכן ~ מספיק. */
+.menu.open ~ .pop-dock,.nsx.open ~ .pop-dock{opacity:0;visibility:hidden;transition:opacity .25s ease}
 
 .pop-body{display:flex;flex-direction:column;align-items:flex-start;gap:22px;
   padding:26px 28px 28px;max-height:calc(100vh - 56px);overflow-y:auto}
@@ -578,6 +675,61 @@ footer{background:var(--dark-blue);color:#fff;padding:48px 0 32px}
 /* padding-inline ולא left/right: המראה מהפכת שמות תכונות אופקיות גם בתוך
    @media, ושתי ההצהרות היו נדרסות זו על זו בגיליון של en/. */
 @media (max-width:1439px){.bcr-wrap{padding-inline:20px !important}}
+/* בדסקטופ השובל יושב 60px מתחת לתפריט או 40px מתחת לתמונת הירו. במובייל
+   התפריט מתכווץ ל-64px, אבל מרווח הפינוי שהלוח מייצא (.nav-gap) נשאר 93px —
+   וכך בעמוד שנפתח בכותרת ולא בתמונה נערמו 89px של לובן ריק מעל שורת השובל,
+   והיא כבר לא נקראת כחלק מראש העמוד. המרווח מיושר לגובה התפריט בפועל,
+   והשובל יורד ל-40px — אותו מרווח שכבר יש ב-search.html ובעמודי ההירו. */
+@media (max-width:768px){
+  .nav-gap{height:64px !important}
+  .bcr-wrap{padding-top:40px !important}
+}
+/* בעמודים שנפתחים בתמונת ירו (project, kablanit, urban-renewal, contact*)
+   ההירו פורץ את נעילת 1660 וממשיך לגעת בשולי החלון, ולכן כותרת ההירו יושבת
+   100px (וב-project 106) מקצה המסך בעוד ‎.fig-page ננעלת על 1660. מעל 1660
+   השובל נשאר מאחור — עד 350px משמאל לכותרת שמעליו. ‎.bcr-hero פורץ באותו
+   טריק בדיוק, וכך תחילת השובל יושבת מתחת לתחילת הכותרת בכל רוחב; הריפוד
+   האופקי של כל עמוד כבר שווה לריפוד ההירו שלו (בסגנון ה-inline של הצומת).
+   עד 1660 ‎.fig-page ממילא ברוחב מלא ושתי הרצועות זהות. */
+@media (min-width:1660px){
+  .bcr-wrap.bcr-hero{width:100vw !important;max-width:100vw !important;
+                     margin-inline:calc(50% - 50vw) !important}
+}
+
+/* ============ סינון מקופל במובייל (.mfx) ============
+   במסך צר סרגל הסינון נפרס על שתי שורות ואוכל את כל הקיפול הראשון — עוד
+   לפני שנראה פרויקט אחד. מתחת ל-769px הסרגל נסגר לשורה אחת ("סינון · הכל"),
+   והקטגוריות עצמן הופכות לרשימה שנפתחת בלחיצה בתוך העמוד — בלי שכבה, בלי
+   רקע כהה ובלי כפתור "החל": בחירה סוגרת מיד.
+   הרכיב גנרי ואינו יודע דבר על העמוד שהוא יושב בו: ‎.mfx-panel עוטף את סרגל
+   הטאבים הקיים כמו שהוא, ו-chrome.js קורא מתוכו את הקטגוריה הפעילה
+   (‎.tab.active / .stab.on / .tab-on) אל תוך השורה הסגורה. מעל 768px הכותרת
+   מוסתרת והפאנל פתוח תמיד — כלומר הסרגל נשאר בדיוק כפי שהיה בדסקטופ, ואותו
+   DOM משרת את שני המצבים בלי כפילות תוויות.
+   העיצוב של השורות עצמן יושב אצל כל עמוד, כי הטאבים שלו הם שלו: ‎.tab
+   בדף הבית, ‎.stab בעמוד החיפוש, וצומתי הייצוא ב-projects.html. */
+.mfx-head{display:none}
+@media (max-width:768px){
+  .mfx{border-top:.5px solid rgba(0,65,108,.25);border-bottom:.75px solid var(--marine)}
+  .mfx-head{display:flex;align-items:center;gap:10px;width:100%;padding:15px 2px;
+            direction:ltr;text-align:start;cursor:pointer}
+  .mfx-lab{font:400 15px/1 'GoogleSans';color:var(--gray-txt)}
+  .mfx-val{display:inline-flex;align-items:center;gap:8px;font:700 16px/1 'GoogleSans';
+           color:var(--night-sky)}
+  .mfx-n{font:400 12px/1 'GoogleSans';color:var(--gray-txt);
+         background:rgba(58,179,255,.1);padding:4px 6px}
+  .mfx-chev{flex:0 0 auto;width:11px;height:8px;color:var(--marine);
+            margin-inline-start:auto;transition:transform .3s ease}
+  .mfx.open .mfx-chev{transform:rotate(180deg)}
+  /* max-height ולא height:auto — רק למספר יש מה להנפיש. 420px גדול מכל פאנל
+     בפועל (חמש שורות ועוד שדה חיפוש) ולכן אינו חותך דבר. */
+  .mfx-panel{max-height:0;overflow:hidden;
+             transition:max-height .42s cubic-bezier(.25,.72,.25,1)}
+  .mfx.open .mfx-panel{max-height:420px}
+}
+@media (max-width:768px) and (prefers-reduced-motion:reduce){
+  .mfx-panel,.mfx-chev{transition:none}
+}
 
 /* ============ מודל הרוחב של לוח ה-Figma (.fig-page) ============
    ‎.fig-page נושא style="width:1440px" בתוך ה-HTML — זהו רוחב הלוח שנוצר
@@ -637,3 +789,96 @@ footer{background:var(--dark-blue);color:#fff;padding:48px 0 32px}
 @media (min-width:1440px){
   .f-cols{max-width:calc(min(100vw, 1660px) - 172px)}
 }
+
+/* ============ HOVER — מצבי ריחוף שהיו חסרים ============
+   שלושה פערים נסגרים כאן.
+   (1) עמודי ה-Figma: כל כפתור וכל קישור־שברון שם הוא <a>/<div> עם סגנון
+       inline ובלי מחלקה, ולכן אף כלל hover של ‎.btn/.plink לא הגיע אליהם —
+       אותו כפתור הגיב בעמוד הבית ולא הגיב בעמוד פנימי. ‎chrome.js מסמן אותם
+       ב-‎.fx-btn/.fx-link, וה-‎!important נדרש כי inline גובר על גיליון חיצוני.
+   (2) פקדים משותפים שנשארו בלי משוב: זכוכית המגדל בניווט, הלוגו, החיצים,
+       הנקודות בגלריה ותיבת הסימון.
+   (3) הכרטיסים: אלה שהם קליקביליים מקבלים סמן יד גם כשהקליק נולד ב-JS. */
+
+/* --- (1) הכפתורים והקישורים של עמודי ה-Figma --- */
+.fx-btn,.fx-link{cursor:pointer;transition:background-color .25s,border-color .25s}
+.fx-btn a,.fx-link a{transition:color .25s}
+.fx-btn:hover{background-color:var(--marine) !important;border-color:var(--marine) !important}
+a.fx-btn:hover,.fx-btn:hover a,.fx-btn:hover>div:last-child{color:#fff !important}
+.fx-btn:hover svg path{stroke:#fff}
+.fx-btn:hover svg{animation:nudge .6s ease}
+/* הווריאנט הבהיר יושב על תצלום: מילוי שקוף במקום היפוך צבע */
+.fx-btn-light:hover{background-color:rgba(255,255,255,.18) !important;border-color:#fff !important}
+a.fx-btn-light:hover,.fx-btn-light:hover a,.fx-btn-light:hover>div:last-child{color:#fff !important}
+.fx-btn-light:hover svg path{stroke:#fff}
+a.fx-link:hover,.fx-link:hover a,.fx-link:hover>div:last-child{color:var(--marine) !important}
+.fx-link:hover svg{animation:nudge .6s ease}
+
+/* --- (2) פקדים משותפים --- */
+.nav-search svg,.menu-search svg{transition:transform .25s ease}
+.nav-search:hover svg,.menu-search:hover svg{transform:scale(1.12)}
+.nav-logo{transition:opacity .25s ease}
+.nav-logo:hover{opacity:.75}
+.arrows button:not([disabled]):hover svg path{stroke:var(--marine)}
+.arrows button:not([disabled]):hover svg{animation:nudge .6s ease}
+.arrows button svg path{transition:stroke .2s ease}
+.pgal:not([data-single="1"]) .pgal-dot:not(.on):hover{background:rgba(255,255,255,.8)}
+.fcheck:hover .cbx::before,.cbx:hover::before{border-color:var(--night-sky);background:rgba(58,179,255,.08)}
+.cbx::before{transition:border-color .2s ease,background .2s ease}
+.tab:not(.active):hover{color:var(--night-sky)}
+.tab:not(.active):hover svg path{stroke:var(--night-sky)}
+.tab svg path{transition:stroke .2s ease}
+.tab{transition:color .2s ease}
+
+/* --- (3) כרטיסים שה-JS הופך לקליקביליים --- */
+[data-name="project card"],[data-name^="כרטיס — "],[data-name^="כרטיס כתבה"]{cursor:pointer}
+
+/* --- ריחוף על הכרטיס כולו ---
+   התצלום כבר התקרב ב-hover, אבל רק כשהעכבר היה ממש עליו: חצי התחתון של
+   הכרטיס (הכותרת, הטקסט והקישור) לא עשה כלום, למרות שכל הכרטיס קליקבילי.
+   עכשיו הריחוף נתפס בכרטיס — בדיוק כמו ב-.pjcard בעמוד החיפוש. */
+[data-name="project card"]:hover>.bgz::after,
+[data-name^="כרטיס — "]:hover .bgz::after,
+[data-name^="כרטיס כתבה"]:hover .bgz::after{transform:scale(1.045)}
+
+/* ============ פרטי יצירת קשר: מייל · חיוג · ניווט ============
+   כל פרט קשר באתר הוא קישור ישיר — mailto למייל, tel לחיוג ו-Waze לכתובת
+   המשרד. החיווט בפועל נעשה בפיתוח; כאן נקבעת השפה הוויזואלית, והיא אותה
+   שפה שכבר קיימת ב-‎.flink ו-‎.fbanner a במצבי הטופס: קו שיער בשקיפות מתחת
+   לערך כבר במנוחה — כדי שיהיה ברור שאפשר ללחוץ בלי להמתין לריחוף — והוא
+   מתמלא לצבע המלא ב-hover/focus. ‎--clink-line נותן גרסה בהירה על רקע כהה.
+   ------------------------------------------------------------------ */
+.clink{color:inherit;cursor:pointer;
+  border-bottom:.75px solid var(--clink-line,rgba(0,65,108,.38));
+  transition:border-color .25s ease,color .25s ease}
+.clink:hover,.clink:focus-visible{border-bottom-color:currentColor}
+
+/* בתפריט ובפוטר הטקסט לבן על כחול, אז הקו יורד לשקיפות לבנה.
+   הוא חל על ‎.clink בלבד ולא על ‎.f-col.contact a — שם יושבים גם אייקוני
+   הרשתות החברתיות, שאסור שיקבלו קו תחתון. */
+.menu-contact .clink,.f-col.contact .clink{--clink-line:rgba(255,255,255,.45)}
+
+/* שורת קשר שלמה (עמוד צור קשר ומצבי הטופס שלו): הריבוע הכחול והטקסט הם
+   קישור אחד — יעד הקלקה של 46px ולא של שורת טקסט. הקו מסומן על הערך
+   בלבד, כלומר על הילד האחרון בעמודת הטקסט (הראשון הוא התווית). */
+a.clink-row{color:inherit;cursor:pointer}
+a.clink-row [data-name="text"]>div:last-child{
+  border-bottom:.75px solid rgba(0,65,108,.38);transition:border-color .25s ease}
+a.clink-row:hover [data-name="text"]>div:last-child,
+a.clink-row:focus-visible [data-name="text"]>div:last-child{border-bottom-color:currentColor}
+a.clink-row svg rect{transition:fill .25s ease}
+a.clink-row:hover svg rect{fill:var(--dark-blue)}
+
+/* ============ קווי השיער שמיוצאים מ-Figma כ-SVG ============
+   הייצוא מצייר כל קו מפריד כ-‎<svg width="1237" height="1">‎ עם
+   ‎stroke-width:0.5‎. כשהעטיפה מצטמצמת במובייל ה-svg מצטמצם איתה,
+   ו-preserveAspectRatio (ברירת המחדל, meet) מקטין באופן אחיד את כל
+   הציור — כולל עובי הקו: ‎0.5 × (350/1237) = 0.14px‎, ובשקיפות 25%
+   הקו פשוט נעלם. אורך הקו דווקא נכון (הוא ממלא את הרוחב), ולכן זה
+   נראה כאילו אין קו בכלל. non-scaling-stroke מנתק את עובי הקו
+   מהסקייל של ה-viewBox — 0.5px על המסך בכל רוחב, בדיוק כמו בדסקטופ.
+   הסלקטור תופס רק קווי שיער אמיתיים (ממד אחד בגודל 1) ולא אייקונים,
+   שאצלם ההקטנה האחידה של הקו היא ההתנהגות הרצויה.
+   ------------------------------------------------------------ */
+svg[height="1"] path,svg[height="1"] line,svg[height="1"] rect,
+svg[width="1"] path,svg[width="1"] line,svg[width="1"] rect{vector-effect:non-scaling-stroke}

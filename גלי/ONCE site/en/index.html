@@ -91,7 +91,11 @@ button{font-family:inherit;background:none;border:none;cursor:pointer}
 .menu-contact h4{font:400 13px/1.3 'GoogleSans';color:#76c9ff;margin-bottom:12px}
 .menu-contact ul{list-style:none;display:flex;flex-direction:column;gap:8px}
 .menu-contact li,.menu-contact a{font:400 15px/1.5 'GoogleSans';color:#fff}
-.menu-contact a:hover{text-decoration:underline}
+/* פרטי יצירת קשר (מייל · חיוג · ניווט בוויז): נראים לחיצים כבר במנוחה —
+   קו שיער בשקיפות מתחת לערך, שמתמלא בריחוף. זהה ל-‎.clink ב-css/chrome.css. */
+.clink{color:inherit;cursor:pointer;border-bottom:.75px solid var(--clink-line,rgba(0,65,108,.38));transition:border-color .25s ease,color .25s ease}
+.clink:hover,.clink:focus-visible{border-bottom-color:currentColor}
+.menu-contact .clink,.f-col.contact .clink{--clink-line:rgba(255,255,255,.45)}
 
 /* ============ language switch ============ */
 .langsw{display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border:.5px solid var(--hairline);background:rgba(251,251,251,.08);color:#fff;font:500 13px/1 'GoogleSans';white-space:nowrap;transition:background .25s,border-color .25s,color .25s}
@@ -134,10 +138,10 @@ button{font-family:inherit;background:none;border:none;cursor:pointer}
 .tab:not(.active) svg path{stroke:#d4d2cc}
 .tab:not(.active) svg path[fill]{fill:#d4d2cc}
 .slider-wrap{position:relative}
-.slider{display:flex;gap:24px;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;padding-bottom:4px}
+.slider{--gap:24px;--peek:104px;display:flex;gap:var(--gap);overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;padding-bottom:4px}
 .slider::-webkit-scrollbar{display:none}
 .pcard{flex:0 0 594px;display:flex;flex-direction:column;gap:32px}
-.pcard-img{width:100%;height:540px}
+.pcard-img{width:100%;aspect-ratio:11/10}
 .pcard-info{position:relative;display:flex;justify-content:space-between;align-items:flex-start;gap:22px}
 .ptag{display:inline-flex;align-items:center;gap:8px;background:#e2eef6;color:var(--marine);font:400 14px/1.3 'GoogleSans';padding:6px 16px 6px 10px;white-space:nowrap}
 .ptag.ptag-mktg{background:rgba(58,179,255,.1);color:var(--night-sky);padding:6px 10px}
@@ -224,6 +228,7 @@ form{display:flex;flex-direction:column;gap:41px}
 .field label{font:400 16px/27px 'GoogleSans';color:var(--marine)}
 .field input{border:none;border-bottom:.75px solid var(--marine);background:transparent;padding:10px 0;font:400 16px/1.4 'GoogleSans';color:var(--night-sky);border-radius:0;outline:none;width:100%}
 .field input:focus{border-bottom-width:1.5px}
+.field input[type=email],.field input[type=tel]{direction:ltr;text-align:left}
 .fcheck{display:flex;align-items:flex-start;gap:10px;color:var(--marine);font:400 16px/27px 'GoogleSans';cursor:pointer;user-select:none}
 .fcheck input{position:absolute;opacity:0;pointer-events:none}
 /* ============ consent checkbox (.cbx) ============ */
@@ -255,14 +260,13 @@ form{display:flex;flex-direction:column;gap:41px}
 /* ============ FOOTER ============ */
 footer{background:var(--dark-blue);color:#fff;padding:48px 0 32px}
 .f-top-line{border-top:.5px solid var(--hairline)}
-.f-cols{max-width:1268px;margin:0 auto;padding:0 20px;min-height:423px;display:flex;justify-content:space-between;align-items:flex-start;gap:11px}.f-cols>.f-col{padding-top:72px}@media (max-width:768px){.f-cols>.f-col{padding-top:0}}.f-col.contact .f-insta{display:inline-flex;margin-top:20px;color:#fff;opacity:.85}.f-col.contact .f-insta:hover{opacity:1}
+.f-cols{max-width:1268px;margin:0 auto;padding:0 20px;min-height:423px;display:flex;justify-content:space-between;align-items:flex-start;gap:11px}.f-cols>.f-col{padding-top:72px}@media (max-width:768px){.f-cols>.f-col{padding-top:0}}.f-col.contact .f-insta{display:inline-flex;margin-top:20px;color:#fff;opacity:.85}.f-col.contact .f-insta:hover{opacity:1}.f-col.contact .f-social{display:flex;align-items:center;gap:24px}
 .f-col{width:237px;display:flex;flex-direction:column;align-items:flex-start;gap:8px}
 .f-col h4{font:400 14px/1.3 'GoogleSans';color:#76c9ff;font-weight:400;margin-bottom:0}
 .f-col.contact ul{margin-top:-2px}
 .f-col ul{list-style:none;display:flex;flex-direction:column;gap:16px}
 .f-col.contact ul{gap:6px}
 .f-col.contact li,.f-col.contact a{font:400 16px/1.3 'GoogleSans';color:#fff}
-.f-col.contact a:hover{text-decoration:underline}
 .f-col.biglinks li a{font:400 28px/1 'Almoni';letter-spacing:-.56px;color:#fff;transition:color .2s}
 .f-col.biglinks li a:hover{color:#76c9ff}
 .f-divider{width:.5px;align-self:stretch;background:var(--hairline);margin:0 27px}
@@ -270,7 +274,7 @@ footer{background:var(--dark-blue);color:#fff;padding:48px 0 32px}
 .f-bottom{max-width:1268px;margin:0 auto;padding:0 20px}
 .f-bottom-line{border-top:.5px solid var(--hairline);margin-bottom:32px}
 .f-bottom-row{display:flex;justify-content:space-between;align-items:center;font:400 12px/1.3 'GoogleSans';color:#fff}
-.f-links{display:flex;gap:32px}
+.f-links{display:flex;gap:32px;align-items:center}
 .f-links a:hover{text-decoration:underline}
 
 /* ============ RESPONSIVE ============ */
@@ -289,10 +293,23 @@ footer{background:var(--dark-blue);color:#fff;padding:48px 0 32px}
   .hero h1{font-size:64px}
   .quote blockquote{font-size:40px}
   .pcard{flex-basis:480px}
-  .pcard-img{height:436px}
   .formsec-inner{flex-direction:column;align-items:center}
   .form-img{max-width:100%;width:520px}
-  .f-cols{flex-wrap:wrap;justify-content:center;row-gap:40px}
+  /* מ-1024 הפוטר נשבר לרשת 2x2 ולא לשורה עוטפת. שלושת הקווים המפרידים
+     נשארים בתפקיד: שניים אנכיים, אחד בכל שורה, באותה עמודת רשת בדיוק —
+     ולכן אחד מעל השני — והשלישי, זה שנשאר בלי זוג, נפרש לרוחב כקו אופקי
+     בין השורות. כל טור צמוד לקו, וכל טור יושב בדיוק מעל הטור שמתחתיו. */
+  .f-cols{display:grid;grid-template-columns:1fr auto 1fr;column-gap:0;row-gap:40px;min-height:0;padding-top:56px;padding-bottom:56px}
+  .f-cols>.f-col{padding-top:0}
+  .f-col{width:auto}
+  .f-cols>:nth-child(1){grid-area:1/1}
+  .f-cols>:nth-child(2){grid-area:1/2}
+  .f-cols>:nth-child(3){grid-area:1/3}
+  .f-cols>:nth-child(4){grid-area:2/1/3/4;width:auto;height:.5px;margin:0}
+  .f-cols>:nth-child(5){grid-area:3/1}
+  .f-cols>:nth-child(6){grid-area:3/2}
+  .f-cols>:nth-child(7){grid-area:3/3}
+  .f-logo img{width:200px}
 }
 @media (max-width:768px){
   .nav{height:64px}
@@ -304,31 +321,39 @@ footer{background:var(--dark-blue);color:#fff;padding:48px 0 32px}
   .menu-search{display:flex}
   .only-mobile{display:inline-flex}
   .projects-head .btn,.ironit-head .btn,.news-head .btn{display:none}
-  .arrows{justify-content:center}
-  .projects-more{margin-top:28px}
+  /* the arrows and the CTA are both slider-level controls, so one row keeps the
+     button anchored instead of floating alone under centred arrows */
+  .projects-foot{display:flex;align-items:center;justify-content:space-between;margin-top:40px;padding-inline-end:20px}
+  .projects-foot .arrows,.projects-more{margin-top:0}
   .tab .tab-pre{display:none}
   .tab .tlab::after{content:attr(data-short)}
   .ironit-more{margin-top:28px}
   .news-more{margin-top:40px}
   .f-top-line{display:none}
-  .f-links{flex-direction:column;gap:16px;align-items:center}
+  /* ברוחב טלפון שורת הזכויות ושני הקישורים נדחסו לשורה אחת שנגעה בשני
+     השוליים, וכפתור השפה נתלה מתחתיה ב-8px. כאן זו רשת של שתי עמודות:
+     שורת הזכויות נפרשת לרוחב, שני הקישורים יושבים זה לצד זה, וכפתור
+     השפה מקבל שורה משלו — הכל ממורכז, עם אוויר בין השורות. */
+  .f-links{display:grid;grid-template-columns:auto auto;justify-content:center;justify-items:center;gap:14px 24px}
+  .f-links>span{grid-column:1/-1}
+  .f-links .langsw{grid-column:1/-1}
   .hero{height:560px}
   .hero-content{padding:0 20px 40px}
   .hero-content .star{width:32px;height:32px}
   .hero h1{font-size:44px;letter-spacing:-1.5px}
   .sec-title h2{font-size:32px;letter-spacing:-1px}
   .sec-title svg,.sec-title img{width:32px;height:32px}
-  .projects{padding:56px 20px 32px 20px}
-  .projects-head{padding-inline-end:0;flex-direction:column-reverse;gap:24px;align-items:flex-start}
-  .projects-track{margin-inline-end:0}
+  .projects{padding:56px 0 32px 20px}
+  .projects-head{padding-inline-end:20px;flex-direction:column-reverse;gap:24px;align-items:flex-start}
+  .projects-track{margin-inline-end:20px}
   .projects-head .sec-title{align-self:flex-start}
-  .tabs{gap:20px;overflow-x:auto;scrollbar-width:none;margin-bottom:24px}
+  .tabs{gap:20px;overflow-x:auto;scrollbar-width:none;margin-bottom:24px;padding-inline-end:20px}
   .tabs::-webkit-scrollbar{display:none}
   .tab{font-size:15px}
-  /* one card per screen: a partial peek would show the next card's headline and
-     link as loose fragments at the edge, so the slide fills the gutter instead */
-  .slider{scroll-snap-type:x mandatory}
-  .pcard{flex-basis:100%;scroll-snap-align:center}
+  /* גם בטלפון נשאר רסיס מהכרטיס הבא בשפת המסך — זה מה שמסמן שאפשר
+     להחליק הצידה. הסקשן נפתח עד הקצה והכרטיס צר ממנו ברוחב הרסיס + המרווח. */
+  .slider{--peek:44px;scroll-snap-type:x mandatory}
+  .pcard{flex-basis:calc(100% - var(--gap) - var(--peek));scroll-snap-align:start}
   .pcard-img{height:auto;aspect-ratio:41/37}
   .pcard-info{gap:16px}
   .pcard-txt{width:100%;max-width:100%}
@@ -337,21 +362,105 @@ footer{background:var(--dark-blue);color:#fff;padding:48px 0 32px}
   .quote blockquote{font-size:28px;letter-spacing:-1px;line-height:1.1}
   .about{min-height:520px;padding:80px 24px}
   .about-inner h2{font-size:32px}
-  .ironit,.news,.formsec{padding:56px 20px}
+  .ironit,.news{padding:56px 20px}
   .ironit-head,.news-head{flex-direction:column;gap:24px;align-items:flex-start}
   .ironit-img{height:auto;aspect-ratio:4/5}
   .ironit-txt{max-width:100%}
   .news-grid{flex-direction:column;gap:40px}
   .ncard-body{padding-inline-start:0}
+  /* סקשן ״בואו נדבר״ במובייל — נדחס כדי שייכנס במסך אחד.
+     ב-390x844 יש 780px מתחת לנאבר, ובספארי עם שורת הכתובת כ-690px; הגרסה
+     הרחבה (כותרת 48px, ארבעה שדות בטור אחד, מרווחי 41px) הגיעה ל-853px
+     והכפתור נחתך תמיד. כאן: שם פרטי+שם משפחה זוג בשורה אחת — שמות בעברית
+     מגיעים ל-81px לכל היותר ב-16px, ונכנסים בנוח בעמודה של 167px — ואילו
+     אימייל וטלפון נשארים ברוחב מלא, כי אימייל ארוך מגיע ל-248px ובחצי שורה
+     היה נגלל בתוך השדה. סה״כ 506px. גודל האינפוט נשאר 16px בכוונה: מתחתיו
+     ספארי מזנק זום בפוקוס, וזה לבדו מחזיר את החריגה מהמסך. */
+  .formsec{padding:40px 20px}
   .formsec-inner{gap:48px}
-  .form-col{gap:40px}
-  .frow{flex-direction:column;gap:41px}
+  /* השדות מקבלים שוליים רחבים מגוף העמוד: 20px של הסקשן ועוד 24px של
+     העמודה, בסך הכל 44px מקצה המסך — אותו מרחק שכבר יש לטופס בעמוד צור
+     קשר. הכותרת נכנסת פנימה יחד עם השדות כדי שהיישור ביניהן יישמר. */
+  .form-col{gap:26px;padding:0 24px}
+  .formsec .form-title{gap:12px}
+  .formsec .form-title svg{width:34px;height:34px}
+  .formsec .form-title h2{font-size:38px;letter-spacing:-1.6px}
+  .formsec form{gap:22px}
+  .formsec .frow{gap:16px}
+  .formsec .frow+.frow{flex-direction:column;gap:22px}
+  .formsec .field label{font-size:15px;line-height:24px}
+  .formsec .field input{padding:8px 0}
+  .formsec .fcheck{--cbx-lh:22px;font-size:14px;line-height:22px}
+  .form-col .btn{align-self:stretch;justify-content:center;padding:15px 17px}
   .form-img{display:none}
-  .f-cols{flex-direction:column;align-items:center;text-align:center;gap:40px;padding:48px 20px;min-height:0}
-  .f-col{width:100%;align-items:center}
-  .f-divider{width:100%;height:.5px;align-self:center;margin:0}
-  .f-logo img{width:180px;height:auto}
-  .f-bottom-row{flex-direction:column;gap:16px}
+  /* השבירה למובייל: עמודה אחת ממורכזת — הלוגו, הכותרות והקישורים יושבים
+     על ציר האמצע, והקווים המפרידים נפרשים לרוחב בין החלקים.
+     display:flex מבטל את הרשת של 1024 (ואיתה כל ה-grid-area שלה). */
+  .f-cols{display:flex;flex-direction:column;align-items:center;text-align:center;gap:32px;padding:40px 20px 44px;min-height:0}
+  .f-col{width:100%;flex:0 0 auto;align-items:center}
+  .f-divider{width:100%;height:.5px;align-self:stretch;margin:0}
+  .f-cols>:nth-child(4){width:100%;height:.5px;margin:0}
+  .f-logo img{width:120px;height:auto}
+  .f-bottom-row{flex-direction:column;align-items:center;text-align:center;gap:20px}
+  /* אקורדיון: שלוש הקטגוריות מתקפלות לשורות שנפתחות בלחיצה, והפוטר יורד
+     מ-1225px לכ-505px — פחות ממסך טלפון אחד. הכל נשאר על ציר האמצע:
+     הכותרת והחץ ממורכזים כזוג, והרשימה שנפתחת ממורכזת מתחתיהם.
+     .acc מתווסף על ידי הסקריפט בלבד — בלי ג׳אווהסקריפט הרשימות נשארות
+     פרושות וכל הקישורים נגישים, במקום ul עם max-height:0 שאין מי שיפתח. */
+  .f-cols.acc{gap:0;padding:28px 0 28px}
+  .f-cols.acc>.f-logo{padding-bottom:26px}
+  .f-cols.acc .f-col{gap:0}
+  .f-cols.acc .f-col h4{width:100%;margin:0}
+  .f-cols.acc .acc-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:17px 20px;background:none;border:0;cursor:pointer;font:400 18px/1.3 'Almoni';letter-spacing:-.36px;color:#76c9ff;-webkit-tap-highlight-color:transparent}
+  .f-cols.acc .acc-ch{flex:0 0 auto;transition:transform .25s}
+  .f-cols.acc .f-col.open .acc-ch{transform:rotate(180deg)}
+  .f-cols.acc .f-col ul{max-height:0;overflow:hidden;align-items:center;padding:0 20px;transition:max-height .3s ease,padding-bottom .3s ease}
+  .f-cols.acc .f-col.open ul{max-height:340px;padding-bottom:24px}
+  .f-cols.acc .f-col.biglinks ul{gap:14px}
+  .f-cols.acc .f-col.biglinks li a{font-size:20px;line-height:1.1;letter-spacing:-.4px}
+  .f-cols.acc .f-col.contact ul{gap:8px;margin-top:0}
+  .f-cols.acc .f-col.contact li,.f-cols.acc .f-col.contact a{font-size:15px}
+  .f-cols.acc .f-col.contact .f-social{margin-top:18px}
+  .f-cols.acc .f-col.contact .f-insta{margin-top:0}
+  footer{padding:0 0 32px}
+  .f-bottom-line{margin-bottom:28px}
+}
+
+/* ---- שולי הפוטר מתחת ל-1440 ----
+   מ-1440 ומעלה השוליים נולדים מ-max-width (הבלוק בסוף הקובץ) ועומדים על
+   106px. מתחת לזה הפוטר היה נצמד ל-20px — שוליים של טלפון — גם בחלון של
+   960, ולכן התוכן נראה דבוק לקצוות. כאן השוליים גדלים ברציפות עם החלון
+   ונוחתים בדיוק על 106px ב-1439 (106/1440 = 7.36vw), כך שאין קפיצה בגבול.
+   הטלפון (עד 768) נשאר על 20px כדי להתיישר עם גוף העמוד. */
+@media (min-width:769px) and (max-width:1439px){
+  .f-cols,.f-bottom{max-width:none;padding-inline:clamp(20px,7.36vw,106px)}
+  .f-divider{margin-inline:clamp(14px,1.875vw,27px)}
+}
+
+/* בשורה האחת (מעל הרשת) גם העמודות והלוגו מתכווצים באותו יחס מהחלון כמו
+   השוליים — 237/1440 ו-233/1440 — ולכן הרווח בין הפריטים ב-1439 יוצא זהה
+   לזה שב-1440. ה-gap מתאפס: המרווח מגיע משולי הקווים המפרידים. */
+@media (min-width:1025px) and (max-width:1439px){
+  .f-cols{gap:0}
+  .f-col{width:clamp(176px,16.46vw,237px);min-width:0}
+  .f-logo img{width:clamp(150px,16.18vw,233px);height:auto}
+}
+
+/* ---- הרסיס בקרוסלת הפרויקטים ----
+   הקרוסלה חייבת להראות תמיד חלק מכרטיס בקצה, אחרת אין שום רמז שאפשר להמשיך
+   הצידה. עם רוחב כרטיס קבוע זה תלוי מזל: ברוחבי חלון שבהם המסילה מתחלקת
+   בדיוק בכרטיסים (1260–1336 למשל, ובהם 1280 שהוא רוחב נפוץ) הכרטיס הבא נעצר
+   בדיוק על הקצה ולא נראה ממנו כלום. לכן מהרוחב שבו שני כרטיסים כבר נכנסים,
+   רוחב הכרטיס נגזר מהמסילה פחות הרסיס — כך הרסיס קיים בכל רוחב, לא רק
+   כשהחשבון "מסתדר". ב-1440 החישוב מחזיר בדיוק את 594px של הלוח:
+   (1340 − 2×24 − 104) / 2 = 594.
+   ה-min שומר שהכרטיס לא יתנפח במסכים רחבים; משם הרסיס הוא שגדל, ובנקודה
+   שבה הוא היה נפתח לכרטיס שלם נכנסת שורת שלושת הכרטיסים. */
+@media (min-width:1260px){
+  .pcard{flex-basis:min(660px,calc((100% - 2*var(--gap) - var(--peek)) / 2))}
+}
+@media (min-width:2128px){
+  .pcard{flex-basis:min(660px,calc((100% - 3*var(--gap) - var(--peek)) / 3))}
 }
 .hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
 .hero::before{z-index:1}
@@ -412,6 +521,30 @@ footer{background:var(--dark-blue);color:#fff;padding:48px 0 32px}
   font:400 14px/1.3 'GoogleSans';color:var(--marine);
   transition:background .2s,color .2s,border-color .2s}
 .nsx-chip:hover{background:var(--marine);border-color:var(--marine);color:#fff}
+
+/* ---- מצבי ריחוף שהיו חסרים ----
+   זכוכית המגדל, הלוגו, הטאבים, חיצי הקרוסלה ותיבת הסימון הגיבו בעמודים
+   הכתובים ביד (search/spec) ולא כאן. מיושר עכשיו עם css/chrome.css. */
+.nav-search svg,.menu-search svg{transition:transform .25s ease}
+.nav-search:hover svg,.menu-search:hover svg{transform:scale(1.12)}
+.nav-logo{transition:opacity .25s ease}
+.nav-logo:hover{opacity:.75}
+.tab{transition:color .2s ease}
+.tab svg path{transition:stroke .2s ease}
+.tab:not(.active):hover{color:var(--night-sky)}
+.tab:not(.active):hover svg path{stroke:var(--night-sky)}
+.arrows button svg path{transition:stroke .2s ease}
+.arrows button:not([disabled]):hover svg path{stroke:var(--marine)}
+.arrows button:not([disabled]):hover svg{animation:nudge .6s ease}
+.cbx::before{transition:border-color .2s ease,background .2s ease}
+.fcheck:hover .cbx::before,.cbx:hover::before{border-color:var(--night-sky);background:rgba(58,179,255,.08)}
+.plink{transition:color .2s ease}
+.plink:hover{color:var(--marine)}
+.pcard,.ncard{cursor:pointer}
+/* הריחוף נתפס בכרטיס כולו, לא רק על התצלום — חצי התחתון של הכרטיס
+   (כותרת, טקסט וקישור) הוא עדיין חלק מאותו שטח קליק. */
+.pcard:hover .imgz img,.ncard:hover .imgz img{transform:scale(1.045)}
+
 @media (max-width:1280px){.nsx-in{width:min(1188px,100% - 96px)}}
 @media (max-width:768px){
   .nsx{top:64px}
@@ -552,9 +685,9 @@ made precise</h1>
   <div class="menu-contact">
     <h4>Contact us</h4>
     <ul>
-      <li><a href="tel:*9240" dir="ltr">*9240</a></li>
-      <li><a href="mailto:info@once-estate.com">info@once-estate.com</a></li>
-      <li>26 Yaakov St., Rehovot</li>
+      <li><a class="clink" href="tel:*9240" dir="ltr">*9240</a></li>
+      <li><a class="clink" href="mailto:info@once-estate.com">info@once-estate.com</a></li>
+      <li><a class="clink" href="https://waze.com/ul?q=%D7%99%D7%A2%D7%A7%D7%91%2026%2C%20%D7%A8%D7%97%D7%95%D7%91%D7%95%D7%AA&amp;navigate=yes" target="_blank" rel="noopener" aria-label="Navigate with Waze to the ONCE offices, 26 Yaakov St., Rehovot">26 Yaakov St., Rehovot</a></li>
     </ul>
   </div>
 </aside>
@@ -577,15 +710,14 @@ made precise</h1>
 </a>
   </div>
   <div class="projects-track"><div class="seg" id="slider-seg"></div></div>
-  <div class="tabs" id="tabs">
-    <button class="tab active" data-icon="house">
-      <svg width="12" height="14" viewBox="0 0 12 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M11.25 6.33984V13.25H0.75V6.33984L6 1.0625L11.25 6.33984Z" stroke="#00416C" stroke-width="1.5"/>
-</svg>
-
-      <span class="tlab" data-text="Occupied projects" data-short="Occupied"><span class="ttxt">Occupied<span class="tab-pre"> projects</span></span></span>
+  <div class="mfx">
+    <button class="mfx-head" type="button" aria-expanded="false" aria-controls="mfx-home">
+      <span class="mfx-lab">Filter</span><span class="mfx-val"></span>
+      <svg class="mfx-chev" viewBox="0 0 12 8" fill="none" aria-hidden="true"><path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </button>
-    <button class="tab" data-icon="flower">
+    <div class="mfx-panel" id="mfx-home">
+  <div class="tabs" id="tabs">
+    <button class="tab active" data-icon="flower">
       <svg width="16" height="16" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M8.39795 0.198242C8.7776 0.198242 9.10841 0.341338 9.3999 0.536133C9.68833 0.728959 9.9522 0.982473 10.1968 1.2168L10.1978 1.21777C10.4781 1.48948 10.7372 1.73463 10.98 1.86719L11.0835 1.91699L11.1802 1.95117C11.2826 1.98123 11.4035 2.00106 11.5425 2.01367C11.7275 2.03045 11.9314 2.03375 12.1509 2.03711C12.4806 2.04224 12.8544 2.04678 13.2075 2.11523C13.5633 2.18424 13.9157 2.32102 14.1958 2.60156C14.4757 2.88193 14.6121 3.23422 14.6812 3.58984C14.7154 3.76615 14.7341 3.94748 14.7446 4.12598L14.7603 4.64551L14.7671 4.9668C14.7772 5.2702 14.8017 5.52225 14.8794 5.71191L14.9282 5.8125C14.9848 5.91502 15.0637 6.02301 15.1587 6.1377C15.2847 6.28983 15.4309 6.44248 15.5806 6.59961C15.8141 6.84408 16.0678 7.10896 16.2612 7.39746C16.4564 7.68873 16.6001 8.01862 16.6001 8.39844C16.6001 8.77808 16.457 9.10792 16.2622 9.39941C16.0693 9.68807 15.816 9.95253 15.5815 10.1973L15.5806 10.1982C15.3088 10.4787 15.0636 10.7376 14.9312 10.9805L14.8813 11.083C14.8315 11.2033 14.8015 11.3573 14.7847 11.543C14.7679 11.728 14.7646 11.9319 14.7612 12.1514C14.7561 12.481 14.7516 12.855 14.6831 13.208C14.6141 13.5637 14.4772 13.9163 14.1968 14.1963C13.9164 14.476 13.564 14.6126 13.2085 14.6816C12.8557 14.7501 12.4825 14.7546 12.1528 14.7598C11.7029 14.7667 11.3376 14.7755 11.0845 14.8799C10.9536 14.9355 10.8127 15.0322 10.6606 15.1582C10.5086 15.2842 10.3558 15.4305 10.1987 15.5801C9.95416 15.8137 9.68945 16.0677 9.40088 16.2607C9.10954 16.4556 8.77959 16.5986 8.3999 16.5986C8.02026 16.5986 7.69042 16.4555 7.39893 16.2607C7.11027 16.0678 6.84581 15.8146 6.60107 15.5801L6.6001 15.5791C6.31964 15.3073 6.06075 15.0622 5.81787 14.9297L5.71533 14.8799C5.59508 14.83 5.44107 14.8 5.25537 14.7832C5.07031 14.7664 4.86648 14.7631 4.64697 14.7598C4.3173 14.7546 3.94339 14.7501 3.59033 14.6816C3.23465 14.6126 2.88208 14.4758 2.60205 14.1953C2.32234 13.915 2.18577 13.5626 2.1167 13.207C2.04821 12.8542 2.0437 12.481 2.03857 12.1514C2.03169 11.7014 2.02288 11.3362 1.91846 11.083V11.082C1.8628 10.9514 1.76583 10.8109 1.64014 10.6592C1.51417 10.5071 1.36782 10.3543 1.21826 10.1973C0.984675 9.9527 0.730637 9.68799 0.537598 9.39941C0.342752 9.10808 0.199707 8.77812 0.199707 8.39844C0.199707 8.01879 0.342803 7.68896 0.537598 7.39746C0.730515 7.1088 0.98378 6.84435 1.21826 6.59961L1.21924 6.59863C1.52968 6.27827 1.80584 5.98628 1.91846 5.71387L1.95264 5.61719C1.98279 5.51461 2.00251 5.39319 2.01514 5.25391C2.0319 5.06885 2.03521 4.86502 2.03857 4.64551L2.05322 4.12598C2.0635 3.94751 2.08176 3.76611 2.11572 3.58984C2.18433 3.23404 2.32044 2.88079 2.60107 2.60059C2.88144 2.32072 3.23373 2.18432 3.58936 2.11523C3.94237 2.04665 4.31618 2.04224 4.646 2.03711C5.03959 2.03108 5.36823 2.02379 5.61377 1.95215L5.71338 1.91699C5.84442 1.86139 5.98586 1.76487 6.13818 1.63867C6.29031 1.51264 6.44298 1.36643 6.6001 1.2168C6.84463 0.983242 7.10844 0.729157 7.39697 0.536133C7.68825 0.341289 8.01836 0.19836 8.39795 0.198242ZM8.3999 1.19238C8.25374 1.19238 8.09001 1.26107 7.896 1.40039C7.79942 1.46974 7.70182 1.55191 7.60107 1.64258L7.28857 1.93652C6.94399 2.26945 6.55382 2.64267 6.09424 2.83301C5.6558 3.01561 5.1235 3.02206 4.6626 3.0293H4.66162C4.35429 3.03379 4.07456 3.03836 3.8335 3.07812C3.59265 3.1179 3.41864 3.1883 3.3042 3.30273C3.18976 3.41717 3.11937 3.59118 3.07959 3.83203C3.03983 4.07309 3.03526 4.35283 3.03076 4.66016V4.66113C3.02443 5.06357 3.0194 5.52038 2.896 5.92383L2.83545 6.09277C2.64574 6.5528 2.26765 6.94365 1.93799 7.28711C1.7299 7.50419 1.54047 7.70152 1.40186 7.89453C1.26253 8.08854 1.19385 8.25227 1.19385 8.39844C1.19385 8.5446 1.26253 8.70833 1.40186 8.90234C1.54047 9.09536 1.7299 9.29268 1.93799 9.50977L2.19189 9.77637C2.44663 10.0527 2.69311 10.3584 2.83545 10.7031L2.896 10.8721C3.01948 11.2741 3.02443 11.7324 3.03076 12.1357V12.1367C3.03526 12.444 3.03983 12.7238 3.07959 12.9648C3.11937 13.2057 3.18976 13.3797 3.3042 13.4941C3.41864 13.6086 3.59265 13.679 3.8335 13.7188C4.07456 13.7585 4.35429 13.7631 4.66162 13.7676H4.6626C5.12241 13.7748 5.65314 13.7805 6.09424 13.9629C6.55399 14.1533 6.94489 14.5305 7.28857 14.8604C7.50566 15.0684 7.70298 15.2579 7.896 15.3965C8.09001 15.5358 8.25374 15.6045 8.3999 15.6045C8.54603 15.6045 8.70963 15.5358 8.90381 15.3965C9.09695 15.2579 9.29446 15.0683 9.51221 14.8604C9.85684 14.5274 10.2469 14.1533 10.7065 13.9629L10.8745 13.9023C11.2767 13.7787 11.7356 13.7739 12.1392 13.7676L12.5776 13.7559C12.7161 13.7489 12.8467 13.7379 12.9673 13.7178C13.2084 13.6775 13.3828 13.6065 13.4976 13.4932C13.6111 13.3809 13.6823 13.2077 13.7222 12.9658C13.7619 12.7243 13.7665 12.444 13.771 12.1367V12.1357C13.7782 11.676 13.783 11.1452 13.9653 10.7041L14.0454 10.5352C14.1764 10.2861 14.359 10.0595 14.5483 9.84863H14.5376L14.8618 9.50977L15.1558 9.19727C15.2464 9.09652 15.3286 8.99892 15.3979 8.90234C15.5373 8.70833 15.606 8.5446 15.606 8.39844C15.606 8.25227 15.5373 8.08854 15.3979 7.89453C15.3286 7.79796 15.2464 7.70036 15.1558 7.59961L14.8618 7.28711C14.5293 6.94293 14.1541 6.55329 13.9644 6.09375L13.9038 5.9248C13.7803 5.52279 13.7754 5.06446 13.769 4.66113V4.66016C13.7646 4.35353 13.7594 4.07402 13.7192 3.83301C13.679 3.59164 13.6081 3.41654 13.4946 3.30176C13.3824 3.18826 13.2091 3.11793 12.9673 3.07812C12.7257 3.03835 12.4455 3.03379 12.1382 3.0293H12.1372C11.6774 3.02206 11.1467 3.01638 10.7056 2.83398C10.2458 2.64357 9.85492 2.2664 9.51123 1.93652C9.29415 1.72844 9.09682 1.539 8.90381 1.40039C8.7098 1.26107 8.54607 1.19238 8.3999 1.19238Z" fill="#00416C" stroke="#00416C" stroke-width="0.4"/>
 </svg>
@@ -599,6 +731,15 @@ made precise</h1>
 
       <span class="tlab" data-text="In permitting" data-short="In permitting"><span class="ttxt">In permitting<span class="tab-pre"></span></span></span>
     </button>
+    <button class="tab" data-icon="house">
+      <svg width="12" height="14" viewBox="0 0 12 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M11.25 6.33984V13.25H0.75V6.33984L6 1.0625L11.25 6.33984Z" stroke="#00416C" stroke-width="1.5"/>
+</svg>
+
+      <span class="tlab" data-text="Occupied projects" data-short="Occupied"><span class="ttxt">Occupied<span class="tab-pre"> projects</span></span></span>
+    </button>
+  </div>
+    </div>
   </div>
   <div class="slider-wrap">
     <div class="slider" id="slider">
@@ -617,26 +758,7 @@ made precise</h1>
               </div>
               <p style="color:var(--night-sky)">A unique, first-of-its-kind project in northern Rehovot, designed by the Etgar Nol Architects firm…</p>
             </div>
-            <a class="plink" href="projects.html"><span>Go to the project</span><svg width="9" height="10" viewBox="0 0 9 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.5 1L7.5 5L0.5 9" stroke="#00416C" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-          </div>
-        </div>
-      </article>
-
-      <article class="pcard">
-        <div class="imgz pcard-img"><img src="../images/3e3d0678027583a3.jpg" alt="Aharoni 24"></div>
-        <div class="pcard-info">
-          <div class="pcard-txt">
-            <div>
-              <div class="pcard-head">
-                <h3>Aharoni 24</h3>
-                <span class="ptag"><svg width="11" height="13" viewBox="0 0 12 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M11.25 6.33984V13.25H0.75V6.33984L6 1.0625L11.25 6.33984Z" stroke="#00416C" stroke-width="1.5"/>
-                </svg>
-                <span>Project being occupied</span></span>
-              </div>
-              <p>A unique, first-of-its-kind project in northern Rehovot, designed by the Etgar Nol Architects firm…</p>
-            </div>
-            <a class="plink" href="projects.html"><span>Go to the project</span><svg width="9" height="10" viewBox="0 0 9 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.5 1L7.5 5L0.5 9" stroke="#00416C" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+            <a class="plink" href="project.html"><span>Go to the project</span><svg width="9" height="10" viewBox="0 0 9 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.5 1L7.5 5L0.5 9" stroke="#00416C" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
           </div>
         </div>
       </article>
@@ -655,7 +777,7 @@ made precise</h1>
               </div>
               <p style="color:var(--night-sky)">A unique, first-of-its-kind project in northern Rehovot, designed by the Etgar Nol Architects firm…</p>
             </div>
-            <a class="plink" href="projects.html"><span>Go to the project</span><svg width="9" height="10" viewBox="0 0 9 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.5 1L7.5 5L0.5 9" stroke="#00416C" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+            <a class="plink" href="project.html"><span>Go to the project</span><svg width="9" height="10" viewBox="0 0 9 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.5 1L7.5 5L0.5 9" stroke="#00416C" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
           </div>
         </div>
       </article>
@@ -674,7 +796,26 @@ made precise</h1>
               </div>
               <p style="color:var(--night-sky)">A unique, first-of-its-kind project in northern Rehovot, designed by the Etgar Nol Architects firm…</p>
             </div>
-            <a class="plink" href="projects.html"><span>Go to the project</span><svg width="9" height="10" viewBox="0 0 9 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.5 1L7.5 5L0.5 9" stroke="#00416C" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+            <a class="plink" href="project.html"><span>Go to the project</span><svg width="9" height="10" viewBox="0 0 9 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.5 1L7.5 5L0.5 9" stroke="#00416C" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="pcard">
+        <div class="imgz pcard-img"><img src="../images/3e3d0678027583a3.jpg" alt="Aharoni 24"></div>
+        <div class="pcard-info">
+          <div class="pcard-txt">
+            <div>
+              <div class="pcard-head">
+                <h3>Aharoni 24</h3>
+                <span class="ptag"><svg width="11" height="13" viewBox="0 0 12 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M11.25 6.33984V13.25H0.75V6.33984L6 1.0625L11.25 6.33984Z" stroke="#00416C" stroke-width="1.5"/>
+                </svg>
+                <span>Project being occupied</span></span>
+              </div>
+              <p>A unique, first-of-its-kind project in northern Rehovot, designed by the Etgar Nol Architects firm…</p>
+            </div>
+            <a class="plink" href="project.html"><span>Go to the project</span><svg width="9" height="10" viewBox="0 0 9 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.5 1L7.5 5L0.5 9" stroke="#00416C" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
           </div>
         </div>
       </article>
@@ -693,13 +834,14 @@ made precise</h1>
               </div>
               <p>A unique, first-of-its-kind project in northern Rehovot, designed by the Etgar Nol Architects firm…</p>
             </div>
-            <a class="plink" href="projects.html"><span>Go to the project</span><svg width="9" height="10" viewBox="0 0 9 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.5 1L7.5 5L0.5 9" stroke="#00416C" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+            <a class="plink" href="project.html"><span>Go to the project</span><svg width="9" height="10" viewBox="0 0 9 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.5 1L7.5 5L0.5 9" stroke="#00416C" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
           </div>
         </div>
       </article>
 
-    </div>
+</div>
   </div>
+  <div class="projects-foot">
   <div class="arrows">
     <button id="arr-prev" aria-label="Previous" disabled><svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g>
@@ -719,6 +861,7 @@ made precise</h1>
 <path d="M8.5 8.5L12.5 4.5L8.5 0.5" stroke="#00416C" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
 </a>
+  </div>
 </section>
 
 <!-- ================= QUOTE ================= -->
@@ -903,9 +1046,9 @@ made precise</h1>
     <div class="f-col biglinks">
       <h4>Projects</h4>
       <ul>
-        <li><a href="projects.html">Occupied</a></li>
         <li><a href="projects.html">In marketing</a></li>
         <li><a href="projects.html">In permitting</a></li>
+        <li><a href="projects.html">Occupied</a></li>
         <li><a href="urban-renewal.html">Urban Renewal</a></li>
       </ul>
     </div>
@@ -913,11 +1056,11 @@ made precise</h1>
     <div class="f-col contact">
       <h4>Contact us</h4>
       <ul>
-        <li><a href="tel:*9240" dir="ltr">*9240</a></li>
-        <li><a href="mailto:info@once-estate.com" style="text-decoration:underline">info@once-estate.com</a></li>
-        <li>26 Yaakov St., Rehovot</li>
+        <li><a class="clink" href="tel:*9240" dir="ltr">*9240</a></li>
+        <li><a class="clink" href="mailto:info@once-estate.com">info@once-estate.com</a></li>
+        <li><a class="clink" href="https://waze.com/ul?q=%D7%99%D7%A2%D7%A7%D7%91%2026%2C%20%D7%A8%D7%97%D7%95%D7%91%D7%95%D7%AA&amp;navigate=yes" target="_blank" rel="noopener" aria-label="Navigate with Waze to the ONCE offices, 26 Yaakov St., Rehovot">26 Yaakov St., Rehovot</a></li>
       </ul>
-      <a class="f-insta" href="#" aria-label="Instagram"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="17.6" cy="6.4" r="1.15" fill="currentColor" stroke="none"/></svg></a>
+      <div class="f-social"><a class="f-insta" href="#" aria-label="Instagram"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="17.6" cy="6.4" r="1.15" fill="currentColor" stroke="none"/></svg></a><a class="f-insta f-fb" href="#" aria-label="Facebook"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2.8h-2.7A4.8 4.8 0 0 0 10.5 7.6v3H7.6v4h2.9v6.6h4v-6.6h2.9l.9-4h-3.8V7.6c0-.5.4-.9.9-.9H18z"/></svg></a></div>
     </div>
   </div>
   <div class="f-bottom-line"></div>
@@ -954,6 +1097,17 @@ made precise</h1>
     prev.disabled = pos() < 5;
     next.disabled = pos() > m - 5;
   }
+  // הכרטיס כולו קליקבילי, כמו בכל שאר העמודים (שם זה נולד ב-chrome.js,
+  // שהעמוד הזה לא טוען). בלי זה רק הקישור הקטן שבתחתית הכרטיס עבד.
+  [['.pcard','project.html'],['.ncard','article.html']].forEach(function(pair){
+    [].slice.call(document.querySelectorAll(pair[0])).forEach(function(card){
+      card.addEventListener('click', function(e){
+        if (e.target.closest('a')) return;
+        location.href = pair[1];
+      });
+    });
+  });
+
   next.addEventListener('click', function(){ slider.scrollBy({left:step(), behavior:'smooth'}); });
   prev.addEventListener('click', function(){ slider.scrollBy({left:-step(), behavior:'smooth'}); });
   slider.addEventListener('scroll', update, {passive:true});
@@ -1112,69 +1266,146 @@ made precise</h1>
   });
 })();
 </script>
+<style>
+/* ============ סינון מקופל במובייל (.mfx) ============
+   הרכיב זהה לזה שב-css/chrome.css, ויושב כאן משום שדף הבית עצמאי — כל ה-CSS
+   וה-JS שלו בתוך הקובץ. מתחת ל-769px שורת הקטגוריות נסגרת לשורה אחת
+   ("סינון · בשיווק וביצוע") ונפתחת לרשימה בלחיצה; מעל 768px הכותרת מוסתרת
+   והפאנל פתוח תמיד, כלומר הסרגל נשאר בדיוק כפי שהיה. */
+.mfx-head{display:none}
+@media (max-width:768px){
+  /* ‎.projects מוותר על ריפוד בצד הסוגר כדי שהסליידר ייגע בקצה המסך; השורה
+     הסגורה אינה סליידר, ובלי המרווח הזה הקו שלה היה בורח מהמסך מצד אחד
+     בלבד. margin לוגי — כך הוא מתהפך מעצמו בגרסה האנגלית. */
+  .mfx{border-top:.5px solid rgba(0,65,108,.25);border-bottom:.75px solid var(--marine);
+       margin-bottom:24px;margin-inline-end:20px}
+  .mfx-head{display:flex;align-items:center;gap:10px;width:100%;padding:15px 2px;
+            direction:ltr;text-align:start;cursor:pointer}
+  .mfx-lab{font:400 15px/1 'GoogleSans';color:var(--gray-txt)}
+  .mfx-val{display:inline-flex;align-items:center;gap:8px;font:700 16px/1 'GoogleSans';
+           color:var(--night-sky)}
+  .mfx-chev{flex:0 0 auto;width:11px;height:8px;color:var(--marine);
+            margin-inline-start:auto;transition:transform .3s ease}
+  .mfx.open .mfx-chev{transform:rotate(180deg)}
+  .mfx-panel{max-height:0;overflow:hidden;
+             transition:max-height .42s cubic-bezier(.25,.72,.25,1)}
+  .mfx.open .mfx-panel{max-height:420px}
+  /* שלוש הקטגוריות הופכות משורה נגללת לרשימה בשורה מלאה. האייקון ראשון
+     ב-DOM ולכן הוא זה שנוגע בקצה ימין, בדיוק כמו בעמוד הפרויקטים. */
+  .tabs{flex-direction:column;gap:0;overflow:visible;margin-bottom:0;padding-inline-end:0}
+  .tab{width:100%;justify-content:flex-start;gap:12px;padding:14px 2px;font-size:16px;
+       border-top:.5px solid rgba(0,65,108,.12)}
+  .tab .tlab{align-items:flex-start}
+  .mfx.open .tabs{padding-bottom:10px}
+}
+@media (max-width:768px) and (prefers-reduced-motion:reduce){
+  .mfx-panel,.mfx-chev{transition:none}
+}
+</style>
 <script>
-/* ---------- status tag: hug the wrapped text ---------- */
-/* When a long label breaks over two lines the pill keeps the width the row
-   handed it, so the panel runs on past the shorter line. There is no CSS length
-   for "as wide as the longest line once it has wrapped", so the lines are
-   measured and the text is pinned to the widest of them; the pill hugs its
-   content, so it follows. Pinning to a line that already fits cannot move the
-   break — and if it somehow does, or if the box will not take a width, the
-   guard puts it back. Measurement is over the text NODES: a range over an
-   element returns a rect per nested box, which is not a line count. */
+/* ---------- סינון מקופל במובייל (.mfx) ---------- */
+/* עותק מקומי של הרכיב שב-js/chrome.js — דף הבית אינו טוען אותו. הוא עוטף את
+   סרגל הטאבים הקיים, קורא ממנו את הקטגוריה הפעילה אל תוך השורה הסגורה,
+   ונסגר אחרי בחירה. מעל 768px הוא שקוף: הכותרת מוסתרת והפאנל פתוח. */
 (function () {
-  var SEL = '.ptag,[data-name="tag"],[data-name="\u05ea\u05d2\u05d9\u05ea"]';
+  var mfx = document.querySelector('.mfx');
+  if (!mfx) return;
+  var head = mfx.querySelector('.mfx-head');
+  var val = mfx.querySelector('.mfx-val');
+  var panel = mfx.querySelector('.mfx-panel');
+  if (!head || !val || !panel) return;
+  var mq = window.matchMedia('(max-width:768px)');
 
-  function textNodes(root) {
-    var out = [], w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null, false), n;
-    while ((n = w.nextNode())) {
-      if (n.nodeValue.trim() && !(n.parentNode.closest && n.parentNode.closest('svg'))) out.push(n);
-    }
-    return out;
+  function sync() {
+    var on = panel.querySelector('.tab.active');
+    if (!on) return;
+    var lab = on.querySelector('[data-short]');
+    val.textContent = lab ? lab.getAttribute('data-short') : on.textContent.trim();
   }
-
-  /* the deepest element holding all of the text — that is the box to size */
-  function holderOf(nodes) {
-    var h = nodes[0].parentNode;
-    for (var i = 1; i < nodes.length; i++) {
-      while (!h.contains(nodes[i])) h = h.parentNode;
-    }
-    if (h.nodeType !== 1) h = h.parentNode;
-    return h;
+  function setOpen(open) {
+    mfx.classList.toggle('open', open);
+    head.setAttribute('aria-expanded', open ? 'true' : 'false');
   }
-
-  function lineRects(nodes) {
-    var r = document.createRange();
-    r.setStart(nodes[0], 0);
-    var last = nodes[nodes.length - 1];
-    r.setEnd(last, last.nodeValue.length);
-    return r.getClientRects();
-  }
-
-  function fit() {
-    [].slice.call(document.querySelectorAll(SEL)).forEach(function (p) {
-      var nodes = textNodes(p);
-      if (!nodes.length) return;
-      var box = holderOf(nodes);
-      if (box === p) return;                       /* nothing of our own to size */
-      box.style.width = '';
-      var rects = lineRects(nodes);
-      if (rects.length < 2) return;                /* one line: already tight */
-      var w = 0, i;
-      for (i = 0; i < rects.length; i++) w = Math.max(w, rects[i].width);
-      var was = box.getBoundingClientRect().width;
-      box.style.width = Math.ceil(w) + 'px';
-      var now = lineRects(nodes);
-      if (now.length !== rects.length || box.getBoundingClientRect().width >= was) {
-        box.style.width = '';                      /* no better: leave it alone */
-      }
-    });
-  }
-
-  function refit() { requestAnimationFrame(fit); } /* measure after the reflow */
-  fit();
-  window.addEventListener('resize', refit);
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+  head.addEventListener('click', function () { setOpen(!mfx.classList.contains('open')); });
+  /* המאזין של הטאבים עצמם הוא שמחליף את .active, ולכן הקריאה נדחית בתור
+     אחריו; ההשהיה נותנת לשורה הנבחרת להיראות לפני הסגירה. */
+  panel.addEventListener('click', function (e) {
+    if (!mq.matches || !e.target.closest || !e.target.closest('.tab')) return;
+    setTimeout(sync, 0);
+    setTimeout(function () { setOpen(false); }, 180);
+  });
+  var onMQ = function () { if (!mq.matches) setOpen(false); };
+  if (mq.addEventListener) mq.addEventListener('change', onMQ);
+  else if (mq.addListener) mq.addListener(onMQ);
+  sync();
 })();
-</script></body>
+</script>
+<script>
+/* אקורדיון הפוטר במובייל. הקיפול נבנה כאן ולא ב-CSS בלבד: מחלקת .acc
+   וכפתורי הפתיחה נוספים רק כשהסקריפט רץ, כך שבלי ג׳אווהסקריפט הרשימות
+   נשארות פרושות וכל הקישורים נגישים. מעל 768 האקורדיון מפורק לגמרי —
+   ה-h4 חוזר להיות כותרת בלבד, כדי שקורא מסך לא יכריז על כפתור שאינו
+   עושה דבר. */
+(function () {
+  var cols = document.querySelector('.f-cols');
+  if (!cols) return;
+  var mq = window.matchMedia('(max-width:768px)');
+  var NS = 'http://www.w3.org/2000/svg';
+  var rows = [];
+
+  [].slice.call(cols.querySelectorAll('.f-col h4')).forEach(function (h, i) {
+    var col = h.parentNode, list = col.querySelector('ul');
+    if (!list) return;
+    if (!list.id) list.id = 'f-acc-' + i;
+
+    /* החץ נבנה כאן ולא כפינה מסובבת של border: border-right/left מתהפך
+       בבניית האנגלית ו-border-inline-* מתהפך לפי dir, ובשני המקרים החץ
+       היה מצביע הצידה ב-en. SVG סימטרי חסין לשניהם. */
+    var svg = document.createElementNS(NS, 'svg'), p = document.createElementNS(NS, 'path');
+    svg.setAttribute('class', 'acc-ch'); svg.setAttribute('width', '11');
+    svg.setAttribute('height', '7'); svg.setAttribute('viewBox', '0 0 11 7');
+    svg.setAttribute('fill', 'none'); svg.setAttribute('aria-hidden', 'true');
+    p.setAttribute('d', 'M1 1L5.5 5.5L10 1'); p.setAttribute('stroke', '#76c9ff');
+    p.setAttribute('stroke-width', '1.3'); p.setAttribute('stroke-linecap', 'round');
+    p.setAttribute('stroke-linejoin', 'round');
+    svg.appendChild(p);
+
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'acc-btn';
+    btn.addEventListener('click', function () {
+      var open = !col.classList.contains('open');
+      col.classList.toggle('open', open);
+      btn.setAttribute('aria-expanded', String(open));
+    });
+    rows.push({ h: h, col: col, list: list, btn: btn, svg: svg });
+  });
+  if (!rows.length) return;
+
+  function mount(r) {
+    if (r.btn.parentNode) return;
+    while (r.h.firstChild) r.btn.appendChild(r.h.firstChild);
+    r.btn.appendChild(r.svg);
+    r.h.appendChild(r.btn);
+    r.btn.setAttribute('aria-controls', r.list.id);
+    r.btn.setAttribute('aria-expanded', String(r.col.classList.contains('open')));
+  }
+  function unmount(r) {
+    if (!r.btn.parentNode) return;
+    if (r.svg.parentNode) r.svg.parentNode.removeChild(r.svg);
+    while (r.btn.firstChild) r.h.appendChild(r.btn.firstChild);
+    r.h.removeChild(r.btn);
+    r.col.classList.remove('open');
+  }
+  function sync() {
+    var on = mq.matches;
+    rows.forEach(on ? mount : unmount);
+    cols.classList.toggle('acc', on);
+  }
+  sync();
+  if (mq.addEventListener) mq.addEventListener('change', sync);
+  else if (mq.addListener) mq.addListener(sync);
+})();
+</script>
+</body>
 </html>

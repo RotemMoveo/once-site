@@ -35,8 +35,11 @@
   }
 
   clickable('[data-name^="כרטיס כתבה"]', 'article.html');
-  clickable('[data-name^="כרטיס — "]', page === 'urban-renewal.html' ? 'projects.html' : 'project.html');
-  clickable('.pcard', 'projects.html');
+  clickable('[data-name^="כרטיס — "]', 'project.html');
+  // the same card, drawn by the same export, on project.html and urban-renewal:
+  // it was the only project card on the site that was not clickable.
+  clickable('[data-name="project card"]', 'project.html');
+  clickable('.pcard', 'project.html');
   clickable('.ncard', 'article.html');
 
   if (page !== 'projects.html') return;
@@ -71,8 +74,8 @@
     var gridParent = firstRow.parentElement;
     var wrap = document.createElement('div');
     wrap.style.cssText = 'display:flex;flex-wrap:wrap;justify-content:flex-start;gap:80px 40px;width:1188px;max-width:100%;flex-shrink:0';
-    // flex-start: a full row (2 cards) exactly fills the width so it is unaffected;
-    // only a leftover odd card gets pushed to the left, as LTR reading expects.
+    // a plain row: the English page reads left-to-right, so DOM order is already
+    // reading order and a leftover odd card stays on the left, where it belongs.
     wrap.className = 'cards-grid';
     gridParent.insertBefore(wrap, firstRow);
     ordered.forEach(function (c) { wrap.appendChild(c); });
@@ -83,7 +86,13 @@
 
   // --- tabs ---
   var tabs = [].slice.call(document.querySelectorAll('[data-name="active tab"],[data-name="non-active tab"]'));
-  function labelOf(t) { return t.textContent.trim(); }
+  // המונה של הרשימה המקופלת (.mfx-c) נוסף לתוך הטאב עצמו, ולכן הוא חייב
+  // לרדת מכאן — אחרת התווית של "הכל" הופכת ל"הכל6" ואף טאב אינו מזוהה.
+  function labelOf(t) {
+    var c = t.cloneNode(true), n = c.querySelector('.mfx-c');
+    if (n) n.remove();
+    return c.textContent.trim();
+  }
   function applyFilter(label) {
     cards.forEach(function (c) {
       var st = c.getAttribute('data-status');
@@ -94,16 +103,70 @@
       var on = labelOf(t) === label;
       t.classList.toggle('tab-on', on);
       [].slice.call(t.querySelectorAll('div,a')).forEach(function (e) {
-        if (!e.children.length && e.textContent.trim()) {
+        // ‎!children.length לבדו החמיץ בדיוק את שלוש הקטגוריות: התווית שלהן
+        // עוטפת את "פרויקטים " ב-span.mw (שמוסתר במובייל), ולכן הצבע והמשקל
+        // של הטאב הפעיל מעולם לא הוחלפו שם — רק "הכל" הגיב. הקו התחתון
+        // הסתיר את זה בדסקטופ; ברשימה המקופלת אין קו, ולכן זה נדרש.
+        var only = [].slice.call(e.children).every(function (k) {
+          return k.classList.contains('mw') || k.classList.contains('tab-pre');
+        });
+        if (only && e.textContent.trim()) {
           e.style.color = on ? '#003A5E' : '#777777';
           e.style.fontWeight = on ? '700' : '400';
         }
       });
     });
   }
+  // --- מונה לכל קטגוריה, לרשימה המקופלת של המובייל (.mfx) ---
+  // נמדד דרך applyFilter עצמו ולא בחישוב מקביל, כדי שהמספר יהיה תמיד בדיוק
+  // מה שהסינון יראה. רץ לפני שהמאזינים מחוברים, וה-applyFilter האחרון מנקה
+  // אחריו את מצב הטאבים.
+  tabs.forEach(function (t) {
+    applyFilter(labelOf(t));
+    var n = document.createElement('span');
+    n.className = 'mfx-c';
+    n.textContent = cards.filter(function (c) { return c.style.display !== 'none'; }).length;
+    t.appendChild(n);
+  });
+  // ל"הכל" אין אייקון סטטוס. ברשימה המקופלת כל שורה מסתיימת באייקון בקצה,
+  // ובלעדיו השורה הזו לבדה נצמדת לקצה הפנים — עיגול ריק שומר על אותו טור.
+  // ה-CSS של העמוד מסתיר אותו מעל 768px.
+  tabs.forEach(function (t) {
+    if (t.querySelector('svg')) return;
+    var ns = 'http://www.w3.org/2000/svg';
+    var svg = document.createElementNS(ns, 'svg');
+    svg.setAttribute('viewBox', '0 0 14 14');
+    svg.setAttribute('class', 'mfx-dot');
+    svg.setAttribute('aria-hidden', 'true');
+    var ci = document.createElementNS(ns, 'circle');
+    ci.setAttribute('cx', '7'); ci.setAttribute('cy', '7'); ci.setAttribute('r', '6.1');
+    ci.setAttribute('fill', 'none');
+    ci.setAttribute('stroke', 'currentColor');
+    ci.setAttribute('stroke-width', '1.3');
+    svg.appendChild(ci);
+    t.appendChild(svg);
+  });
+
+  // --- בחירת קטגוריה מביאה את הפרויקטים שלה אל מול העין ---
+  // הסינון לבדו מחליף תוכן שיושב הרחק מעל לנקודת המבט: מי שבחר קטגוריה
+  // אחרי גלילה נשאר מול שארית הרשת הקודמת או מול הפוטר, ולא רואה אף כרטיס
+  // מהקבוצה שביקש. הגלילה מצמידה את סרגל הסינון אל מתחת לניווט הקבוע,
+  // כך שהטאב שנבחר נשאר גלוי והכרטיסים מתחילים מיד מתחתיו.
+  // העוגן הוא ראש הסרגל ולא ראש הרשת, ולכן הוא אינו זז כשהרשימה המקופלת
+  // של המובייל נסגרת אחרי הבחירה (chrome.js, בלוק ‎.mfx).
+  var bar = document.querySelector('[data-name="סרגל סינון"]');
+  var still = window.matchMedia('(prefers-reduced-motion:reduce)');
+  function bringIntoView() {
+    if (!bar) return;
+    var navEl = document.querySelector('.nav');
+    var y = bar.getBoundingClientRect().top + window.pageYOffset -
+            (navEl ? navEl.getBoundingClientRect().height : 0);
+    window.scrollTo({ top: Math.max(0, y), behavior: still.matches ? 'auto' : 'smooth' });
+  }
+
   tabs.forEach(function (t) {
     t.style.cursor = 'pointer';
-    t.addEventListener('click', function () { applyFilter(labelOf(t)); });
+    t.addEventListener('click', function () { applyFilter(labelOf(t)); bringIntoView(); });
   });
   applyFilter('All');
 })();
@@ -120,6 +183,74 @@
   if (!pg) return;
   pg.style.transform = '';
   pg.style.transformOrigin = '';
+})();
+
+// ---------- hover: tag the Figma-exported buttons and links ----------
+// The export draws every button and every chevron link the same way — a flex
+// wrapper holding [icon, <a>] — but gives them no class and an inline style
+// that beats any rule coming from chrome.css.  So none of the .btn / .plink
+// hover rules ever reached them: the same button reacted on the home page and
+// sat dead on every inner page.  Tag them once here; chrome.css does the rest.
+//
+// Guards, each for a real false positive on this site:
+//   * font-size <= 22px  — the page H1s are <a> too (contact / kablanit /
+//     accessibility / privacy), one of them even next to the ✦ star.
+//   * an icon sibling    — a bare <a> in a paragraph is not a button.
+//   * [data-name="tag"]  — the status pill is also "icon + text in a padded,
+//     coloured box", and it is not interactive.
+(function () {
+  function isBoxed(el) {
+    var st = el.getAttribute('style') || '';
+    return /padding:/.test(st) && /(border:|background-color:)/.test(st);
+  }
+  function light(el, a) {
+    var st = el.getAttribute('style') || '';
+    return /border:[^;]*rgb\(255,\s*255,\s*255\)/.test(st) ||
+           /color:\s*rgb\(255,\s*255,\s*255\)/.test(a.getAttribute('style') || '');
+  }
+  function tag(wrap, textEl) {
+    if (!wrap || wrap.classList.contains('fx-btn') || wrap.classList.contains('fx-link')) return;
+    if (wrap.closest('[data-name="tag"]')) return;
+    if (isBoxed(wrap)) {
+      wrap.classList.add('fx-btn');
+      if (light(wrap, textEl)) wrap.classList.add('fx-btn-light');
+    } else {
+      wrap.classList.add('fx-link');
+    }
+  }
+
+  function iconish(el) {
+    if (!el || !el.querySelector || !el.querySelector('svg')) return false;
+    var r = el.getBoundingClientRect();            // an icon, not a column that
+    return r.width <= 40 && r.height <= 40;        // merely contains svgs
+  }
+
+  document.querySelectorAll('.fig-page a[href]').forEach(function (a) {
+    if (parseFloat(getComputedStyle(a).fontSize) > 22) return;
+    // (a) the export's usual shape: a wrapper holding [icon, <a>]
+    var wrap = a.parentElement;
+    if (wrap && wrap.children.length === 2) {
+      var icon = wrap.firstElementChild === a ? wrap.lastElementChild : wrap.firstElementChild;
+      if (iconish(icon)) { tag(wrap, a); return; }
+    }
+    // (b) sometimes the <a> IS the wrapper and holds [icon, text] itself
+    if (a.children.length === 2 && (iconish(a.firstElementChild) || iconish(a.lastElementChild))) {
+      tag(a, a);
+    }
+  });
+
+  // the send buttons are the boxes the export left without an <a> inside.
+  // Structural, not by name: a padded box WITH A BORDER holding [icon, label].
+  // The status pill is padded too but has no border, so it stays out.
+  document.querySelectorAll('.fig-page [style*="border:"]').forEach(function (w) {
+    if (w.children.length !== 2 || w.querySelector('a[href]')) return;
+    if (!/padding:/.test(w.getAttribute('style') || '')) return;
+    if ((w.textContent || '').trim().length > 40) return;
+    var a = w.firstElementChild, b = w.lastElementChild;
+    var icon = iconish(a) ? a : (iconish(b) ? b : null);
+    if (!icon) return;
+    tag(w, icon === a ? b : a);
+  });
 })();
 
 // ---------- lobby: fill active tab icon + normalize icon sizes ----------
@@ -180,6 +311,43 @@
   var active3 = aptTabs.find(function (t) { return t.textContent.trim() === '3 rooms'; });
   if (active3) setApt(active3);
 
+  // --- the pager arrows next to the "N/M" counter ---
+  // They came out of the export as decoration: they carry .pgal-arrow, so they
+  // had a pointer cursor and an opacity hover, but nothing listened to them —
+  // a control that lights up and then does nothing.  And the prev arrow kept a
+  // hard-coded inline opacity:.4, so it looked permanently disabled.
+  // They page through the apartment tabs, and the counter follows the real
+  // number of tabs instead of the artboard's hard-coded "4".
+  var next = document.querySelector('.pgal-arrow.pgal-next');
+  var prev = document.querySelector('.pgal-arrow.pgal-prev');
+  var counter = [].slice.call(document.querySelectorAll('div')).find(function (e) {
+    return !e.children.length && /^\d+\s*\/\s*\d+$/.test(e.textContent.trim());
+  });
+  if (next && prev && aptTabs.length > 1) {
+    // reading order, right to left: the export lists the tabs left to right
+    aptTabs.sort(function (x, y) {
+      return y.getBoundingClientRect().right - x.getBoundingClientRect().right;
+    });
+    var i = aptTabs.indexOf(active3 || aptTabs[0]);
+    if (i < 0) i = 0;
+    function paint() {
+      setApt(aptTabs[i]);
+      if (counter) counter.textContent = (i + 1) + '/' + aptTabs.length;
+      // the inline opacity from the export would win over [disabled]
+      prev.style.opacity = '';
+      next.style.opacity = '';
+      prev.toggleAttribute('disabled', i === 0);
+      next.toggleAttribute('disabled', i === aptTabs.length - 1);
+    }
+    next.addEventListener('click', function () { if (i < aptTabs.length - 1) { i++; paint(); } });
+    prev.addEventListener('click', function () { if (i > 0) { i--; paint(); } });
+    // clicking a tab directly keeps the pager in step
+    aptTabs.forEach(function (t, k) {
+      var box = t.closest('[data-name]') || t;
+      box.addEventListener('click', function () { i = k; paint(); });
+    });
+    paint();
+  }
 })();
 
 // ---------- kablanit gallery lightbox ----------
@@ -234,7 +402,7 @@
   });
 })();
 
-// ---------- image gallery (.pgal): dots + 4s autoplay ----------
+// ---------- image gallery (.pgal): dots + 4s autoplay + finger swipe ----------
 // Navigation is dots-only by design — no arrows. (The .pgal-arrow CSS is still
 // used by the apartments gallery on project.html, so it stays in chrome.css.)
 (function () {
@@ -280,6 +448,42 @@
 
     gal.addEventListener('mouseenter', stop);
     gal.addEventListener('mouseleave', start);
+
+    /* ---- finger swipe (touch): the track follows the finger, snaps on lift ----
+       .pgal is touch-action:pan-y, so a vertical drag still scrolls the page;
+       we lock to the axis of the first 8px so a scroll never nudges the track. */
+    var sx = 0, sy = 0, dx = 0, gw = 0, drag = 0;   /* drag: 0 idle, 1 undecided, 2 swiping */
+
+    gal.addEventListener('touchstart', function (e) {
+      if (e.touches.length !== 1) return;
+      drag = 1; dx = 0; gw = gal.clientWidth || 1;
+      sx = e.touches[0].clientX; sy = e.touches[0].clientY;
+    }, { passive: true });
+
+    gal.addEventListener('touchmove', function (e) {
+      if (!drag) return;
+      var mx = e.touches[0].clientX - sx, my = e.touches[0].clientY - sy;
+      if (drag === 1) {
+        if (Math.abs(mx) < 8 && Math.abs(my) < 8) return;
+        if (Math.abs(my) >= Math.abs(mx)) { drag = 0; return; }   /* the page is scrolling */
+        drag = 2; stop(); track.style.transition = 'none';
+      }
+      dx = mx;
+      /* nothing sits past either end — pull back there instead of dragging blank in */
+      if ((cur === 0 && dx > 0) || (cur === n - 1 && dx < 0)) dx *= 0.35;
+      track.style.transform = 'translateX(' + (-cur * gw + dx) + 'px)';
+    }, { passive: true });
+
+    function drop() {
+      if (drag !== 2) { drag = 0; return; }
+      drag = 0;
+      track.style.transition = '';
+      var step = Math.max(40, gw * 0.15);
+      go(dx <= -step ? cur + 1 : dx >= step ? cur - 1 : cur);
+      start();                                    /* a swipe restarts the 4s clock */
+    }
+    gal.addEventListener('touchend', drop);
+    gal.addEventListener('touchcancel', drop);
 
     go(0);
     start();
@@ -425,6 +629,146 @@
     }, { once: true });
     setTimeout(function () { if (!document.hidden) reveal(); }, 1200);
   }
+})();
+
+/* ---------- סינון מקופל במובייל (.mfx) ---------- */
+/* הרכיב אינו יודע דבר על העמוד שהוא יושב בו: הוא עוטף את סרגל הטאבים הקיים,
+   קורא ממנו את הקטגוריה הפעילה אל תוך השורה הסגורה, ונסגר אחרי בחירה. מעל
+   768px הוא שקוף לגמרי — הכותרת מוסתרת ב-CSS והפאנל פתוח תמיד, כך שאותו DOM
+   משרת גם את הדסקטופ בלי כפילות תוויות. ראו css/chrome.css. */
+(function () {
+  var mq = window.matchMedia('(max-width:768px)');
+  var ROWS = '.tab,.stab,[data-name="active tab"],[data-name="non-active tab"]';
+  var ON   = '.tab.active,.stab.on,.tab-on';
+
+  /* התווית הקצרה: data-short הוא מה שהטאב מציג ממילא במסך צר, ואחריו
+     data-text. בלעדיהם נלקח הטקסט עצמו בלי הקידומת שמוסתרת במובייל
+     (.mw/.tab-pre) ובלי המונה. */
+  function labelOf(el) {
+    var d = el.querySelector('[data-short]');
+    if (d && d.getAttribute('data-short')) return d.getAttribute('data-short');
+    d = el.querySelector('[data-text]');
+    if (d && d.getAttribute('data-text')) return d.getAttribute('data-text');
+    var c = el.cloneNode(true);
+    [].slice.call(c.querySelectorAll('.mw,.tab-pre,.stab-n,.mfx-c')).forEach(function (x) { x.remove(); });
+    return c.textContent.trim();
+  }
+  function countOf(el) {
+    var n = el.querySelector('.stab-n,.mfx-c');
+    return n ? n.textContent.trim() : '';
+  }
+
+  [].slice.call(document.querySelectorAll('.mfx')).forEach(function (mfx) {
+    /* search.html טוען את chrome.js פעמיים (בלוק ההדגמה שאחרי </html>);
+       בלי השמירה הזו כל לחיצה הייתה פותחת וסוגרת מיד. */
+    if (mfx.getAttribute('data-mfx') === 'on') return;
+    mfx.setAttribute('data-mfx', 'on');
+    var head  = mfx.querySelector('.mfx-head');
+    var val   = mfx.querySelector('.mfx-val');
+    var panel = mfx.querySelector('.mfx-panel');
+    if (!head || !val || !panel) return;
+
+    function sync() {
+      var on = panel.querySelector(ON);
+      if (!on) return;
+      var n = countOf(on);
+      val.textContent = labelOf(on);
+      if (n) {
+        var chip = document.createElement('span');
+        chip.className = 'mfx-n';
+        chip.textContent = n;
+        val.appendChild(chip);
+      }
+    }
+    function setOpen(open) {
+      mfx.classList.toggle('open', open);
+      head.setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
+
+    head.addEventListener('click', function () { setOpen(!mfx.classList.contains('open')); });
+
+    /* המאזין של העמוד עצמו הוא שמסמן את הטאב הפעיל, ולכן הקריאה נדחית
+       בתור אחריו; ההשהיה הקצרה נותנת לשורה הנבחרת להיראות לפני הסגירה. */
+    panel.addEventListener('click', function (e) {
+      if (!mq.matches || !e.target.closest || !e.target.closest(ROWS)) return;
+      setTimeout(sync, 0);
+      setTimeout(function () { setOpen(false); }, 180);
+    });
+
+    /* חזרה לדסקטופ באמצע מצב פתוח משאירה .open על רכיב שאין לו כותרת */
+    var onMQ = function () { if (!mq.matches) setOpen(false); };
+    if (mq.addEventListener) mq.addEventListener('change', onMQ);
+    else if (mq.addListener) mq.addListener(onMQ);
+
+    setOpen(false);
+    sync();
+  });
+})();
+
+/* אקורדיון הפוטר במובייל. הקיפול נבנה כאן ולא ב-CSS בלבד: מחלקת .acc
+   וכפתורי הפתיחה נוספים רק כשהסקריפט רץ, כך שבלי ג׳אווהסקריפט הרשימות
+   נשארות פרושות וכל הקישורים נגישים. מעל 768 האקורדיון מפורק לגמרי —
+   ה-h4 חוזר להיות כותרת בלבד, כדי שקורא מסך לא יכריז על כפתור שאינו
+   עושה דבר. */
+(function () {
+  var cols = document.querySelector('.f-cols');
+  if (!cols) return;
+  var mq = window.matchMedia('(max-width:768px)');
+  var NS = 'http://www.w3.org/2000/svg';
+  var rows = [];
+
+  [].slice.call(cols.querySelectorAll('.f-col h4')).forEach(function (h, i) {
+    var col = h.parentNode, list = col.querySelector('ul');
+    if (!list) return;
+    if (!list.id) list.id = 'f-acc-' + i;
+
+    /* החץ נבנה כאן ולא כפינה מסובבת של border: border-right/left מתהפך
+       בבניית האנגלית ו-border-inline-* מתהפך לפי dir, ובשני המקרים החץ
+       היה מצביע הצידה ב-en. SVG סימטרי חסין לשניהם. */
+    var svg = document.createElementNS(NS, 'svg'), p = document.createElementNS(NS, 'path');
+    svg.setAttribute('class', 'acc-ch'); svg.setAttribute('width', '11');
+    svg.setAttribute('height', '7'); svg.setAttribute('viewBox', '0 0 11 7');
+    svg.setAttribute('fill', 'none'); svg.setAttribute('aria-hidden', 'true');
+    p.setAttribute('d', 'M1 1L5.5 5.5L10 1'); p.setAttribute('stroke', '#76c9ff');
+    p.setAttribute('stroke-width', '1.3'); p.setAttribute('stroke-linecap', 'round');
+    p.setAttribute('stroke-linejoin', 'round');
+    svg.appendChild(p);
+
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'acc-btn';
+    btn.addEventListener('click', function () {
+      var open = !col.classList.contains('open');
+      col.classList.toggle('open', open);
+      btn.setAttribute('aria-expanded', String(open));
+    });
+    rows.push({ h: h, col: col, list: list, btn: btn, svg: svg });
+  });
+  if (!rows.length) return;
+
+  function mount(r) {
+    if (r.btn.parentNode) return;
+    while (r.h.firstChild) r.btn.appendChild(r.h.firstChild);
+    r.btn.appendChild(r.svg);
+    r.h.appendChild(r.btn);
+    r.btn.setAttribute('aria-controls', r.list.id);
+    r.btn.setAttribute('aria-expanded', String(r.col.classList.contains('open')));
+  }
+  function unmount(r) {
+    if (!r.btn.parentNode) return;
+    if (r.svg.parentNode) r.svg.parentNode.removeChild(r.svg);
+    while (r.btn.firstChild) r.h.appendChild(r.btn.firstChild);
+    r.h.removeChild(r.btn);
+    r.col.classList.remove('open');
+  }
+  function sync() {
+    var on = mq.matches;
+    rows.forEach(on ? mount : unmount);
+    cols.classList.toggle('acc', on);
+  }
+  sync();
+  if (mq.addEventListener) mq.addEventListener('change', sync);
+  else if (mq.addListener) mq.addListener(sync);
 })();
 
 /* ---------- status tag: hug the wrapped text ---------- */

@@ -10,6 +10,7 @@ sys.path.insert(0, HERE)
 import mirror                                   # noqa: E402
 from dict_en import T                           # noqa: E402
 import fixups                                   # noqa: E402
+import fonts_en                                 # noqa: E402
 import make_js                                  # noqa: E402
 from tagfit_snippet import TAG_FIT_JS            # noqa: E402
 
@@ -180,22 +181,26 @@ def build_page(name):
         s = s.replace(a, b)
     s = apply_global(s)
     extra = (fixups.EXTRA_CSS.get(name) or '') + title_row_css(s)
+    if fonts_en.covers(name):
+        extra += fonts_en.GUARD_CSS
     if extra:
         s = s.replace('</head>', '<style>' + extra + '</style></head>', 1)
     # index.html and about.html carry their scripts inline; everything else
     # gets this from chrome.js
     if 'js/chrome.js' not in s and re.search(r'class="[^"]*\bptag\b|data-name="tag"', s):
         s = s.replace('</body>', '<script>' + TAG_FIT_JS + '</script></body>', 1)
+    if fonts_en.covers(name):                    # Latin type instead of Almoni + Google Sans
+        s = fonts_en.swap(s)
     open(os.path.join(DST, name), 'w', encoding='utf-8').write(s)
 
 
 def build_css(name, physical=False):
     src = open(os.path.join(SRC, 'css', name), encoding='utf-8').read()
     if name == 'site.css':                       # fonts + reset only
-        out = src
+        out = fonts_en.swap(src) if fonts_en.PAGES == fonts_en.ALL else src
     else:
         out = mirror.mirror_stylesheet(src, force_physical=physical)
-        out = out.replace('url(images/', 'url(../../images/')
+        out = out.replace('url(../images/', 'url(../../images/')
         out = apply_global(out)
     open(os.path.join(DST, 'css', name), 'w', encoding='utf-8').write(out)
 

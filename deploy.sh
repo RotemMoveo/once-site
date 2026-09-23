@@ -10,6 +10,10 @@ trap 'rm -rf "$WORK"' EXIT
 
 [ -d "$SRC" ] || { echo "לא נמצאה התיקייה: $SRC" >&2; exit 1; }
 
+# הגרסה האנגלית נבנית מהעברית — בונים מחדש לפני הפרסום כדי שלא יעלה en/ ישן.
+echo "מסנכרן את הגרסה האנגלית..."
+"$SRC/_en-build/sync.sh" || { echo "בניית האתר באנגלית נכשלה — הפרסום נעצר." >&2; exit 1; }
+
 echo "מעתיק את האתר..."
 tar cf - -C "$SRC" . | tar xf - -C "$WORK"
 find "$WORK" -name '.DS_Store' -delete

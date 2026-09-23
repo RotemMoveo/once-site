@@ -1,0 +1,113 @@
+<!doctype html><html lang="he" dir="rtl"><head><meta charset="utf-8">
+<title>ONCE — ראש עמוד במובייל, אפשרויות</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../css/site.css?v=17">
+<style>
+ :root{--night-sky:#003a5e;--marine:#00416c;--gray:#5b7183;--line:rgba(0,65,108,.22)}
+ *{box-sizing:border-box}
+ body{margin:0;background:#eef1f3;color:var(--night-sky);
+      font:400 13px/1.5 'GoogleSans',-apple-system,system-ui,sans-serif;padding:28px 28px 60px}
+ h1{font:400 34px/1.05 'Almoni',Arial,sans-serif;letter-spacing:-1.4px;margin:0 0 10px}
+ .lede{max-width:760px;color:var(--marine);font-size:15px;line-height:26px;margin:0 0 6px}
+ .note{max-width:760px;color:var(--gray);font-size:13px;margin:0 0 26px}
+ h2{font:400 24px/1.1 'Almoni',Arial,sans-serif;letter-spacing:-1px;margin:34px 0 14px;
+    padding-top:20px;border-top:.5px solid var(--line)}
+ .row{display:flex;gap:18px;align-items:flex-start;overflow-x:auto;padding-bottom:10px}
+ .item{flex:0 0 auto;width:calc(375px * var(--s))}
+ .cap{margin:0 0 3px;font-weight:700;font-size:13px}
+ .sub{margin:0 0 9px;font-size:11.5px;line-height:16px;color:var(--gray);height:32px}
+ .wrap{position:relative;width:calc(375px * var(--s));height:calc(812px * var(--s));
+       overflow:hidden;background:#fff;box-shadow:0 2px 12px rgba(6,40,64,.16)}
+ .scale{transform:scale(var(--s));transform-origin:top right;width:375px;height:812px}
+ iframe{width:375px;height:812px;border:0;display:block}
+ .m{margin:8px 0 0;font-size:11.5px;color:var(--marine)}
+ .m b{font-weight:700}
+ .m .d{color:#1a8a4a}
+ .fold{position:absolute;inset-inline:0;bottom:0;height:0;border-top:1px dashed rgba(6,40,64,.35)}
+</style></head><body>
+
+<h1>ראש עמוד במובייל — שש אפשרויות</h1>
+<p class="lede">בעמודים שנפתחים בכותרת ולא בתמונה, הקצב האנכי של לוח ה-1440
+ממשיך לחול גם ב-375px: ‎480px של לובן ובתוכם שלוש שורות טקסט, לפני שנראה תוכן
+אחד. כל אפשרות כאן היא טלאי של ‎<code>@media (max-width:768px)</code>‎ על העמוד
+האמיתי — הדסקטופ לא זז.</p>
+<p class="note">המספר מתחת לכל מסגרת הוא הגובה שבו מתחילה התמונה הראשונה בעמוד,
+במסך של 375×812. הקו המקווקו הוא הקיפול.</p>
+
+<h2>הפרויקטים שלנו</h2>
+<div class="row" id="row-projects"></div>
+
+<h2>חדשות ועדכונים</h2>
+<div class="row" id="row-news"></div>
+
+<script>
+const S = .62;
+const V = [
+ ['v0','0 · המצב היום','הקצב של לוח 1440 ממשיך לחול ב-375'],
+ ['v1','1 · כיווץ מרווחים','אותו עיצוב בדיוק, קצב אנכי של טלפון'],
+ ['v2','2 · שורת כותרת','הכוכב עולה לשורה, קו שיער סוגר את הראש'],
+ ['v3','3 · רצועת תמונה','שורת כותרת ומתחתיה רצועה מקצה לקצה'],
+ ['v4','4 · הירו מצולם','ההירו של קבלנית / התחדשות — במובייל בלבד'],
+ ['v5','5 · הפריט הראשון פותח','הפריט הראשון עולה מעל הסרגל ובורח לשוליים'],
+ ['v6','6 · כוכב ענק','הלובן הופך לשדה מעוצב, בלי תמונה חדשה'],
+];
+
+['projects','news'].forEach(page => {
+  const row = document.getElementById('row-' + page);
+  V.forEach(([v, t, s]) => {
+    const d = document.createElement('div');
+    d.className = 'item';
+    d.style.setProperty('--s', S);
+    d.innerHTML =
+      '<p class="cap">' + t + '</p>' +
+      '<p class="sub">' + s + '</p>' +
+      '<div class="wrap"><div class="scale">' +
+        '<iframe src="' + page + '-' + v + '.html" scrolling="no" ' +
+        'data-k="' + page + '-' + v + '"></iframe>' +
+      '</div><span class="fold"></span></div>' +
+      '<p class="m" id="m-' + page + '-' + v + '">…</p>';
+    row.appendChild(d);
+  });
+});
+
+/* הגובה שבו מתחילה התמונה הראשונה: הצומת הגלוי הגבוה ביותר שנושא תמונת רקע
+   או <img>, ורחב מ-150px — כדי לא לתפוס את הלוגו או אייקון בתפריט. */
+function firstPhotoTop(doc) {
+  let best = Infinity;
+  doc.querySelectorAll('div,section,figure,img,a').forEach(e => {
+    const b = e.getBoundingClientRect();
+    if (b.width < 150 || b.height < 80) return;
+    if (e.closest('.menu, .nsx, .pop')) return;
+    const bg = getComputedStyle(e).backgroundImage;
+    if (e.tagName !== 'IMG' && !/url\(/.test(bg)) return;
+    if (b.top < best) best = Math.round(b.top);
+  });
+  return best === Infinity ? null : best;
+}
+
+/* כשהעמוד נפתח ב-file:// הדפדפן חוסם קריאה אל contentDocument של ה-iframe.
+   הערכים שנמדדו ב-15.09.2026 משמשים אז כגיבוי, כדי שהמספרים לא ייעלמו. */
+const FALLBACK = {
+  projects: { v0: 482, v1: 311, v2: 241, v3: 170, v4: 0, v5: 170, v6: 333 },
+  news:     { v0: 450, v1: 327, v2: 235, v3: 170, v4: 0, v5: 170, v6: 349 },
+};
+
+window.addEventListener('load', () => setTimeout(() => {
+  const base = {};
+  document.querySelectorAll('iframe').forEach(fr => {
+    const page = fr.dataset.k.split('-')[0];
+    const v = fr.dataset.k.split('-')[1];
+    let doc = null, top = null;
+    try { doc = fr.contentDocument; top = firstPhotoTop(doc); } catch (e) { doc = null; }
+    if (doc === null) top = FALLBACK[page][v];
+    if (v === 'v0') base[page] = top;
+    const el = document.getElementById('m-' + fr.dataset.k);
+    const over = (doc && doc.documentElement.scrollWidth > 375)
+      ? ' ⚠ גלישה ' + doc.documentElement.scrollWidth + 'px' : '';
+    const diff = (base[page] != null && top != null && v !== 'v0')
+      ? ' <span class="d">(' + (top - base[page]) + 'px)</span>' : '';
+    el.innerHTML = 'תמונה ראשונה ב-<b>' + (top == null ? '—' : top + 'px') + '</b>' + diff + over;
+  });
+}, 900));
+</script>
+</body></html>

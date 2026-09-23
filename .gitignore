@@ -4,3 +4,10 @@
 
 # Zip archives — duplicates of folders already tracked here
 *.zip
+
+# Build stamp for the English site (_en-build/sync.sh)
+**/_en-build/.build-stamp
+
+# Developer handoff package — assembled from the sources already tracked here
+# (its site/ alone is a 41MB duplicate). Rebuild it rather than versioning it.
+ONCE-dev-handoff/

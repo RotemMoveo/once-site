@@ -17,14 +17,16 @@ REPLACEMENTS = [
      "return !e.children.length && e.textContent.trim() === 'In marketing & construction';"),
     ("var status = 'בשיווק וביצוע';",
      "var status = 'In marketing & construction';"),
-    ("wrap.style.cssText = 'display:flex;flex-wrap:wrap;justify-content:flex-end;"
-     "gap:80px 40px;width:1188px;max-width:100%;flex-shrink:0';\n"
-     "    // flex-end: a full row (2 cards) exactly fills the width so it is unaffected;\n"
-     "    // only a leftover odd card gets pushed to the right, as RTL reading expects.",
+    ("wrap.style.cssText = 'display:flex;flex-direction:row-reverse;flex-wrap:wrap;"
+     "justify-content:flex-start;gap:80px 40px;width:1188px;max-width:100%;flex-shrink:0';\n"
+     "    // row-reverse: the page is dir=ltr (Figma export), so without it the first card\n"
+     "    // in the DOM lands on the LEFT and each row reads backwards against the Hebrew.\n"
+     "    // With it, DOM order IS reading order — which is what the sort above assumes —\n"
+     "    // and a leftover odd card stays on the right, where RTL reading expects it.",
      "wrap.style.cssText = 'display:flex;flex-wrap:wrap;justify-content:flex-start;"
      "gap:80px 40px;width:1188px;max-width:100%;flex-shrink:0';\n"
-     "    // flex-start: a full row (2 cards) exactly fills the width so it is unaffected;\n"
-     "    // only a leftover odd card gets pushed to the left, as LTR reading expects."),
+     "    // a plain row: the English page reads left-to-right, so DOM order is already\n"
+     "    // reading order and a leftover odd card stays on the left, where it belongs."),
     ("      var show = label === 'הכל' || label.indexOf(st.replace('מאוכלס', 'מאוכלס')) "
      "!== -1 || label.indexOf(st) !== -1 ||\n"
      "                 (label.indexOf('מאוכלסים') !== -1 && st === 'מאוכלס');",
