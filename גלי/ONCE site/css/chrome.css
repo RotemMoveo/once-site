@@ -766,6 +766,30 @@ footer{background:var(--dark-blue);color:#fff;padding:48px 0 32px}
     white-space:normal !important;min-width:0 !important;flex-shrink:1 !important}
 }
 
+/* ---- כרטיס פרויקט באנגלית, במובייל: תגית וכותרת מיושרות למעלה ----
+   התווית האנגלית ("Project in marketing & construction") נשברת לשתיים־שלוש
+   שורות בטלפון. שורת הכותרת והתגית עצמה היו align-items:center, ולכן הכותרת
+   והאייקון צנחו לאמצע התגית. כאן: התגית נשארת בשורה של הכותרת, שתיהן
+   מיושרות לראש השורה, והאייקון יושב במרכז השורה הראשונה של התווית — קופסת
+   האייקון בגובה שורה אחת (18px) והגליף ממורכז בתוכה.
+   'start' ולא 'flex-start' — המראה של en/ הופך flex-start ל-flex-end. */
+@media (max-width:768px){
+  html[lang="en"] .ptag,html[lang="en"] .rtag,
+  html[lang="en"] [data-name="שורת כותרת"] [data-name="tag"] div:not([data-name]),
+  html[lang="en"] [data-name="שורת כותרת"] [data-name="תגית"] > div:not([data-name]){
+    line-height:18px !important;white-space:normal !important}
+  html[lang="en"] .pcard-head,html[lang="en"] .pjcard-head,
+  html[lang="en"] [data-name="שורת כותרת"]{flex-wrap:nowrap !important;align-items:start !important}
+  html[lang="en"] .ptag,html[lang="en"] .rtag,
+  html[lang="en"] [data-name="שורת כותרת"] [data-name="tag"],
+  html[lang="en"] [data-name="שורת כותרת"] [data-name="tag"] > [data-name],
+  html[lang="en"] [data-name="שורת כותרת"] [data-name="תגית"]{
+    align-items:start !important;min-width:0 !important;flex-shrink:1 !important}
+  html[lang="en"] .ptag > svg,html[lang="en"] .rtag > svg{height:18px !important;flex-shrink:0}
+  html[lang="en"] [data-name="שורת כותרת"] [data-name="tag"] [data-name]:has(> svg),
+  html[lang="en"] [data-name="שורת כותרת"] [data-name="תגית"] [data-name]:has(> svg){height:18px !important}
+}
+
 /* ---- הפוטר גדל ומתכווץ יחד עם גוף העמוד ----
    הפוטר יושב מחוץ ל-.fig-page. עד 1439px שניהם זהים ממילא (רוחב מלא עם
    שוליים של 20px). בין 1440 ל-1660, שבו גוף העמוד מתרחב, גם עמודות הפוטר
